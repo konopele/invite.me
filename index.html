@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CodiceFacile — Community Promo & Invite Codes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink:       #0f0e0c;
+      --paper:     #f5f0e8;
+      --cream:     #ede7d9;
+      --rust:      #c94a2b;
+      --rust-dim:  #a63b22;
+      --gold:      #c9932b;
+      --sage:      #4a7c59;
+      --muted:     #7a7062;
+      --border:    #d5cdc0;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'DM Sans', sans-serif;
+      --font-mono:    'DM Mono', monospace;
+      --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+
+    /* LANG SWITCHER */
+    .lang-switcher { display: flex; align-items: center; background: var(--cream); border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+    .lang-btn { padding: 6px 12px; font-family: var(--font-body); font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--muted); background: transparent; border: none; cursor: pointer; transition: all 0.18s; border-right: 1px solid var(--border); line-height: 1.5; }
+    .lang-btn:last-child { border-right: none; }
+    .lang-btn:hover { color: var(--ink); background: rgba(201,74,43,0.07); }
+    .lang-btn.active { background: var(--rust); color: #fff; }
+
+    /* COOKIE BANNER */
+    #cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: var(--ink); color: #e8e2d8; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; z-index: 1000; font-size: 13px; transform: translateY(100%); animation: slideUp 0.6s 1.2s var(--ease-out-expo) forwards; }
+    @keyframes slideUp { to { transform: translateY(0); } }
+    #cookie-banner p { max-width: 640px; opacity: 0.85; }
+    #cookie-banner a { color: var(--gold); text-decoration: underline; }
+    .cookie-actions { display: flex; gap: 10px; flex-shrink: 0; }
+    .btn-cookie { padding: 8px 20px; border-radius: 4px; font-family: var(--font-body); font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid transparent; transition: all 0.2s; }
+    .btn-cookie.accept { background: var(--rust); color: #fff; border-color: var(--rust); }
+    .btn-cookie.accept:hover { background: var(--rust-dim); }
+    .btn-cookie.decline { background: transparent; color: #e8e2d8; border-color: #555; }
+    .btn-cookie.decline:hover { border-color: #aaa; }
+
+    /* NAV */
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(245,240,232,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; }
+    .nav-logo { font-family: var(--font-display); font-size: 22px; font-weight: 900; color: var(--ink); text-decoration: none; letter-spacing: -0.5px; flex-shrink: 0; }
+    .nav-logo span { color: var(--rust); }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-right { display: flex; gap: 10px; align-items: center; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 22px; border-radius: 6px; font-family: var(--font-body); font-weight: 600; font-size: 14px; text-decoration: none; cursor: pointer; border: 1.5px solid transparent; transition: all 0.2s; }
+    .btn-ghost { color: var(--ink); border-color: var(--border); background: transparent; }
+    .btn-ghost:hover { border-color: var(--ink); }
+    .btn-primary { background: var(--rust); color: #fff; border-color: var(--rust); }
+    .btn-primary:hover { background: var(--rust-dim); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,74,43,0.3); }
+    .btn-lg { padding: 14px 32px; font-size: 16px; border-radius: 8px; }
+
+    /* HERO */
+    .hero { min-height: calc(100vh - 64px); display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 80px; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 48px 48px; opacity: 0.35; pointer-events: none; }
+    .hero-bg-text { position: absolute; bottom: -40px; right: -20px; font-family: var(--font-display); font-size: 280px; font-weight: 900; color: var(--cream); line-height: 1; pointer-events: none; user-select: none; z-index: 0; }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s 0.2s var(--ease-out-expo) forwards; }
+    .hero-eyebrow::before { content: ''; display: block; width: 24px; height: 2px; background: var(--rust); }
+    .hero h1 { font-family: var(--font-display); font-size: clamp(44px, 5.5vw, 72px); font-weight: 900; line-height: 1.05; letter-spacing: -2px; margin-bottom: 24px; opacity: 0; animation: fadeUp 0.9s 0.35s var(--ease-out-expo) forwards; }
+    .hero h1 em { font-style: italic; color: var(--rust); }
+    .hero-sub { font-size: 18px; color: var(--muted); max-width: 460px; margin-bottom: 40px; font-weight: 300; line-height: 1.7; opacity: 0; animation: fadeUp 0.9s 0.5s var(--ease-out-expo) forwards; }
+    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.9s 0.65s var(--ease-out-expo) forwards; }
+    .hero-stats { display: flex; gap: 40px; margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--border); opacity: 0; animation: fadeUp 0.9s 0.8s var(--ease-out-expo) forwards; }
+    .stat-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+    .stat-label { font-size: 13px; color: var(--muted); }
+
+    /* HERO CARDS */
+    .hero-visual { position: relative; z-index: 1; display: flex; justify-content: center; align-items: center; height: 520px; opacity: 0; animation: fadeIn 1.2s 0.4s var(--ease-out-expo) forwards; }
+    .code-card { position: absolute; background: #fff; border-radius: 16px; padding: 20px 24px; box-shadow: 0 8px 40px rgba(15,14,12,0.12), 0 2px 8px rgba(15,14,12,0.06); border: 1px solid var(--border); min-width: 260px; transition: transform 0.4s var(--ease-out-expo); }
+    .code-card:hover { transform: translateY(-4px) scale(1.01) !important; }
+    .card-1 { top: 20px; left: 10px; transform: rotate(-3deg); z-index: 3; animation: cf1 6s ease-in-out infinite; }
+    .card-2 { top: 120px; right: 0; transform: rotate(2deg); z-index: 4; animation: cf2 7s ease-in-out infinite; }
+    .card-3 { bottom: 40px; left: 30px; transform: rotate(1deg); z-index: 2; animation: cf3 8s ease-in-out infinite; }
+    @keyframes cf1 { 0%,100%{transform:rotate(-3deg) translateY(0)} 50%{transform:rotate(-3deg) translateY(-10px)} }
+    @keyframes cf2 { 0%,100%{transform:rotate(2deg) translateY(0)} 50%{transform:rotate(2deg) translateY(-14px)} }
+    @keyframes cf3 { 0%,100%{transform:rotate(1deg) translateY(0)} 50%{transform:rotate(1deg) translateY(-8px)} }
+    .card-merchant { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .merchant-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .merchant-name { font-weight: 600; font-size: 15px; line-height: 1.2; }
+    .merchant-cat { font-size: 12px; color: var(--muted); }
+    .code-block { background: var(--cream); border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .code-text { font-family: var(--font-mono); font-size: 15px; font-weight: 500; letter-spacing: 0.08em; color: var(--ink); }
+    .copy-btn { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--rust); cursor: pointer; border: none; background: none; font-family: var(--font-body); padding: 0; transition: opacity 0.2s; }
+    .copy-btn:hover { opacity: 0.7; }
+    .card-meta { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--muted); }
+    .verified-badge { display: inline-flex; align-items: center; gap: 4px; background: #eaf5ee; color: var(--sage); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 100px; }
+    .premium-badge { display: inline-flex; align-items: center; gap: 4px; background: #fff8ec; color: var(--gold); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 100px; }
+    .discount-tag { background: var(--rust); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 100px; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* TICKER */
+    .ticker-wrap { background: var(--ink); color: var(--paper); overflow: hidden; padding: 12px 0; border-top: 1px solid #222; border-bottom: 1px solid #222; }
+    .ticker-track { display: flex; animation: ticker 28s linear infinite; white-space: nowrap; }
+    .ticker-item { display: inline-flex; align-items: center; gap: 10px; padding: 0 32px; font-size: 13px; font-weight: 500; border-right: 1px solid #333; }
+    .ticker-item span { color: var(--gold); font-family: var(--font-mono); font-size: 12px; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* SECTIONS */
+    .section { padding: 100px 80px; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rust); margin-bottom: 16px; }
+    .section-title { font-family: var(--font-display); font-size: clamp(36px, 4vw, 52px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 16px; }
+    .section-sub { font-size: 17px; color: var(--muted); max-width: 520px; font-weight: 300; }
+
+    /* HOW IT WORKS */
+    .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 60px; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .step-card { background: #fff; padding: 40px 32px; border-right: 1px solid var(--border); transition: background 0.3s; }
+    .step-card:last-child { border-right: none; }
+    .step-card:hover { background: var(--cream); }
+    .step-num { font-family: var(--font-display); font-size: 72px; font-weight: 900; color: var(--border); line-height: 1; margin-bottom: 20px; }
+    .step-icon { font-size: 28px; margin-bottom: 16px; }
+    .step-title { font-weight: 700; font-size: 17px; margin-bottom: 10px; }
+    .step-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* CATEGORIES */
+    .categories-section { background: var(--cream); padding: 100px 80px; }
+    .cats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 48px; }
+    .cat-pill { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 20px 16px; text-align: center; cursor: pointer; transition: all 0.2s; text-decoration: none; color: var(--ink); }
+    .cat-pill:hover { border-color: var(--rust); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(201,74,43,0.12); }
+    .cat-pill .cat-icon { font-size: 28px; margin-bottom: 8px; }
+    .cat-pill .cat-name { font-size: 13px; font-weight: 600; }
+    .cat-pill .cat-count { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* PREMIUM */
+    .premium-section { padding: 100px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .premium-cards { display: flex; flex-direction: column; gap: 16px; }
+    .plan-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 28px; display: flex; align-items: center; gap: 20px; transition: all 0.3s; cursor: pointer; }
+    .plan-card:hover { border-color: var(--rust); box-shadow: 0 8px 32px rgba(201,74,43,0.1); transform: translateX(6px); }
+    .plan-card.featured { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .plan-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .plan-icon.free-icon { background: var(--cream); }
+    .plan-icon.pro-icon { background: var(--rust); }
+    .plan-icon.biz-icon { background: var(--gold); }
+    .plan-info { flex: 1; }
+    .plan-name { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+    .plan-desc { font-size: 13px; opacity: 0.65; }
+    .plan-price { text-align: right; flex-shrink: 0; }
+    .plan-amount { font-family: var(--font-display); font-size: 24px; font-weight: 700; line-height: 1; }
+    .plan-period { font-size: 11px; opacity: 0.55; margin-top: 2px; }
+    .boost-card { background: var(--cream); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; display: flex; align-items: center; gap: 16px; }
+    .boost-card-text { flex: 1; }
+    .boost-card-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+    .boost-card-desc { font-size: 13px; color: var(--muted); }
+
+    /* TRUST */
+    .trust-section { background: var(--ink); color: var(--paper); padding: 80px; }
+    .trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #222; border: 1px solid #222; border-radius: 16px; overflow: hidden; margin-top: 56px; }
+    .trust-item { background: var(--ink); padding: 40px 36px; transition: background 0.3s; }
+    .trust-item:hover { background: #1a1916; }
+    .trust-icon { font-size: 32px; margin-bottom: 20px; }
+    .trust-title { font-weight: 700; font-size: 18px; margin-bottom: 10px; }
+    .trust-desc { font-size: 14px; color: #8a8278; line-height: 1.65; }
+
+    /* CTA STRIP */
+    .cta-strip { background: var(--rust); padding: 80px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+    .cta-strip h2 { font-family: var(--font-display); font-size: clamp(32px, 3.5vw, 48px); font-weight: 900; color: #fff; letter-spacing: -1.5px; line-height: 1.1; }
+    .cta-strip h2 em { font-style: italic; opacity: 0.75; }
+    .btn-white { background: #fff; color: var(--rust); border-color: #fff; white-space: nowrap; flex-shrink: 0; }
+    .btn-white:hover { background: var(--paper); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+
+    /* FOOTER */
+    footer { background: #0a0908; color: #6a6258; padding: 60px 80px 40px; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid #1e1c19; }
+    .footer-logo { font-family: var(--font-display); font-size: 24px; font-weight: 900; color: var(--paper); margin-bottom: 14px; }
+    .footer-logo span { color: var(--rust); }
+    .footer-tagline { font-size: 14px; line-height: 1.6; max-width: 260px; }
+    .footer-gdpr { display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; font-size: 11px; background: #1a1916; padding: 6px 12px; border-radius: 100px; color: #8a8278; }
+    .footer-col h4 { color: var(--paper); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a { color: #6a6258; text-decoration: none; font-size: 14px; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: var(--paper); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 12px; gap: 16px; flex-wrap: wrap; }
+    .footer-legal { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-legal a { color: #6a6258; text-decoration: none; transition: color 0.2s; }
+    .footer-legal a:hover { color: var(--paper); }
+    .vat-notice { font-size: 11px; color: #3a3830; }
+
+    /* LANG TRANSITION */
+    .lang-fade { animation: langFade 0.25s ease; }
+    @keyframes langFade { from { opacity: 0.4; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* RESPONSIVE */
+    @media (max-width: 1100px) {
+      .hero { grid-template-columns: 1fr; padding: 60px 40px; min-height: auto; }
+      .hero-visual { height: 380px; }
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+      .premium-section { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .section, .categories-section, .trust-section, .cta-strip, footer, .hero, .premium-section { padding-left: 24px; padding-right: 24px; }
+    }
+    @media (max-width: 640px) {
+      .steps-grid { grid-template-columns: 1fr; }
+      .trust-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 24px; flex-wrap: wrap; }
+      .cta-strip { flex-direction: column; text-align: center; }
+      .footer-top { grid-template-columns: 1fr; }
+      .code-card.card-3 { display: none; }
+      .hero-bg-text { font-size: 120px; }
+      .nav-right { gap: 6px; }
+      .btn-ghost { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- COOKIE BANNER -->
+  <div id="cookie-banner" role="dialog" aria-label="Cookie consent">
+    <p data-i18n="cookie_text"></p>
+    <div class="cookie-actions">
+      <button class="btn-cookie decline" onclick="closeBanner()" data-i18n="cookie_decline"></button>
+      <button class="btn-cookie accept" onclick="closeBanner()" data-i18n="cookie_accept"></button>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Codice<span>Facile</span></a>
+    <ul class="nav-links">
+      <li><a href="#codes" data-i18n="nav_codes"></a></li>
+      <li><a href="#invites" data-i18n="nav_invites"></a></li>
+      <li><a href="#merchants" data-i18n="nav_merchants"></a></li>
+      <li><a href="#premium" data-i18n="nav_premium"></a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang-switcher" role="group" aria-label="Language">
+        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" data-lang="it" onclick="setLang('it')">IT</button>
+        <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
+      </div>
+      <a href="login.html" class="btn btn-ghost" data-i18n="nav_login"></a>
+      <a href="signup.html" class="btn btn-primary" data-i18n="nav_signup"></a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow" data-i18n="hero_eyebrow"></div>
+      <h1 data-i18n="hero_h1"></h1>
+      <p class="hero-sub" data-i18n="hero_sub"></p>
+      <div class="hero-ctas">
+        <a href="signup.html" class="btn btn-primary btn-lg" data-i18n="hero_cta1"></a>
+        <a href="login.html" class="btn btn-ghost btn-lg" data-i18n="hero_cta2"></a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num">12,400+</div><div class="stat-label" data-i18n="stat_codes"></div></div>
+        <div><div class="stat-num">840+</div><div class="stat-label" data-i18n="stat_merchants"></div></div>
+        <div><div class="stat-num">38k</div><div class="stat-label" data-i18n="stat_members"></div></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-bg-text">%</div>
+
+      <div class="code-card card-1">
+        <div class="card-merchant">
+          <div class="merchant-icon" style="background:#fff0eb;">🛒</div>
+          <div><div class="merchant-name">Zalando</div><div class="merchant-cat" data-i18n="cat_fashion"></div></div>
+          <div class="discount-tag">−20%</div>
+        </div>
+        <div class="code-block">
+          <span class="code-text">ZALA20IT</span>
+          <button class="copy-btn" onclick="copyCode(this,'ZALA20IT')" data-i18n="copy"></button>
+        </div>
+        <div class="card-meta">
+          <span class="verified-badge" data-i18n="verified"></span>
+          <span data-i18n="expires"></span>
+        </div>
+      </div>
+
+      <div class="code-card card-2">
+        <div class="card-merchant">
+          <div class="merchant-icon" style="background:#f0f5ff;">🚗</div>
+          <div><div class="merchant-name">Uber</div><div class="merchant-cat" data-i18n="cat_mobility"></div></div>
+        </div>
+        <div class="code-block">
+          <span class="code-text">UBER-MARCO9</span>
+          <button class="copy-btn" onclick="copyCode(this,'UBER-MARCO9')" data-i18n="copy"></button>
+        </div>
+        <div class="card-meta">
+          <span class="premium-badge">⭐ Premium</span>
+          <span data-i18n="invite_bonus"></span>
+        </div>
+      </div>
+
+      <div class="code-card card-3">
+        <div class="card-merchant">
+          <div class="merchant-icon" style="background:#f0fff4;">🍕</div>
+          <div><div class="merchant-name">Deliveroo</div><div class="merchant-cat" data-i18n="cat_food"></div></div>
+          <div class="discount-tag">−€3</div>
+        </div>
+        <div class="code-block">
+          <span class="code-text">DELIV3FREE</span>
+          <button class="copy-btn" onclick="copyCode(this,'DELIV3FREE')" data-i18n="copy"></button>
+        </div>
+        <div class="card-meta">
+          <span class="verified-badge" data-i18n="verified"></span>
+          <span data-i18n="first_order"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker-track">
+      <div class="ticker-item">Zalando <span>ZALA20IT</span></div>
+      <div class="ticker-item">Amazon Prime <span>PRIMEIT25</span></div>
+      <div class="ticker-item">Deliveroo <span>DELIV3FREE</span></div>
+      <div class="ticker-item">Satispay <span>SATI5BACK</span></div>
+      <div class="ticker-item">DAZN <span>DAZN-SPORT</span></div>
+      <div class="ticker-item">Enel <span>ENELGREEN</span></div>
+      <div class="ticker-item">TicketOne <span>TICKET10</span></div>
+      <div class="ticker-item">Booking.com <span>BOOK15OFF</span></div>
+      <div class="ticker-item">Revolut <span>REV-MARCO</span></div>
+      <div class="ticker-item">Zalando <span>ZALA20IT</span></div>
+      <div class="ticker-item">Amazon Prime <span>PRIMEIT25</span></div>
+      <div class="ticker-item">Deliveroo <span>DELIV3FREE</span></div>
+      <div class="ticker-item">Satispay <span>SATI5BACK</span></div>
+      <div class="ticker-item">DAZN <span>DAZN-SPORT</span></div>
+      <div class="ticker-item">Enel <span>ENELGREEN</span></div>
+      <div class="ticker-item">TicketOne <span>TICKET10</span></div>
+      <div class="ticker-item">Booking.com <span>BOOK15OFF</span></div>
+      <div class="ticker-item">Revolut <span>REV-MARCO</span></div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="codes">
+    <div class="section-label" data-i18n="how_label"></div>
+    <h2 class="section-title" data-i18n="how_title"></h2>
+    <p class="section-sub" data-i18n="how_sub"></p>
+    <div class="steps-grid">
+      <div class="step-card"><div class="step-num">01</div><div class="step-icon">🔍</div><div class="step-title" data-i18n="step1_title"></div><div class="step-desc" data-i18n="step1_desc"></div></div>
+      <div class="step-card"><div class="step-num">02</div><div class="step-icon">📋</div><div class="step-title" data-i18n="step2_title"></div><div class="step-desc" data-i18n="step2_desc"></div></div>
+      <div class="step-card"><div class="step-num">03</div><div class="step-icon">✅</div><div class="step-title" data-i18n="step3_title"></div><div class="step-desc" data-i18n="step3_desc"></div></div>
+      <div class="step-card"><div class="step-num">04</div><div class="step-icon">🚀</div><div class="step-title" data-i18n="step4_title"></div><div class="step-desc" data-i18n="step4_desc"></div></div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section class="categories-section" id="invites">
+    <div class="section-label" data-i18n="cats_label"></div>
+    <h2 class="section-title" data-i18n="cats_title"></h2>
+    <div class="cats-grid">
+      <a href="#" class="cat-pill"><div class="cat-icon">🛒</div><div class="cat-name" data-i18n="cat_fashion"></div><div class="cat-count">1,240 <span data-i18n="codes_word"></span></div></a>
+      <a href="#" class="cat-pill"><div class="cat-icon">🍕</div><div class="cat-name" data-i18n="cat_food"></div><div class="cat-count">380 <span data-i18n="codes_word"></span></div></a>
+      <a href="#" class="cat-pill"><div class="cat-icon">✈️</div><div class="cat-name" data-i18n="cat_travel"></div><div class="cat-count">920 <span data-i18n="codes_word"></span></div></a>
+      <a href="#" class="cat-pill"><div class="cat-icon">🚗</div><div class="cat-name" data-i18n="cat_mobility"></div><div class="cat-count">215 <span data-i18n="codes_word"></span></div></a>
+      <a href="#" class="cat-pill"><div class="cat-icon">💳</div><div class="cat-name" data-i18n="cat_fintech"></div><div class="cat-count">540 <span data-i18n="codes_word"></span></div></a>
+      <a href="#" class="cat-pill"><div class="cat-icon">🎮</div><div class="cat-name" data-i18n="cat_gaming"></div><div class="cat-count">310 <span data-i18n="codes_word"></span></div></a>
+      <a href="#" class="cat-pill"><div class="cat-icon">📱</div><div class="cat-name" data-i18n="cat_tech"></div><div class="cat-count">680 <span data-i18n="codes_word"></span></div></a>
+      <a href="#" class="cat-pill"><div class="cat-icon">⚡</div><div class="cat-name" data-i18n="cat_energy"></div><div class="cat-count">92 <span data-i18n="codes_word"></span></div></a>
+      <a href="#" class="cat-pill"><div class="cat-icon">💊</div><div class="cat-name" data-i18n="cat_health"></div><div class="cat-count">175 <span data-i18n="codes_word"></span></div></a>
+      <a href="#" class="cat-pill"><div class="cat-icon">🎓</div><div class="cat-name" data-i18n="cat_edu"></div><div class="cat-count">230 <span data-i18n="codes_word"></span></div></a>
+      <a href="#" class="cat-pill"><div class="cat-icon">🏠</div><div class="cat-name" data-i18n="cat_home"></div><div class="cat-count">415 <span data-i18n="codes_word"></span></div></a>
+      <a href="#" class="cat-pill"><div class="cat-icon">🎬</div><div class="cat-name" data-i18n="cat_stream"></div><div class="cat-count">190 <span data-i18n="codes_word"></span></div></a>
+    </div>
+  </section>
+
+  <!-- PREMIUM -->
+  <section class="premium-section" id="premium">
+    <div>
+      <div class="section-label" data-i18n="premium_label"></div>
+      <h2 class="section-title" data-i18n="premium_title"></h2>
+      <p class="section-sub" style="margin-bottom:32px;" data-i18n="premium_sub"></p>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:14px;"><span style="color:var(--rust)">✓</span><span data-i18n="perk_vat"></span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:14px;"><span style="color:var(--rust)">✓</span><span data-i18n="perk_invoice"></span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:14px;"><span style="color:var(--rust)">✓</span><span data-i18n="perk_cancel"></span></div>
+      </div>
+    </div>
+    <div class="premium-cards">
+      <div class="plan-card">
+        <div class="plan-icon free-icon">🆓</div>
+        <div class="plan-info"><div class="plan-name" data-i18n="plan_free"></div><div class="plan-desc" data-i18n="plan_free_desc"></div></div>
+        <div class="plan-price"><div class="plan-amount">€0</div><div class="plan-period" data-i18n="plan_forever"></div></div>
+      </div>
+      <div class="plan-card featured">
+        <div class="plan-icon pro-icon">⭐</div>
+        <div class="plan-info"><div class="plan-name">Pro</div><div class="plan-desc" data-i18n="plan_pro_desc"></div></div>
+        <div class="plan-price"><div class="plan-amount">€4.90</div><div class="plan-period" data-i18n="plan_mo"></div></div>
+      </div>
+      <div class="plan-card">
+        <div class="plan-icon biz-icon">🏢</div>
+        <div class="plan-info"><div class="plan-name">Business</div><div class="plan-desc" data-i18n="plan_biz_desc"></div></div>
+        <div class="plan-price"><div class="plan-amount">€14.90</div><div class="plan-period" data-i18n="plan_mo"></div></div>
+      </div>
+      <div class="boost-card">
+        <span style="font-size:24px;">⚡</span>
+        <div class="boost-card-text">
+          <div class="boost-card-title" data-i18n="boost_title"></div>
+          <div class="boost-card-desc" data-i18n="boost_desc"></div>
+        </div>
+        <a href="#" class="btn btn-primary" style="white-space:nowrap;" data-i18n="boost_cta"></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section class="trust-section" id="merchants">
+    <div class="section-label" style="color:var(--rust)" data-i18n="trust_label"></div>
+    <h2 class="section-title" style="color:var(--paper)" data-i18n="trust_title"></h2>
+    <div class="trust-grid">
+      <div class="trust-item"><div class="trust-icon">🗳️</div><div class="trust-title" data-i18n="trust1_title"></div><div class="trust-desc" data-i18n="trust1_desc"></div></div>
+      <div class="trust-item"><div class="trust-icon">🛡️</div><div class="trust-title" data-i18n="trust2_title"></div><div class="trust-desc" data-i18n="trust2_desc"></div></div>
+      <div class="trust-item"><div class="trust-icon">📊</div><div class="trust-title" data-i18n="trust3_title"></div><div class="trust-desc" data-i18n="trust3_desc"></div></div>
+      <div class="trust-item"><div class="trust-icon">🔗</div><div class="trust-title" data-i18n="trust4_title"></div><div class="trust-desc" data-i18n="trust4_desc"></div></div>
+      <div class="trust-item"><div class="trust-icon">📝</div><div class="trust-title" data-i18n="trust5_title"></div><div class="trust-desc" data-i18n="trust5_desc"></div></div>
+      <div class="trust-item"><div class="trust-icon">⚖️</div><div class="trust-title" data-i18n="trust6_title"></div><div class="trust-desc" data-i18n="trust6_desc"></div></div>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section class="cta-strip">
+    <h2 data-i18n="cta_h2"></h2>
+    <a href="signup.html" class="btn btn-white btn-lg" data-i18n="cta_btn"></a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">Codice<span>Facile</span></div>
+        <div class="footer-tagline" data-i18n="footer_tagline"></div>
+        <div class="footer-gdpr">🔒 GDPR Compliant · <span data-i18n="footer_hq"></span></div>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_platform"></h4>
+        <ul>
+          <li><a href="#" data-i18n="nav_codes"></a></li>
+          <li><a href="#" data-i18n="nav_invites"></a></li>
+          <li><a href="#" data-i18n="footer_verified"></a></li>
+          <li><a href="#" data-i18n="cats_label"></a></li>
+          <li><a href="#" data-i18n="footer_new"></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_account"></h4>
+        <ul>
+          <li><a href="#" data-i18n="nav_signup"></a></li>
+          <li><a href="#" data-i18n="nav_login"></a></li>
+          <li><a href="#" data-i18n="footer_premium"></a></li>
+          <li><a href="#" data-i18n="footer_mod"></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_legal_col"></h4>
+        <ul>
+          <li><a href="#" data-i18n="footer_tos"></a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#" data-i18n="footer_cookies"></a></li>
+          <li><a href="#" data-i18n="footer_dpo"></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        <a href="#" data-i18n="footer_tos"></a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Cookie Policy</a>
+        <a href="#" data-i18n="footer_report"></a>
+      </div>
+      <div class="vat-notice" data-i18n="footer_vat"></div>
+    </div>
+  </footer>
+
+<script>
+// ════════════════════════════════════════════════════════
+//  TRANSLATION DICTIONARY
+// ════════════════════════════════════════════════════════
+const T = {
+  en: {
+    page_title: 'CodiceFacile — Community Promo & Invite Codes',
+    // cookie
+    cookie_text: 'We use cookies to improve your experience and for analytics, in compliance with <strong>GDPR</strong> and Italian Consumer Code. <a href="#privacy">Read our Privacy Policy.</a>',
+    cookie_decline: 'Essential only',
+    cookie_accept: 'Accept all',
+    // nav
+    nav_codes: 'Promo Codes', nav_invites: 'Invites', nav_merchants: 'Merchants', nav_premium: 'Premium',
+    nav_login: 'Log in', nav_signup: 'Sign up free',
+    // hero
+    hero_eyebrow: 'International community · Verified codes',
+    hero_h1: 'Save more with<br/><em>community</em> codes',
+    hero_sub: 'Find promo codes and invite links for the best brands. Share yours, gain visibility. Everything verified by the community.',
+    hero_cta1: 'Explore codes →', hero_cta2: 'Add yours',
+    stat_codes: 'Active codes', stat_merchants: 'Verified merchants', stat_members: 'Community members',
+    // cards
+    cat_fashion: 'Fashion & Apparel', cat_mobility: 'Mobility & Transport', cat_food: 'Food Delivery',
+    copy: 'Copy', copied: 'Copied!',
+    verified: '✓ Verified', expires: 'Expires: 31/07/2026',
+    invite_bonus: 'Invite link · €5 bonus', first_order: 'First order',
+    // how
+    how_label: 'How it works',
+    how_title: 'Simple, fast,<br/>community-verified',
+    how_sub: 'Four steps to save or share your code with thousands of users.',
+    step1_title: 'Find a merchant', step1_desc: 'Browse by category or search directly. Only community-verified brands are listed.',
+    step2_title: 'Copy the code', step2_desc: 'One click to copy a promo code or open an invite link. No sign-up needed for free codes.',
+    step3_title: 'Report if it works', step3_desc: 'After using it, confirm or flag if the code is expired. The community keeps everything current.',
+    step4_title: 'Share yours', step4_desc: 'Add your own invite or promo codes. Premium members get priority visibility across the platform.',
+    // categories
+    cats_label: 'Categories', cats_title: 'Find a code<br/>for every need',
+    cat_travel: 'Travel', cat_fintech: 'Fintech', cat_gaming: 'Gaming', cat_tech: 'Tech',
+    cat_energy: 'Energy', cat_health: 'Health', cat_edu: 'Education', cat_home: 'Home', cat_stream: 'Streaming',
+    codes_word: 'codes',
+    // premium
+    premium_label: 'Plans & Pricing',
+    premium_title: 'Maximize<br/>your visibility',
+    premium_sub: 'Premium accounts get your codes to the top of results. Single Boost works without a subscription.',
+    perk_vat: 'Prices incl. VAT (22%)', perk_invoice: 'Electronic invoice available', perk_cancel: 'Cancel anytime',
+    plan_free: 'Free', plan_free_desc: 'Add codes, standard visibility', plan_forever: 'forever',
+    plan_pro_desc: 'Priority visibility · Verified badge', plan_mo: '/ mo incl. VAT',
+    plan_biz_desc: 'Merchant dashboard · Analytics',
+    boost_title: 'Single Boost', boost_desc: 'Pin a code to the top for 7 days · €1.99', boost_cta: 'Activate',
+    // trust
+    trust_label: 'Community Governance', trust_title: 'Merchants are verified<br/>by real people',
+    trust1_title: 'Community voting', trust1_desc: 'Every proposed merchant is reviewed by members. A minimum threshold of positive votes is required for approval.',
+    trust2_title: 'Verified moderators', trust2_desc: 'A team of moderators reviews reports and can revoke fraudulent merchants or codes within 24 hours.',
+    trust3_title: 'Reliability score', trust3_desc: 'Each code receives a score based on user feedback. Codes with a low rating are automatically hidden.',
+    trust4_title: 'VAT number check', trust4_desc: 'For Italian merchants we verify the VAT number via the Business Register (CCIAA API). Zero ghost companies.',
+    trust5_title: 'GDPR compliance', trust5_desc: 'Data processing compliant with EU Regulation 2016/679 and Italian Privacy Code (D.Lgs. 196/2003).',
+    trust6_title: 'Italian jurisdiction', trust6_desc: 'Terms of Service and Privacy Policy drafted under Italian and European law. Registered office in Italy.',
+    // cta & footer
+    cta_h2: 'Start saving<br/><em>today, for free.</em>', cta_btn: 'Create your account →',
+    footer_tagline: 'The international community for verified promo codes and invite links. Legally based in Italy.',
+    footer_hq: 'HQ: Milan, Italy', footer_platform: 'Platform', footer_verified: 'Verified Merchants', footer_new: 'New Codes',
+    footer_account: 'Account', footer_premium: 'Premium Plans', footer_mod: 'Become a moderator',
+    footer_legal_col: 'Legal', footer_tos: 'Terms of Service', footer_cookies: 'Cookie settings', footer_dpo: 'Contact & DPO',
+    footer_report: 'Report an issue',
+    footer_vat: '© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901 · Prices include VAT (22%)',
+  },
+
+  it: {
+    page_title: 'CodiceFacile — Promo & Invite della Community',
+    cookie_text: 'Utilizziamo cookie per migliorare la tua esperienza e per scopi analitici, nel rispetto del <strong>GDPR</strong> e del Codice del Consumo italiano. <a href="#privacy">Leggi la nostra Privacy Policy.</a>',
+    cookie_decline: 'Solo essenziali', cookie_accept: 'Accetta tutti',
+    nav_codes: 'Codici Promo', nav_invites: 'Inviti', nav_merchants: 'Merchant', nav_premium: 'Premium',
+    nav_login: 'Accedi', nav_signup: 'Registrati gratis',
+    hero_eyebrow: 'Community internazionale · Codici verificati',
+    hero_h1: 'Risparmia di più<br/>con i codici della <em>community</em>',
+    hero_sub: 'Trova codici promo e link di invito per i migliori brand. Condividi i tuoi, guadagna visibilità. Tutto verificato dalla community.',
+    hero_cta1: 'Esplora i codici →', hero_cta2: 'Aggiungi il tuo',
+    stat_codes: 'Codici attivi', stat_merchants: 'Merchant verificati', stat_members: 'Membri community',
+    cat_fashion: 'Moda & Abbigliamento', cat_mobility: 'Mobilità & Trasporti', cat_food: 'Food Delivery',
+    copy: 'Copia', copied: 'Copiato!',
+    verified: '✓ Verificato', expires: 'Scade: 31/07/2026',
+    invite_bonus: 'Link invito · bonus €5', first_order: 'Primo ordine',
+    how_label: 'Come funziona',
+    how_title: 'Semplice, veloce,<br/>verificato dalla community',
+    how_sub: 'Quattro passi per risparmiare o condividere il tuo codice con migliaia di utenti.',
+    step1_title: 'Cerca il merchant', step1_desc: 'Sfoglia per categoria o cerca direttamente il brand. Trovi solo aziende verificate dalla community.',
+    step2_title: 'Copia il codice', step2_desc: 'Un click per copiare il codice promo o aprire il link di invito. Nessuna registrazione per i codici gratuiti.',
+    step3_title: 'Segnala se funziona', step3_desc: "Dopo l'utilizzo, conferma o segnala se il codice è scaduto. La community mantiene tutto aggiornato.",
+    step4_title: 'Condividi il tuo', step4_desc: 'Aggiungi i tuoi codici di invito o promo. Con un account Premium ottieni visibilità prioritaria.',
+    cats_label: 'Categorie', cats_title: 'Trova il codice<br/>per ogni esigenza',
+    cat_travel: 'Viaggi', cat_fintech: 'Fintech', cat_gaming: 'Gaming', cat_tech: 'Tech',
+    cat_energy: 'Energia', cat_health: 'Salute', cat_edu: 'Formazione', cat_home: 'Casa', cat_stream: 'Streaming',
+    codes_word: 'codici',
+    premium_label: 'Piani & Prezzi',
+    premium_title: 'Massimizza<br/>la tua visibilità',
+    premium_sub: 'Con un account Premium i tuoi codici appaiono in cima ai risultati. Il Boost singolo funziona senza abbonamento.',
+    perk_vat: 'Prezzi IVA inclusa (22%)', perk_invoice: 'Fattura elettronica disponibile', perk_cancel: 'Disdici quando vuoi',
+    plan_free: 'Gratuito', plan_free_desc: 'Aggiungi codici, visibilità standard', plan_forever: 'per sempre',
+    plan_pro_desc: 'Visibilità prioritaria · Badge verificato', plan_mo: '/ mese IVA incl.',
+    plan_biz_desc: 'Dashboard merchant · Analytics',
+    boost_title: 'Boost singolo', boost_desc: 'Porta un codice in cima per 7 giorni · €1,99', boost_cta: 'Attiva',
+    trust_label: 'Governance della Community', trust_title: 'I merchant sono verificati<br/>da persone reali',
+    trust1_title: 'Votazione della community', trust1_desc: "Ogni nuovo merchant proposto viene valutato dai membri. Soglia minima di voti positivi per l'approvazione.",
+    trust2_title: 'Moderatori verificati', trust2_desc: 'Un team di moderatori controlla le segnalazioni e può revocare merchant o codici fraudolenti in 24 ore.',
+    trust3_title: 'Punteggio di affidabilità', trust3_desc: 'Ogni codice riceve un punteggio in base ai feedback degli utenti. I codici con basso rating vengono nascosti automaticamente.',
+    trust4_title: 'Controllo Partita IVA', trust4_desc: 'Per i merchant italiani verifichiamo la P.IVA tramite il Registro Imprese (API CCIAA). Zero aziende fantasma.',
+    trust5_title: 'Conformità GDPR', trust5_desc: 'Trattamento dati conforme al Regolamento UE 2016/679 e al Codice Privacy italiano (D.Lgs. 196/2003).',
+    trust6_title: 'Foro competente italiano', trust6_desc: 'Termini di Servizio e Privacy Policy redatti secondo la normativa italiana ed europea. Sede legale in Italia.',
+    cta_h2: 'Inizia a risparmiare<br/><em>oggi, gratis.</em>', cta_btn: 'Crea il tuo account →',
+    footer_tagline: 'La community internazionale per codici promo e link di invito verificati. Sede legale in Italia.',
+    footer_hq: 'Sede: Milano, Italia', footer_platform: 'Piattaforma', footer_verified: 'Merchant verificati', footer_new: 'Nuovi codici',
+    footer_account: 'Account', footer_premium: 'Piani Premium', footer_mod: 'Diventa moderatore',
+    footer_legal_col: 'Legale', footer_tos: 'Termini di Servizio', footer_cookies: 'Impostazioni cookie', footer_dpo: 'Contatti & DPO',
+    footer_report: 'Segnala un problema',
+    footer_vat: '© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901 · I prezzi sono IVA inclusa (22%)',
+  },
+
+  ru: {
+    page_title: 'CodiceFacile — Промокоды и инвайты сообщества',
+    cookie_text: 'Мы используем файлы cookie для улучшения работы сайта и аналитики в соответствии с <strong>GDPR</strong> и итальянским законодательством о защите потребителей. <a href="#privacy">Политика конфиденциальности.</a>',
+    cookie_decline: 'Только необходимые', cookie_accept: 'Принять все',
+    nav_codes: 'Промокоды', nav_invites: 'Инвайты', nav_merchants: 'Магазины', nav_premium: 'Премиум',
+    nav_login: 'Войти', nav_signup: 'Регистрация',
+    hero_eyebrow: 'Международное сообщество · Проверенные коды',
+    hero_h1: 'Экономьте больше с кодами <em>сообщества</em>',
+    hero_sub: 'Находите промокоды и инвайт-ссылки для лучших брендов. Делитесь своими, получайте видимость. Всё проверено сообществом.',
+    hero_cta1: 'Смотреть коды →', hero_cta2: 'Добавить свой',
+    stat_codes: 'Активных кодов', stat_merchants: 'Верифицированных магазинов', stat_members: 'Участников сообщества',
+    cat_fashion: 'Мода и одежда', cat_mobility: 'Транспорт', cat_food: 'Доставка еды',
+    copy: 'Копировать', copied: 'Скопировано!',
+    verified: '✓ Проверено', expires: 'Действует до: 31.07.2026',
+    invite_bonus: 'Инвайт · бонус €5', first_order: 'Первый заказ',
+    how_label: 'Как это работает',
+    how_title: 'Просто, быстро,<br/>проверено сообществом',
+    how_sub: 'Четыре шага, чтобы сэкономить или поделиться кодом с тысячами пользователей.',
+    step1_title: 'Найдите магазин', step1_desc: 'Просматривайте по категориям или ищите напрямую. Только бренды, проверенные сообществом.',
+    step2_title: 'Скопируйте код', step2_desc: 'Один клик, чтобы скопировать промокод или открыть инвайт-ссылку. Регистрация не нужна для бесплатных кодов.',
+    step3_title: 'Сообщите, работает ли', step3_desc: 'После использования подтвердите или отметьте, что код истёк. Сообщество поддерживает актуальность.',
+    step4_title: 'Поделитесь своим', step4_desc: 'Добавьте свои инвайты или промокоды. Участники Premium получают приоритетную видимость.',
+    cats_label: 'Категории', cats_title: 'Найдите код<br/>для любых нужд',
+    cat_travel: 'Путешествия', cat_fintech: 'Финтех', cat_gaming: 'Игры', cat_tech: 'Технологии',
+    cat_energy: 'Энергетика', cat_health: 'Здоровье', cat_edu: 'Образование', cat_home: 'Дом', cat_stream: 'Стриминг',
+    codes_word: 'кодов',
+    premium_label: 'Планы и цены',
+    premium_title: 'Максимальная<br/>видимость',
+    premium_sub: 'Аккаунты Premium выводят ваши коды в топ результатов. Разовый буст работает без подписки.',
+    perk_vat: 'Цены включают НДС (22%)', perk_invoice: 'Электронный счёт-фактура', perk_cancel: 'Отмена в любое время',
+    plan_free: 'Бесплатно', plan_free_desc: 'Добавляйте коды, стандартная видимость', plan_forever: 'навсегда',
+    plan_pro_desc: 'Приоритетная видимость · Значок верификации', plan_mo: '/ мес. с НДС',
+    plan_biz_desc: 'Панель магазина · Аналитика',
+    boost_title: 'Разовый буст', boost_desc: 'Закрепите код вверху на 7 дней · €1,99', boost_cta: 'Активировать',
+    trust_label: 'Управление сообществом', trust_title: 'Магазины проверяются<br/>реальными людьми',
+    trust1_title: 'Голосование сообщества', trust1_desc: 'Каждый предложенный магазин проверяется участниками. Для одобрения требуется минимальный порог положительных голосов.',
+    trust2_title: 'Верифицированные модераторы', trust2_desc: 'Команда модераторов рассматривает жалобы и может отозвать мошеннические магазины или коды в течение 24 часов.',
+    trust3_title: 'Рейтинг надёжности', trust3_desc: 'Каждый код получает оценку на основе отзывов пользователей. Коды с низким рейтингом скрываются автоматически.',
+    trust4_title: 'Проверка номера НДС', trust4_desc: 'Для итальянских магазинов мы проверяем номер НДС через Торговый реестр (API CCIAA). Никаких фиктивных компаний.',
+    trust5_title: 'Соответствие GDPR', trust5_desc: 'Обработка данных соответствует Регламенту ЕС 2016/679 и итальянскому Кодексу о конфиденциальности.',
+    trust6_title: 'Итальянская юрисдикция', trust6_desc: 'Условия использования и Политика конфиденциальности составлены по итальянскому и европейскому праву. Юридический адрес в Италии.',
+    cta_h2: 'Начните экономить<br/><em>сегодня, бесплатно.</em>', cta_btn: 'Создать аккаунт →',
+    footer_tagline: 'Международное сообщество проверенных промокодов и инвайт-ссылок. Юридически зарегистрировано в Италии.',
+    footer_hq: 'Штаб-квартира: Милан, Италия', footer_platform: 'Платформа', footer_verified: 'Верифицированные магазины', footer_new: 'Новые коды',
+    footer_account: 'Аккаунт', footer_premium: 'Планы Premium', footer_mod: 'Стать модератором',
+    footer_legal_col: 'Юридическое', footer_tos: 'Условия использования', footer_cookies: 'Настройки cookie', footer_dpo: 'Контакты и DPO',
+    footer_report: 'Сообщить о проблеме',
+    footer_vat: '© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901 · Цены включают НДС (22%)',
+  }
+};
+
+// ════════════════════════════════════════════════════════
+//  KEYS THAT RENDER AS innerHTML (may contain HTML tags)
+// ════════════════════════════════════════════════════════
+const HTML_KEYS = new Set([
+  'cookie_text','hero_h1','how_title','cats_title',
+  'premium_title','trust_title','cta_h2','footer_vat'
+]);
+
+// ════════════════════════════════════════════════════════
+//  LANGUAGE ENGINE
+// ════════════════════════════════════════════════════════
+function detectLang() {
+  const saved = localStorage.getItem('cf_lang');
+  if (saved && T[saved]) return saved;
+  const nav = (navigator.language || 'en').toLowerCase();
+  if (nav.startsWith('it')) return 'it';
+  if (nav.startsWith('ru')) return 'ru';
+  return 'en';
+}
+
+let lang = detectLang();
+
+function setLang(l) {
+  if (!T[l]) return;
+  lang = l;
+  localStorage.setItem('cf_lang', l);
+  applyLang();
+}
+
+function applyLang() {
+  const d = T[lang];
+  document.title = d.page_title;
+  document.documentElement.lang = lang;
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (d[key] == null) return;
+    if (HTML_KEYS.has(key)) {
+      el.innerHTML = d[key];
+    } else {
+      el.textContent = d[key];
+    }
+  });
+
+  // Update active switcher button
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+  });
+
+  // Subtle fade
+  document.body.classList.remove('lang-fade');
+  void document.body.offsetWidth;
+  document.body.classList.add('lang-fade');
+  setTimeout(() => document.body.classList.remove('lang-fade'), 280);
+}
+
+// ════════════════════════════════════════════════════════
+//  COPY CODE
+// ════════════════════════════════════════════════════════
+function copyCode(btn, code) {
+  navigator.clipboard.writeText(code).then(() => {
+    const origKey = btn.getAttribute('data-i18n');
+    btn.textContent = T[lang].copied || '✓';
+    btn.style.color = '#4a7c59';
+    setTimeout(() => {
+      btn.textContent = T[lang][origKey] || origKey;
+      btn.style.color = '';
+    }, 1800);
+  });
+}
+
+// ════════════════════════════════════════════════════════
+//  COOKIE BANNER
+// ════════════════════════════════════════════════════════
+function closeBanner() {
+  const b = document.getElementById('cookie-banner');
+  if (!b) return;
+  b.style.transition = 'transform 0.4s ease-in';
+  b.style.transform = 'translateY(100%)';
+  setTimeout(() => b.remove(), 400);
+}
+
+// ════════════════════════════════════════════════════════
+//  SCROLL REVEAL
+// ════════════════════════════════════════════════════════
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      e.target.style.transition = `opacity 0.55s ${i*0.05}s ease, transform 0.55s ${i*0.05}s ease`;
+      e.target.style.opacity = '1';
+      e.target.style.transform = (e.target.style.transform || '').replace(' translateY(20px)','');
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.step-card, .cat-pill, .trust-item, .plan-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform += ' translateY(20px)';
+  obs.observe(el);
+});
+
+// ════════════════════════════════════════════════════════
+//  BOOT
+// ════════════════════════════════════════════════════════
+applyLang();
+</script>
+</body>
+</html>

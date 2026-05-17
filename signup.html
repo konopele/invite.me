@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CodiceFacile — Sign Up Free</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink:       #0f0e0c;
+      --paper:     #f5f0e8;
+      --cream:     #ede7d9;
+      --rust:      #c94a2b;
+      --rust-dim:  #a63b22;
+      --gold:      #c9932b;
+      --sage:      #4a7c59;
+      --muted:     #7a7062;
+      --border:    #d5cdc0;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'DM Sans', sans-serif;
+      --font-mono:    'DM Mono', monospace;
+      --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* NAV */
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(245,240,232,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; }
+    .nav-logo { font-family: var(--font-display); font-size: 22px; font-weight: 900; color: var(--ink); text-decoration: none; letter-spacing: -0.5px; flex-shrink: 0; }
+    .nav-logo span { color: var(--rust); }
+    .nav-right { display: flex; gap: 10px; align-items: center; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 22px; border-radius: 6px; font-family: var(--font-body); font-weight: 600; font-size: 14px; text-decoration: none; cursor: pointer; border: 1.5px solid transparent; transition: all 0.2s; background: none; }
+    .btn-ghost { color: var(--ink); border-color: var(--border); }
+    .btn-ghost:hover { border-color: var(--ink); }
+    .btn-primary { background: var(--rust); color: #fff; border-color: var(--rust); }
+    .btn-primary:hover { background: var(--rust-dim); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,74,43,0.3); }
+
+    /* LANG SWITCHER */
+    .lang-switcher { display: flex; align-items: center; background: var(--cream); border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+    .lang-btn { padding: 6px 12px; font-family: var(--font-body); font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--muted); background: transparent; border: none; cursor: pointer; transition: all 0.18s; border-right: 1px solid var(--border); line-height: 1.5; }
+    .lang-btn:last-child { border-right: none; }
+    .lang-btn:hover { color: var(--ink); background: rgba(201,74,43,0.07); }
+    .lang-btn.active { background: var(--rust); color: #fff; }
+
+    /* MAIN LAYOUT — signup has form on LEFT, panel on RIGHT */
+    .auth-layout { flex: 1; display: grid; grid-template-columns: 1fr 1fr; }
+
+    /* LEFT — form */
+    .auth-form-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 40px;
+      background: var(--paper);
+    }
+    .auth-form-inner {
+      width: 100%;
+      max-width: 400px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.15s var(--ease-out-expo) forwards;
+    }
+    .form-title { font-family: var(--font-display); font-size: 34px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 8px; }
+    .form-subtitle { font-size: 14px; color: var(--muted); margin-bottom: 32px; }
+    .form-subtitle a { color: var(--rust); text-decoration: none; font-weight: 600; }
+    .form-subtitle a:hover { text-decoration: underline; }
+
+    /* Social buttons */
+    .social-btns { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .btn-social {
+      width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 11px 20px; border-radius: 8px; border: 1.5px solid var(--border);
+      background: #fff; font-family: var(--font-body); font-size: 14px; font-weight: 600;
+      color: var(--ink); cursor: pointer; transition: all 0.2s; text-decoration: none;
+    }
+    .btn-social:hover { border-color: var(--ink); background: var(--cream); transform: translateY(-1px); }
+    .btn-social svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .divider { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .divider span { font-size: 12px; color: var(--muted); font-weight: 500; white-space: nowrap; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* Form fields */
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--ink); }
+    .field input {
+      width: 100%; padding: 11px 14px; border-radius: 8px;
+      border: 1.5px solid var(--border); background: #fff;
+      font-family: var(--font-body); font-size: 14px; color: var(--ink);
+      transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+    }
+    .field input:focus { border-color: var(--rust); box-shadow: 0 0 0 3px rgba(201,74,43,0.1); }
+    .field input::placeholder { color: #b0a89a; }
+    .field input.valid { border-color: var(--sage); }
+
+    .field-row-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+
+    .password-wrap { position: relative; }
+    .password-wrap input { padding-right: 44px; }
+    .toggle-pw {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: var(--muted);
+      font-size: 16px; padding: 4px; line-height: 1; transition: color 0.2s;
+    }
+    .toggle-pw:hover { color: var(--ink); }
+
+    /* Password strength bar */
+    .pw-strength { margin-top: 6px; }
+    .pw-strength-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+    .pw-strength-fill { height: 100%; width: 0%; border-radius: 2px; transition: width 0.3s, background 0.3s; }
+    .pw-strength-label { font-size: 11px; color: var(--muted); }
+
+    /* Field error */
+    .field-error { display: none; font-size: 12px; color: var(--rust); margin-top: 4px; }
+    .field.has-error input { border-color: var(--rust); }
+    .field.has-error .field-error { display: block; }
+
+    /* Terms checkbox */
+    .terms-row { display: flex; align-items: flex-start; gap: 10px; margin: 18px 0; }
+    .terms-row input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--rust); cursor: pointer; margin-top: 3px; flex-shrink: 0; }
+    .terms-row label { font-size: 13px; color: var(--muted); cursor: pointer; line-height: 1.5; }
+    .terms-row label a { color: var(--rust); text-decoration: none; font-weight: 600; }
+    .terms-row label a:hover { text-decoration: underline; }
+
+    .btn-submit {
+      width: 100%; padding: 13px 20px; background: var(--rust); color: #fff;
+      border: none; border-radius: 8px; font-family: var(--font-body);
+      font-size: 15px; font-weight: 700; cursor: pointer;
+      transition: all 0.2s; letter-spacing: 0.01em;
+    }
+    .btn-submit:hover { background: var(--rust-dim); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,74,43,0.3); }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .form-footer { margin-top: 20px; text-align: center; font-size: 13px; color: var(--muted); }
+    .form-footer a { color: var(--rust); text-decoration: none; font-weight: 600; }
+    .form-footer a:hover { text-decoration: underline; }
+
+    .gdpr-note { margin-top: 16px; padding: 12px 16px; background: var(--cream); border-radius: 8px; border: 1px solid var(--border); font-size: 11px; color: var(--muted); line-height: 1.5; }
+    .gdpr-note a { color: var(--rust); text-decoration: none; }
+
+    /* RIGHT PANEL — decorative */
+    .auth-panel {
+      background: var(--cream);
+      padding: 64px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      border-left: 1px solid var(--border);
+    }
+    .auth-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .panel-bg-text {
+      position: absolute;
+      bottom: -60px; right: -30px;
+      font-family: var(--font-display);
+      font-size: 260px;
+      font-weight: 900;
+      color: rgba(15,14,12,0.04);
+      line-height: 1;
+      user-select: none;
+      pointer-events: none;
+    }
+    .panel-eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--rust); margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px; position: relative; z-index: 1;
+    }
+    .panel-eyebrow::before { content: ''; display: block; width: 20px; height: 2px; background: var(--rust); }
+    .panel-heading {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 3vw, 46px);
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1.08;
+      margin-bottom: 20px;
+      position: relative; z-index: 1;
+    }
+    .panel-heading em { font-style: italic; color: var(--rust); }
+    .panel-sub { font-size: 15px; color: var(--muted); line-height: 1.7; max-width: 320px; position: relative; z-index: 1; }
+
+    /* Benefits list */
+    .benefits { display: flex; flex-direction: column; gap: 16px; position: relative; z-index: 1; }
+    .benefit { display: flex; align-items: flex-start; gap: 14px; padding: 18px 20px; background: #fff; border: 1px solid var(--border); border-radius: 12px; transition: all 0.2s; }
+    .benefit:hover { border-color: var(--rust); transform: translateX(4px); }
+    .benefit-icon { font-size: 20px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: var(--cream); border-radius: 10px; flex-shrink: 0; }
+    .benefit-title { font-weight: 700; font-size: 14px; margin-bottom: 3px; }
+    .benefit-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* Member avatars */
+    .member-strip { display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: #fff; border: 1px solid var(--border); border-radius: 12px; position: relative; z-index: 1; }
+    .avatars { display: flex; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #fff; background: var(--cream); margin-left: -8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .avatar:first-child { margin-left: 0; }
+    .avatar-1 { background: #c94a2b; }
+    .avatar-2 { background: #4a7c59; }
+    .avatar-3 { background: #c9932b; }
+    .avatar-4 { background: #6a5c9e; }
+    .member-text { font-size: 13px; color: var(--muted); }
+    .member-text strong { color: var(--ink); font-weight: 700; }
+
+    /* FOOTER */
+    footer { background: #0a0908; color: #6a6258; padding: 28px 40px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .footer-logo { font-family: var(--font-display); font-size: 18px; font-weight: 900; color: var(--paper); }
+    .footer-logo span { color: var(--rust); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { color: #6a6258; text-decoration: none; font-size: 13px; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--paper); }
+    .footer-vat { font-size: 11px; color: #3a3830; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 900px) {
+      .auth-layout { grid-template-columns: 1fr; }
+      .auth-panel { display: none; }
+      nav { padding: 0 20px; }
+      .auth-form-wrap { padding: 32px 20px; }
+    }
+    @media (max-width: 480px) {
+      .field-row-two { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">Codice<span>Facile</span></a>
+    <div class="nav-right">
+      <div class="lang-switcher" role="group" aria-label="Language">
+        <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" data-lang="it" onclick="setLang('it')">IT</button>
+        <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
+      </div>
+      <a href="index.html" class="btn btn-ghost">← Back</a>
+      <a href="login.html" class="btn btn-ghost" data-i18n="nav_login">Log in</a>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="auth-layout">
+
+    <!-- LEFT — FORM -->
+    <div class="auth-form-wrap">
+      <div class="auth-form-inner">
+
+        <h1 class="form-title" data-i18n="signup_title">Create Account</h1>
+        <p class="form-subtitle">
+          <span data-i18n="signup_subtitle">Already have an account?</span>
+          <a href="login.html" data-i18n="signup_login_link"> Log in →</a>
+        </p>
+
+        <!-- Social -->
+        <div class="social-btns">
+          <button class="btn-social" onclick="handleSocial('Google')">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            <span data-i18n="social_google">Continue with Google</span>
+          </button>
+        </div>
+
+        <div class="divider"><span data-i18n="or_email">or with email</span></div>
+
+        <form id="signup-form" novalidate onsubmit="handleSignup(event)">
+
+          <div class="field-row-two">
+            <div class="field" id="field-firstname">
+              <label for="firstname" data-i18n="label_firstname">First name</label>
+              <input type="text" id="firstname" name="firstname" autocomplete="given-name" placeholder="Marco" />
+              <span class="field-error" data-i18n="err_firstname">Required.</span>
+            </div>
+            <div class="field" id="field-lastname">
+              <label for="lastname" data-i18n="label_lastname">Last name</label>
+              <input type="text" id="lastname" name="lastname" autocomplete="family-name" placeholder="Rossi" />
+              <span class="field-error" data-i18n="err_lastname">Required.</span>
+            </div>
+          </div>
+
+          <div class="field" id="field-email">
+            <label for="email" data-i18n="label_email">Email address</label>
+            <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" />
+            <span class="field-error" data-i18n="err_email">Please enter a valid email address.</span>
+          </div>
+
+          <div class="field" id="field-password">
+            <label for="password" data-i18n="label_password">Password</label>
+            <div class="password-wrap">
+              <input type="password" id="password" name="password" autocomplete="new-password" placeholder="At least 8 characters" oninput="checkStrength(this.value)" />
+              <button type="button" class="toggle-pw" onclick="togglePw('password', this)" aria-label="Show/hide password">👁</button>
+            </div>
+            <div class="pw-strength">
+              <div class="pw-strength-bar"><div class="pw-strength-fill" id="pw-fill"></div></div>
+              <span class="pw-strength-label" id="pw-label"></span>
+            </div>
+            <span class="field-error" data-i18n="err_password">Password must be at least 8 characters.</span>
+          </div>
+
+          <div class="terms-row">
+            <input type="checkbox" id="terms" name="terms" />
+            <label for="terms" data-i18n="label_terms">
+              I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand my data is processed in compliance with GDPR.
+            </label>
+          </div>
+
+          <button type="submit" class="btn-submit" data-i18n="btn_signup">Create free account →</button>
+        </form>
+
+        <p class="form-footer">
+          <span data-i18n="have_account">Already have an account?</span>
+          <a href="login.html" data-i18n="footer_login_link"> Log in</a>
+        </p>
+
+        <div class="gdpr-note">
+          🔒 <span data-i18n="gdpr_note">Your data is processed in compliance with GDPR (EU 2016/679). Read our <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>. CodiceFacile S.r.l. · Milan, Italy.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT — DECORATIVE PANEL -->
+    <div class="auth-panel">
+      <div>
+        <div class="panel-eyebrow" data-i18n="panel_eyebrow">Community · Verified codes</div>
+        <h2 class="panel-heading" data-i18n="panel_heading">Join <em>38,000+</em><br/>members saving<br/>every day</h2>
+        <p class="panel-sub" data-i18n="panel_sub">Free forever. No credit card required.</p>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">
+          <div class="benefit-icon">🏷️</div>
+          <div>
+            <div class="benefit-title" data-i18n="benefit1_title">Access all promo codes</div>
+            <div class="benefit-desc" data-i18n="benefit1_desc">12,400+ verified codes across 840+ merchants. Updated daily by the community.</div>
+          </div>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">📤</div>
+          <div>
+            <div class="benefit-title" data-i18n="benefit2_title">Share your invite links</div>
+            <div class="benefit-desc" data-i18n="benefit2_desc">Earn visibility by sharing your referral codes. Premium members get priority placement.</div>
+          </div>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">✅</div>
+          <div>
+            <div class="benefit-title" data-i18n="benefit3_title">Community-verified only</div>
+            <div class="benefit-desc" data-i18n="benefit3_desc">Every merchant verified by real members. Real-time reliability scores on every code.</div>
+          </div>
+        </div>
+
+        <div class="member-strip">
+          <div class="avatars">
+            <div class="avatar avatar-1">M</div>
+            <div class="avatar avatar-2">S</div>
+            <div class="avatar avatar-3">L</div>
+            <div class="avatar avatar-4">A</div>
+          </div>
+          <div class="member-text" data-i18n="member_text"><strong>38,000+</strong> members already saving</div>
+        </div>
+      </div>
+
+      <div class="panel-bg-text">+</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Codice<span>Facile</span></div>
+    <div class="footer-links">
+      <a href="#" data-i18n="footer_tos">Terms of Service</a>
+      <a href="#" data-i18n="footer_cookies">Cookie settings</a>
+      <a href="#" data-i18n="footer_dpo">Contact & DPO</a>
+    </div>
+    <div class="footer-vat" data-i18n="footer_vat">© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901</div>
+  </footer>
+
+<script>
+// ── Translations ──────────────────────────────────────────
+const T = {
+  en: {
+    nav_login: 'Log in',
+    panel_eyebrow: 'Community · Verified codes',
+    panel_heading: 'Join <em>38,000+</em><br/>members saving<br/>every day',
+    panel_sub: 'Free forever. No credit card required.',
+    signup_title: 'Create Account',
+    signup_subtitle: 'Already have an account?',
+    signup_login_link: ' Log in →',
+    social_google: 'Continue with Google',
+    or_email: 'or with email',
+    label_firstname: 'First name', label_lastname: 'Last name',
+    label_email: 'Email address', label_password: 'Password',
+    label_terms: 'I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand my data is processed in compliance with GDPR.',
+    btn_signup: 'Create free account →',
+    err_firstname: 'Required.', err_lastname: 'Required.',
+    err_email: 'Please enter a valid email address.',
+    err_password: 'Password must be at least 8 characters.',
+    have_account: 'Already have an account?', footer_login_link: ' Log in',
+    gdpr_note: 'Your data is processed in compliance with GDPR (EU 2016/679). Read our <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>. CodiceFacile S.r.l. · Milan, Italy.',
+    benefit1_title: 'Access all promo codes', benefit1_desc: '12,400+ verified codes across 840+ merchants. Updated daily by the community.',
+    benefit2_title: 'Share your invite links', benefit2_desc: 'Earn visibility by sharing your referral codes. Premium members get priority placement.',
+    benefit3_title: 'Community-verified only', benefit3_desc: 'Every merchant verified by real members. Real-time reliability scores on every code.',
+    member_text: '<strong>38,000+</strong> members already saving',
+    pw_weak: '⚡ Weak', pw_fair: '👍 Fair', pw_strong: '✅ Strong', pw_very_strong: '🔐 Very strong',
+    footer_tos: 'Terms of Service', footer_cookies: 'Cookie settings', footer_dpo: 'Contact & DPO',
+    footer_vat: '© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901',
+  },
+  it: {
+    nav_login: 'Accedi',
+    panel_eyebrow: 'Community · Codici verificati',
+    panel_heading: 'Unisciti a <em>38.000+</em><br/>membri che risparmiano<br/>ogni giorno',
+    panel_sub: 'Gratis per sempre. Nessuna carta di credito.',
+    signup_title: 'Crea Account',
+    signup_subtitle: 'Hai già un account?',
+    signup_login_link: ' Accedi →',
+    social_google: 'Continua con Google',
+    or_email: 'oppure con email',
+    label_firstname: 'Nome', label_lastname: 'Cognome',
+    label_email: 'Indirizzo email', label_password: 'Password',
+    label_terms: 'Accetto i <a href="#">Termini di Servizio</a> e la <a href="#">Privacy Policy</a>. Comprendo che i miei dati sono trattati nel rispetto del GDPR.',
+    btn_signup: 'Crea account gratis →',
+    err_firstname: 'Campo obbligatorio.', err_lastname: 'Campo obbligatorio.',
+    err_email: 'Inserisci un indirizzo email valido.',
+    err_password: 'La password deve contenere almeno 8 caratteri.',
+    have_account: 'Hai già un account?', footer_login_link: ' Accedi',
+    gdpr_note: 'I tuoi dati sono trattati nel rispetto del GDPR (UE 2016/679). Leggi la nostra <a href="#">Privacy Policy</a> e i <a href="#">Termini di Servizio</a>. CodiceFacile S.r.l. · Milano, Italia.',
+    benefit1_title: 'Accedi a tutti i codici promo', benefit1_desc: '12.400+ codici verificati per 840+ merchant. Aggiornati ogni giorno dalla community.',
+    benefit2_title: 'Condividi i tuoi link di invito', benefit2_desc: 'Guadagna visibilità condividendo i tuoi codici referral. I Premium ottengono posizionamento prioritario.',
+    benefit3_title: 'Solo verificati dalla community', benefit3_desc: 'Ogni merchant verificato da persone reali. Punteggi di affidabilità in tempo reale su ogni codice.',
+    member_text: '<strong>38.000+</strong> membri che risparmiano già',
+    pw_weak: '⚡ Debole', pw_fair: '👍 Discreta', pw_strong: '✅ Forte', pw_very_strong: '🔐 Molto forte',
+    footer_tos: 'Termini di Servizio', footer_cookies: 'Impostazioni cookie', footer_dpo: 'Contatti & DPO',
+    footer_vat: '© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901 · I prezzi sono IVA inclusa (22%)',
+  },
+  ru: {
+    nav_login: 'Войти',
+    panel_eyebrow: 'Сообщество · Проверенные коды',
+    panel_heading: 'Присоединитесь к <em>38 000+</em><br/>участникам,<br/>которые экономят',
+    panel_sub: 'Бесплатно навсегда. Без карты.',
+    signup_title: 'Создать аккаунт',
+    signup_subtitle: 'Уже есть аккаунт?',
+    signup_login_link: ' Войти →',
+    social_google: 'Войти через Google',
+    or_email: 'или через email',
+    label_firstname: 'Имя', label_lastname: 'Фамилия',
+    label_email: 'Адрес электронной почты', label_password: 'Пароль',
+    label_terms: 'Я принимаю <a href="#">Условия использования</a> и <a href="#">Политику конфиденциальности</a>. Я понимаю, что мои данные обрабатываются согласно GDPR.',
+    btn_signup: 'Создать бесплатный аккаунт →',
+    err_firstname: 'Обязательное поле.', err_lastname: 'Обязательное поле.',
+    err_email: 'Введите корректный адрес электронной почты.',
+    err_password: 'Пароль должен содержать минимум 8 символов.',
+    have_account: 'Уже есть аккаунт?', footer_login_link: ' Войти',
+    gdpr_note: 'Ваши данные обрабатываются в соответствии с GDPR (ЕС 2016/679). Прочитайте нашу <a href="#">Политику конфиденциальности</a> и <a href="#">Условия использования</a>. CodiceFacile S.r.l. · Милан, Италия.',
+    benefit1_title: 'Доступ ко всем промокодам', benefit1_desc: 'Более 12 400 проверенных кодов для 840+ магазинов. Обновляются каждый день.',
+    benefit2_title: 'Делитесь инвайт-ссылками', benefit2_desc: 'Получайте видимость, делясь реферальными кодами. Участники Premium получают приоритетное место.',
+    benefit3_title: 'Только проверенные сообществом', benefit3_desc: 'Каждый магазин проверен реальными участниками. Рейтинги надёжности для каждого кода.',
+    member_text: '<strong>38 000+</strong> участников уже экономят',
+    pw_weak: '⚡ Слабый', pw_fair: '👍 Средний', pw_strong: '✅ Сильный', pw_very_strong: '🔐 Очень сильный',
+    footer_tos: 'Условия использования', footer_cookies: 'Настройки cookie', footer_dpo: 'Контакты & DPO',
+    footer_vat: '© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901',
+  }
+};
+
+const HTML_KEYS = new Set(['panel_heading','label_terms','gdpr_note','member_text','footer_vat','signup_subtitle']);
+
+function detectLang() {
+  const saved = localStorage.getItem('cf_lang');
+  if (saved && T[saved]) return saved;
+  const nav = (navigator.language || 'en').toLowerCase();
+  if (nav.startsWith('it')) return 'it';
+  if (nav.startsWith('ru')) return 'ru';
+  return 'en';
+}
+
+let lang = detectLang();
+
+function setLang(l) {
+  if (!T[l]) return;
+  lang = l;
+  localStorage.setItem('cf_lang', l);
+  applyLang();
+}
+
+function applyLang() {
+  const d = T[lang];
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (d[key] == null) return;
+    if (HTML_KEYS.has(key)) el.innerHTML = d[key];
+    else el.textContent = d[key];
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+  });
+}
+
+// ── Password strength ─────────────────────────────────────
+function checkStrength(val) {
+  const fill = document.getElementById('pw-fill');
+  const label = document.getElementById('pw-label');
+  const d = T[lang];
+  let score = 0;
+  if (val.length >= 8) score++;
+  if (val.length >= 12) score++;
+  if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+
+  const levels = [
+    { pct: 0, color: 'var(--border)', text: '' },
+    { pct: 25, color: '#c94a2b', text: d.pw_weak },
+    { pct: 50, color: '#c9932b', text: d.pw_fair },
+    { pct: 75, color: '#4a7c59', text: d.pw_strong },
+    { pct: 100, color: '#2e5c3d', text: d.pw_very_strong },
+  ];
+  const lvl = val.length === 0 ? 0 : Math.min(score, 4);
+  fill.style.width = levels[lvl].pct + '%';
+  fill.style.background = levels[lvl].color;
+  label.textContent = levels[lvl].text;
+  label.style.color = levels[lvl].color;
+}
+
+// ── Toggle password ───────────────────────────────────────
+function togglePw(id, btn) {
+  const input = document.getElementById(id);
+  if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
+  else { input.type = 'password'; btn.textContent = '👁'; }
+}
+
+// ── Validate & submit ─────────────────────────────────────
+function handleSignup(e) {
+  e.preventDefault();
+  let valid = true;
+
+  function check(fieldId, inputId, condition) {
+    const f = document.getElementById(fieldId);
+    const ok = condition(document.getElementById(inputId).value.trim());
+    f.classList.toggle('has-error', !ok);
+    if (!ok) valid = false;
+  }
+
+  check('field-firstname', 'firstname', v => v.length > 0);
+  check('field-lastname',  'lastname',  v => v.length > 0);
+  check('field-email',     'email',     v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+  check('field-password',  'password',  v => v.length >= 8);
+
+  if (!document.getElementById('terms').checked) {
+    alert(lang === 'it' ? 'Devi accettare i Termini di Servizio.' : lang === 'ru' ? 'Вы должны принять Условия использования.' : 'You must accept the Terms of Service.');
+    return;
+  }
+
+  if (!valid) return;
+
+  const btn = document.querySelector('.btn-submit');
+  btn.textContent = '…';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = lang === 'it' ? '✓ Account creato!' : lang === 'ru' ? '✓ Аккаунт создан!' : '✓ Account created!';
+    btn.style.background = '#4a7c59';
+  }, 1400);
+}
+
+function handleSocial(provider) {
+  alert(`${provider} OAuth would be configured here.`);
+}
+
+// ── Boot ──────────────────────────────────────────────────
+applyLang();
+</script>
+</body>
+</html>

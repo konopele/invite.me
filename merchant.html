@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Merchant — CodiceFacile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --ink:#0f0e0c; --paper:#f5f0e8; --cream:#ede7d9; --white:#fff;
+      --rust:#c94a2b; --rust-dim:#a63b22; --rust-pale:#fdf0ec;
+      --gold:#c9932b; --gold-pale:#fdf6e8;
+      --sage:#3d6b4a; --sage-pale:#eaf5ee;
+      --red:#dc2626; --red-pale:#fef2f2;
+      --muted:#7a7062; --border:#d5cdc0; --border-strong:#b8b0a5;
+      --font-display:'Playfair Display',Georgia,serif;
+      --font-body:'DM Sans',sans-serif;
+      --font-mono:'DM Mono',monospace;
+      --ease:cubic-bezier(0.19,1,0.22,1);
+      --radius:12px;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.5;overflow-x:hidden}
+
+    /* ── NAV ── */
+    nav{position:sticky;top:0;z-index:300;background:rgba(245,240,232,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .nav-logo{font-family:var(--font-display);font-size:20px;font-weight:900;color:var(--ink);text-decoration:none;letter-spacing:-.5px;flex-shrink:0}
+    .nav-logo span{color:var(--rust)}
+    .nav-breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);flex:1}
+    .nav-breadcrumb a{color:var(--muted);text-decoration:none;transition:color .2s}
+    .nav-breadcrumb a:hover{color:var(--ink)}
+    .nav-breadcrumb .sep{opacity:.35}
+    .nav-right{display:flex;gap:8px;align-items:center;flex-shrink:0}
+    .lang-sw{display:flex;background:var(--cream);border:1.5px solid var(--border);border-radius:7px;overflow:hidden}
+    .lang-btn{padding:5px 11px;font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--muted);background:transparent;border:none;cursor:pointer;transition:all .15s;border-right:1px solid var(--border);line-height:1.6}
+    .lang-btn:last-child{border-right:none}
+    .lang-btn.active{background:var(--rust);color:#fff}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:6px;font-family:var(--font-body);font-weight:600;font-size:13px;text-decoration:none;cursor:pointer;border:1.5px solid transparent;transition:all .2s;line-height:1;white-space:nowrap}
+    .btn-ghost{color:var(--ink);border-color:var(--border);background:transparent}
+    .btn-ghost:hover{border-color:var(--ink)}
+    .btn-primary{background:var(--rust);color:#fff;border-color:var(--rust)}
+    .btn-primary:hover{background:var(--rust-dim);transform:translateY(-1px)}
+    .btn-sm{padding:6px 14px;font-size:12px}
+
+    /* ── MERCHANT HEADER ── */
+    .merchant-header{background:var(--ink);padding:44px 40px 40px;position:relative;overflow:hidden}
+    .merchant-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 75% 50%,rgba(201,74,43,.18) 0%,transparent 55%);pointer-events:none}
+    .mh-inner{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;position:relative;z-index:1}
+    .mh-back{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#5a5248;text-decoration:none;margin-bottom:20px;transition:color .2s;font-weight:500}
+    .mh-back:hover{color:var(--paper)}
+    .mh-top{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+    .mh-logo{width:64px;height:64px;background:rgba(255,255,255,.08);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;border:1.5px solid rgba(255,255,255,.1)}
+    .mh-name{font-family:var(--font-display);font-size:clamp(28px,4vw,44px);font-weight:900;color:var(--paper);letter-spacing:-1.5px;line-height:1;margin-bottom:4px}
+    .mh-cat{font-size:11px;color:#5a5248;text-transform:uppercase;letter-spacing:.12em;font-weight:700}
+    .mh-badges{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+    .badge{display:inline-flex;align-items:center;gap:3px;padding:4px 10px;border-radius:100px;font-size:11px;font-weight:700}
+    .badge-v{background:rgba(61,107,74,.25);color:#6ee79a;border:1px solid rgba(61,107,74,.4)}
+    .badge-f{background:rgba(201,147,43,.2);color:#f0c060;border:1px solid rgba(201,147,43,.3)}
+    .mh-desc{font-size:14px;color:#8a8278;max-width:540px;line-height:1.7;margin-bottom:18px}
+    .mh-website{display:inline-flex;align-items:center;gap:6px;color:#6a6258;font-size:13px;font-weight:500;text-decoration:none;border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:6px 14px;transition:all .2s}
+    .mh-website:hover{border-color:rgba(255,255,255,.22);color:var(--paper)}
+    .mh-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden;min-width:220px}
+    .mh-stat{background:rgba(255,255,255,.03);padding:18px 16px;text-align:center}
+    .mh-stat-val{font-family:var(--font-display);font-size:26px;font-weight:700;line-height:1;margin-bottom:4px}
+    .rust{color:var(--rust)} .gold{color:var(--gold)} .sage{color:#6ee79a}
+    .mh-stat-key{font-size:10px;color:#5a5248;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+
+    /* ── SECTION SWITCHER ── */
+    .switcher-bar{background:var(--white);border-bottom:1px solid var(--border);padding:0;position:sticky;top:60px;z-index:200}
+    .switcher-inner{max-width:1060px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .section-switcher{display:flex;padding:12px 0;gap:4px}
+    .sw-tab{
+      display:flex;align-items:center;gap:10px;
+      padding:12px 28px;border-radius:10px;
+      border:2px solid transparent;background:transparent;
+      font-family:var(--font-body);font-size:15px;font-weight:700;
+      color:var(--muted);cursor:pointer;transition:all .22s var(--ease);
+      position:relative;
+    }
+    .sw-tab:hover{color:var(--ink);background:var(--cream)}
+    .sw-tab.active{
+      background:var(--ink);color:var(--paper);border-color:var(--ink);
+      box-shadow:0 4px 16px rgba(15,14,12,.18);
+    }
+    .sw-tab.active.promo{background:var(--rust);border-color:var(--rust);box-shadow:0 4px 16px rgba(201,74,43,.28)}
+    .sw-tab.active.invite{background:var(--ink);border-color:var(--ink)}
+    .sw-icon{font-size:18px;line-height:1}
+    .sw-label{}
+    .sw-count{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-width:22px;height:22px;padding:0 6px;
+      border-radius:100px;font-size:11px;font-weight:800;font-family:var(--font-mono);
+      background:rgba(255,255,255,.18);color:inherit;
+    }
+    .sw-tab:not(.active) .sw-count{background:var(--cream);color:var(--muted)}
+    .switcher-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+
+    /* Panel visibility */
+    .section-panel{display:none;animation:panelIn .28s var(--ease)}
+    .section-panel.active{display:block}
+    @keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ── PAGE BODY ── */
+    .page-body{max-width:1060px;margin:0 auto;padding:36px 40px 60px}
+
+    /* ── PROMO CODES ── */
+    .promo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+    .promo-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px 20px;transition:all .22s var(--ease);animation:fadeUp .35s var(--ease) both}
+    .promo-card:hover{border-color:var(--border-strong);box-shadow:0 6px 24px rgba(15,14,12,.1);transform:translateY(-2px)}
+    .promo-card.top-pick{border-color:var(--rust);background:var(--rust-pale)}
+    .promo-top-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .promo-disc{background:var(--rust);color:#fff;font-size:13px;font-weight:800;padding:5px 13px;border-radius:100px;letter-spacing:.02em}
+    .promo-card.top-pick .promo-disc{background:var(--ink)}
+    .pbadges{display:flex;gap:4px;flex-wrap:wrap}
+    .pbadge{padding:2px 8px;border-radius:100px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:2px}
+    .pbadge-v{background:var(--sage-pale);color:var(--sage)}
+    .pbadge-exp{background:#fef3c7;color:#92400e}
+    .pbadge-top{background:var(--rust-pale);color:var(--rust);border:1px solid rgba(201,74,43,.2)}
+    .promo-desc{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:13px}
+    .promo-code-row{display:flex;align-items:center;gap:8px;background:var(--cream);border-radius:8px;padding:9px 12px;border:1px dashed var(--border-strong);margin-bottom:10px}
+    .promo-card.top-pick .promo-code-row{background:rgba(201,74,43,.07);border-color:rgba(201,74,43,.3)}
+    .promo-code-val{font-family:var(--font-mono);font-size:14px;font-weight:600;letter-spacing:.1em;flex:1;user-select:all}
+    .copy-btn{padding:5px 12px;border-radius:5px;border:1.5px solid var(--rust);background:transparent;color:var(--rust);font-family:var(--font-body);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:all .15s;flex-shrink:0}
+    .copy-btn:hover{background:var(--rust);color:#fff}
+    .copy-btn.ok{background:var(--sage);border-color:var(--sage);color:#fff}
+    .promo-meta{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--muted)}
+    .expiring-soon{color:#92400e;font-weight:600}
+
+    /* ── INVITE TOOLBAR ── */
+    .invite-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+    .inv-sort{display:flex;gap:4px}
+    .inv-sort-btn{padding:6px 14px;border-radius:100px;border:1.5px solid var(--border);background:transparent;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .18s;white-space:nowrap}
+    .inv-sort-btn:hover{border-color:var(--border-strong);color:var(--ink)}
+    .inv-sort-btn.active{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    .invite-count-lbl{font-size:12px;color:var(--muted);margin-left:4px}
+    .add-btn{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;background:var(--rust);color:#fff;border:none;font-family:var(--font-body);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;flex-shrink:0}
+    .add-btn:hover{background:var(--rust-dim);transform:translateY(-1px)}
+
+    /* ── INVITE GRID ── */
+    .invite-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+    .invite-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .22s var(--ease);display:flex;flex-direction:column;animation:fadeUp .35s var(--ease) both}
+    .invite-card:hover{border-color:var(--border-strong);box-shadow:0 6px 24px rgba(15,14,12,.1);transform:translateY(-2px)}
+    .invite-card.premium{border-color:var(--gold)}
+    .invite-card.premium:hover{box-shadow:0 6px 24px rgba(201,147,43,.18)}
+
+    /* User strip */
+    .ic-user{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--cream)}
+    .invite-card.premium .ic-user{background:var(--gold-pale)}
+    .ic-av{width:34px;height:34px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:var(--white)}
+    .ic-info{flex:1;min-width:0}
+    .ic-name{font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ic-date{font-size:11px;color:var(--muted)}
+    .ic-badges{display:flex;gap:4px;flex-shrink:0}
+    .ub{padding:2px 8px;border-radius:100px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:2px}
+    .ub-pro{background:var(--gold-pale);color:var(--gold);border:1px solid rgba(201,147,43,.3)}
+    .ub-top{background:var(--rust-pale);color:var(--rust);border:1px solid rgba(201,74,43,.2)}
+
+    /* Card body */
+    .ic-body{padding:14px 16px;flex:1;display:flex;flex-direction:column;gap:10px}
+
+    /* Code field */
+    .ic-code-field{display:flex;align-items:stretch;background:var(--cream);border-radius:8px;border:1.5px dashed var(--border-strong);overflow:hidden}
+    .invite-card.premium .ic-code-field{background:rgba(201,147,43,.08);border-color:rgba(201,147,43,.4)}
+    .ic-code-val{font-family:var(--font-mono);font-size:14px;font-weight:600;letter-spacing:.09em;padding:10px 10px 10px 12px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:text;user-select:all;align-self:center}
+    .ic-copy{padding:0 16px;background:var(--rust);color:#fff;border:none;font-family:var(--font-body);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;cursor:pointer;transition:background .15s;flex-shrink:0;align-self:stretch;display:flex;align-items:center}
+    .ic-copy:hover{background:var(--rust-dim)}
+    .ic-copy.ok{background:var(--sage)}
+
+    /* Bonus row */
+    .ic-bonus{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--muted);background:var(--cream);border-radius:7px;padding:8px 11px;line-height:1.45}
+    .invite-card.premium .ic-bonus{background:var(--gold-pale)}
+    .ic-bonus-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+
+    /* Action row */
+    .ic-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+    .ic-link-btn{display:flex;align-items:center;justify-content:center;gap:5px;padding:8px 10px;border-radius:7px;border:1.5px solid var(--border);background:transparent;color:var(--ink);font-family:var(--font-body);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;text-decoration:none}
+    .ic-link-btn:hover{border-color:var(--border-strong);background:var(--cream)}
+    .ic-link-btn:disabled,.ic-link-btn[aria-disabled="true"]{opacity:.35;cursor:not-allowed;pointer-events:none}
+    .ic-validate-btn{display:flex;align-items:center;justify-content:center;gap:5px;padding:8px 10px;border-radius:7px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-family:var(--font-body);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+    .ic-validate-btn:hover{border-color:var(--sage);color:var(--sage);background:var(--sage-pale)}
+    .ic-validate-btn.voted-ok{border-color:var(--sage);color:var(--sage);background:var(--sage-pale)}
+    .ic-validate-btn.voted-bad{border-color:var(--red);color:var(--red);background:var(--red-pale)}
+
+    /* Vote bar */
+    .ic-vote-bar{display:flex;flex-direction:column;gap:4px}
+    .vote-track{height:5px;background:var(--cream);border-radius:3px;overflow:hidden}
+    .vote-fill{height:100%;background:linear-gradient(90deg,var(--sage),#5aad6e);border-radius:3px;transition:width .55s var(--ease)}
+    .vote-labels{display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:var(--muted)}
+    .vote-labels .ok{color:var(--sage)} .vote-labels .bad{color:var(--red)}
+
+    /* ── LOAD MORE ── */
+    .load-more{text-align:center;margin-top:24px}
+    .load-more-btn{padding:11px 32px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer;color:var(--ink);transition:all .2s}
+    .load-more-btn:hover{border-color:var(--rust);color:var(--rust)}
+
+    /* ── VALIDATE MODAL ── */
+    .modal-bg{position:fixed;inset:0;background:rgba(15,14,12,.55);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+    .modal-bg.open{opacity:1;pointer-events:all}
+    .modal{background:var(--white);border-radius:20px;width:100%;max-width:440px;overflow:hidden;box-shadow:0 24px 80px rgba(15,14,12,.25);transform:translateY(18px) scale(.97);transition:transform .3s var(--ease)}
+    .modal-bg.open .modal{transform:none}
+    .modal-head{padding:24px 24px 18px;border-bottom:1px solid var(--border)}
+    .modal-title{font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-.5px;margin-bottom:12px}
+    .modal-preview{display:flex;align-items:center;gap:12px;background:var(--cream);border-radius:9px;padding:11px 14px}
+    .modal-preview-emoji{font-size:22px}
+    .modal-preview-merchant{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:2px}
+    .modal-preview-code{font-family:var(--font-mono);font-size:15px;font-weight:700;letter-spacing:.08em}
+    .modal-body{padding:20px 24px}
+    .modal-q{font-size:14px;font-weight:700;margin-bottom:12px;color:var(--ink)}
+    .modal-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+    .modal-opt{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:10px;border:1.5px solid var(--border);cursor:pointer;transition:all .18s}
+    .modal-opt:hover{background:var(--cream);border-color:var(--border-strong)}
+    .modal-opt.sel-ok{border-color:var(--sage);background:var(--sage-pale)}
+    .modal-opt.sel-partial{border-color:var(--gold);background:var(--gold-pale)}
+    .modal-opt.sel-bad{border-color:var(--red);background:var(--red-pale)}
+    .opt-icon{font-size:22px;flex-shrink:0;margin-top:1px}
+    .opt-label{font-weight:700;font-size:14px;margin-bottom:2px}
+    .opt-sub{font-size:12px;color:var(--muted)}
+
+    .country-sec{margin-bottom:16px;display:none}
+    .country-sec.show{display:block}
+    .country-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:8px}
+    .country-chips{display:flex;flex-wrap:wrap;gap:6px}
+    .cchip{padding:5px 12px;border-radius:100px;border:1.5px solid var(--border);background:transparent;font-family:var(--font-body);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;color:var(--muted)}
+    .cchip.sel{border-color:var(--gold);background:var(--gold-pale);color:var(--gold);font-weight:700}
+
+    .modal-note{width:100%;min-height:68px;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-family:var(--font-body);font-size:13px;color:var(--ink);resize:none;outline:none;background:var(--cream);transition:border-color .2s;margin-bottom:16px}
+    .modal-note:focus{border-color:var(--rust);background:var(--white)}
+    .modal-note::placeholder{color:var(--border-strong)}
+    .modal-actions{display:flex;gap:8px}
+    .modal-cancel{padding:11px 20px;border-radius:8px;border:1.5px solid var(--border);background:transparent;font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .2s}
+    .modal-cancel:hover{border-color:var(--border-strong);color:var(--ink)}
+    .modal-submit{flex:1;padding:11px;border-radius:8px;background:var(--rust);color:#fff;border:none;font-family:var(--font-body);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+    .modal-submit:hover{background:var(--rust-dim)}
+    .modal-submit:disabled{opacity:.4;cursor:not-allowed}
+    .modal-success{display:none;text-align:center;padding:44px 24px}
+    .modal-success.show{display:block}
+    .success-icon{font-size:52px;margin-bottom:16px}
+    .success-title{font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:8px}
+    .success-sub{font-size:14px;color:var(--muted)}
+
+    /* ── TOAST ── */
+    .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:var(--paper);padding:10px 22px;border-radius:100px;font-size:13px;font-weight:600;z-index:600;opacity:0;transition:all .3s var(--ease);pointer-events:none;white-space:nowrap}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+    @media(max-width:900px){
+      nav,.merchant-header,.switcher-inner,.page-body{padding-left:20px;padding-right:20px}
+      .mh-inner{grid-template-columns:1fr;gap:24px}
+      .mh-stats{grid-template-columns:repeat(3,1fr)}
+      .promo-grid,.invite-grid{grid-template-columns:1fr}
+      .sw-tab{padding:10px 18px;font-size:14px}
+    }
+    @media(max-width:600px){
+      .section-switcher{width:100%}
+      .sw-tab{flex:1;justify-content:center;padding:10px 10px}
+      .sw-label{display:none}
+      .sw-count{display:inline-flex}
+      .modal{border-radius:16px 16px 0 0;max-width:100%;margin-top:auto}
+      .modal-bg{align-items:flex-end;padding:0}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Codice<span>Facile</span></a>
+  <div class="nav-breadcrumb">
+    <a href="explore.html" data-i18n="bc_explore"></a>
+    <span class="sep">/</span>
+    <span id="bc-name">—</span>
+  </div>
+  <div class="nav-right">
+    <div class="lang-sw">
+      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="it" onclick="setLang('it')">IT</button>
+      <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
+    </div>
+    <a href="#" class="btn btn-ghost btn-sm" data-i18n="nav_login"></a>
+    <a href="#" class="btn btn-primary btn-sm" data-i18n="nav_signup"></a>
+  </div>
+</nav>
+
+<!-- MERCHANT HEADER -->
+<div class="merchant-header">
+  <div class="mh-inner">
+    <div>
+      <a href="explore.html" class="mh-back">← <span data-i18n="back_lbl"></span></a>
+      <div class="mh-top">
+        <div class="mh-logo" id="mh-logo">🛒</div>
+        <div>
+          <div class="mh-name" id="mh-name">—</div>
+          <div class="mh-cat" id="mh-cat">—</div>
+        </div>
+      </div>
+      <div class="mh-badges" id="mh-badges"></div>
+      <div class="mh-desc" id="mh-desc">—</div>
+      <a href="#" class="mh-website" id="mh-site" target="_blank" rel="noopener">🌐 <span id="mh-site-txt"></span></a>
+    </div>
+    <div class="mh-stats">
+      <div class="mh-stat"><div class="mh-stat-val rust" id="s-total">—</div><div class="mh-stat-key" data-i18n="s_total"></div></div>
+      <div class="mh-stat"><div class="mh-stat-val gold" id="s-invites">—</div><div class="mh-stat-key" data-i18n="s_invites"></div></div>
+      <div class="mh-stat"><div class="mh-stat-val sage" id="s-rate">—</div><div class="mh-stat-key" data-i18n="s_rate"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION SWITCHER (sticky below nav) -->
+<div class="switcher-bar">
+  <div class="switcher-inner">
+    <div class="section-switcher">
+      <button class="sw-tab promo active" id="sw-promo" onclick="switchSection('promo')">
+        <span class="sw-icon">🏷</span>
+        <span class="sw-label" data-i18n="sw_promo"></span>
+        <span class="sw-count" id="sw-promo-count">0</span>
+      </button>
+      <button class="sw-tab invite" id="sw-invite" onclick="switchSection('invite')">
+        <span class="sw-icon">🔗</span>
+        <span class="sw-label" data-i18n="sw_invite"></span>
+        <span class="sw-count" id="sw-invite-count">0</span>
+      </button>
+    </div>
+    <div class="switcher-actions">
+      <button class="add-btn" onclick="onAddCode()">＋ <span id="add-btn-lbl" data-i18n="add_code"></span></button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE BODY -->
+<div class="page-body">
+
+  <!-- PROMO PANEL -->
+  <div class="section-panel active" id="panel-promo">
+    <div class="promo-grid" id="promo-grid"></div>
+  </div>
+
+  <!-- INVITE PANEL -->
+  <div class="section-panel" id="panel-invite">
+    <div class="invite-toolbar">
+      <div class="inv-sort" id="inv-sort"></div>
+      <span class="invite-count-lbl" id="inv-count-lbl"></span>
+    </div>
+    <div class="invite-grid" id="invite-grid"></div>
+    <div class="load-more" id="load-more-wrap" style="display:none">
+      <button class="load-more-btn" onclick="loadMore()" data-i18n="load_more"></button>
+    </div>
+  </div>
+
+</div>
+
+<!-- VALIDATE MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="bgClose(event)">
+  <div class="modal">
+    <div id="modal-form">
+      <div class="modal-head">
+        <div class="modal-title" data-i18n="modal_title"></div>
+        <div class="modal-preview">
+          <span class="modal-preview-emoji" id="modal-emoji">🛒</span>
+          <div>
+            <div class="modal-preview-merchant" id="modal-merchant">—</div>
+            <div class="modal-preview-code" id="modal-code">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-q" data-i18n="modal_q"></div>
+        <div class="modal-opts" id="modal-opts"></div>
+        <div class="country-sec" id="country-sec">
+          <div class="country-lbl" data-i18n="modal_countries"></div>
+          <div class="country-chips" id="country-chips"></div>
+        </div>
+        <textarea class="modal-note" id="modal-note" rows="3" data-i18n-ph="modal_note_ph"></textarea>
+        <div class="modal-actions">
+          <button class="modal-cancel" onclick="closeModal()" data-i18n="modal_cancel"></button>
+          <button class="modal-submit" id="modal-submit" onclick="submitVal()" data-i18n="modal_submit" disabled></button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-success" id="modal-success">
+      <div class="success-icon">🎉</div>
+      <div class="success-title" data-i18n="modal_ok_title"></div>
+      <div class="success-sub" data-i18n="modal_ok_sub"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════════
+   TRANSLATIONS
+══════════════════════════════════════════════ */
+const LANGS = {
+  en:{
+    nav_login:'Log in', nav_signup:'Sign up free',
+    bc_explore:'Explore', back_lbl:'All merchants',
+    badge_v:'Verified', badge_f:'Featured',
+    s_total:'Total codes', s_invites:'Invite codes', s_rate:'Success rate',
+    sw_promo:'Promo Codes', sw_invite:'Invite Codes',
+    add_code:'Share your code',
+    tab_all:'All', tab_popular:'Popular', tab_newest:'Newest', tab_verified:'Verified only',
+    copy:'Copy', copied:'Copied!',
+    bonus_you:'Bonus for you:', bonus_them:'Also for inviter:',
+    open_link:'Open link', no_link:'No link',
+    validate:'Validate', voted_ok:'✓ Works', voted_bad:'✗ Expired',
+    works_lbl:'work', invalid_lbl:'invalid',
+    modal_title:'Validate code', modal_q:'Did this code work for you?',
+    opt_ok:'It works ✓', opt_ok_sub:'Used it successfully just now.',
+    opt_partial:'Works in certain countries', opt_partial_sub:'Valid only in specific regions.',
+    opt_bad:'Not working ✗', opt_bad_sub:'Expired, invalid, or already used.',
+    modal_countries:'Select your country',
+    modal_note_ph:'Optional note — e.g. "first order only", "valid for new accounts"…',
+    modal_cancel:'Cancel', modal_submit:'Submit',
+    modal_ok_title:'Thank you!', modal_ok_sub:'Your feedback helps the whole community.',
+    load_more:'Load more invite codes',
+    toast_copy:'Code copied to clipboard!',
+    invite_count:n=>`${n} invite codes`,
+    expiry:'Expires', uses:'uses',
+    verified:'Verified',
+  },
+  it:{
+    nav_login:'Accedi', nav_signup:'Registrati gratis',
+    bc_explore:'Esplora', back_lbl:'Tutti i merchant',
+    badge_v:'Verificato', badge_f:'In evidenza',
+    s_total:'Codici totali', s_invites:'Codici invito', s_rate:'Tasso successo',
+    sw_promo:'Codici Promo', sw_invite:'Codici Invito',
+    add_code:'Condividi il tuo codice',
+    tab_all:'Tutti', tab_popular:'Popolari', tab_newest:'Recenti', tab_verified:'Solo verificati',
+    copy:'Copia', copied:'Copiato!',
+    bonus_you:'Bonus per te:', bonus_them:'Anche per chi invita:',
+    open_link:'Apri link', no_link:'Nessun link',
+    validate:'Verifica', voted_ok:'✓ Funziona', voted_bad:'✗ Scaduto',
+    works_lbl:'funzionano', invalid_lbl:'invalidi',
+    modal_title:'Verifica codice', modal_q:'Questo codice ha funzionato?',
+    opt_ok:'Funziona ✓', opt_ok_sub:"L'ho usato con successo adesso.",
+    opt_partial:'Funziona in certi paesi', opt_partial_sub:'Valido solo in alcune regioni.',
+    opt_bad:'Non funziona ✗', opt_bad_sub:'Scaduto, non valido o già utilizzato.',
+    modal_countries:'Seleziona il tuo paese',
+    modal_note_ph:'Nota opzionale — es. "solo primo ordine", "valido per nuovi account"…',
+    modal_cancel:'Annulla', modal_submit:'Invia',
+    modal_ok_title:'Grazie!', modal_ok_sub:'Il tuo feedback aiuta tutta la community.',
+    load_more:'Carica altri inviti',
+    toast_copy:'Codice copiato!',
+    invite_count:n=>`${n} codici invito`,
+    expiry:'Scade', uses:'usi',
+    verified:'Verificato',
+  },
+  ru:{
+    nav_login:'Войти', nav_signup:'Регистрация',
+    bc_explore:'Магазины', back_lbl:'Все магазины',
+    badge_v:'Проверено', badge_f:'Рекомендуем',
+    s_total:'Всего кодов', s_invites:'Инвайтов', s_rate:'Успешность',
+    sw_promo:'Промокоды', sw_invite:'Инвайт-коды',
+    add_code:'Добавить код',
+    tab_all:'Все', tab_popular:'Популярные', tab_newest:'Новые', tab_verified:'Только проверенные',
+    copy:'Копировать', copied:'Скопировано!',
+    bonus_you:'Бонус вам:', bonus_them:'Также пригласившему:',
+    open_link:'Открыть ссылку', no_link:'Нет ссылки',
+    validate:'Проверить', voted_ok:'✓ Работает', voted_bad:'✗ Истёк',
+    works_lbl:'работают', invalid_lbl:'истекли',
+    modal_title:'Подтвердить код', modal_q:'Этот код сработал у вас?',
+    opt_ok:'Работает ✓', opt_ok_sub:'Успешно использовал прямо сейчас.',
+    opt_partial:'Работает в некоторых странах', opt_partial_sub:'Действителен только в определённых регионах.',
+    opt_bad:'Не работает ✗', opt_bad_sub:'Истёк, недействителен или уже использован.',
+    modal_countries:'Выберите страну',
+    modal_note_ph:'Необязательная заметка — например, "только для первого заказа"…',
+    modal_cancel:'Отмена', modal_submit:'Отправить',
+    modal_ok_title:'Спасибо!', modal_ok_sub:'Ваш отзыв помогает всему сообществу.',
+    load_more:'Загрузить ещё инвайты',
+    toast_copy:'Код скопирован!',
+    invite_count:n=>`${n} инвайт-кодов`,
+    expiry:'Истекает', uses:'использований',
+    verified:'Проверено',
+  }
+};
+
+/* ══════════════════════════════════════════════
+   MERCHANT DATA
+══════════════════════════════════════════════ */
+const MERCHANTS = {
+  zalando:{name:'Zalando',emoji:'🛒',cat:'fashion',verified:true,featured:true,
+    desc:"Europe's largest online fashion platform. 7,000+ brands, free returns on every order.",
+    website:'zalando.com',totalCodes:50,inviteCodes:38,success:91},
+  uber:{name:'Uber',emoji:'🚗',cat:'mobility',verified:true,featured:true,
+    desc:'Rides, food delivery and parcels. 70+ countries. Invite friends for mutual bonuses.',
+    website:'uber.com',totalCodes:96,inviteCodes:92,success:94},
+  revolut:{name:'Revolut',emoji:'💳',cat:'fintech',verified:true,featured:false,
+    desc:'Global spending account. Multi-currency, instant transfers, crypto, no hidden fees.',
+    website:'revolut.com',totalCodes:74,inviteCodes:71,success:96},
+  deliveroo:{name:'Deliveroo',emoji:'🍕',cat:'food',verified:true,featured:false,
+    desc:'Food delivery from local restaurants and chains. Fast, live tracking, exclusive deals.',
+    website:'deliveroo.com',totalCodes:62,inviteCodes:54,success:88},
+  booking:{name:'Booking.com',emoji:'🏨',cat:'travel',verified:true,featured:false,
+    desc:'Hotels, apartments and villas worldwide. Best prices, free cancellation on most stays.',
+    website:'booking.com',totalCodes:31,inviteCodes:22,success:82},
+};
+
+const PROMO_CODES = {
+  zalando:[
+    {code:'ZALA20IT',disc:'−20%',desc:'20% off your first fashion order. Valid on full-price items.',verified:true,top:true,expiring:false,expires:'31 Jul 2026',uses:3420},
+    {code:'ZALASALE10',disc:'−10%',desc:'Extra 10% on already discounted items during the seasonal sale.',verified:true,top:false,expiring:false,expires:'30 Jun 2026',uses:1890},
+    {code:'ZALA5SHOE',disc:'−€5',desc:'€5 off any shoe purchase over €60.',verified:false,top:false,expiring:true,expires:'15 Jun 2026',uses:640},
+  ],
+  uber:[
+    {code:'UBERFIRST5',disc:'€5 off',desc:'€5 off your first ride. New accounts only.',verified:true,top:true,expiring:false,expires:'No expiry',uses:5610},
+    {code:'UBEREATS3',disc:'€3 off',desc:'€3 off your first Uber Eats order over €15.',verified:true,top:false,expiring:false,expires:'31 Dec 2026',uses:2200},
+  ],
+  revolut:[
+    {code:'REVPREMIUM',disc:'3 mo free',desc:'3 months of Revolut Premium free when you top up €10 in the first 30 days.',verified:true,top:true,expiring:false,expires:'No expiry',uses:980},
+  ],
+  deliveroo:[
+    {code:'DELIV3FREE',disc:'−€3',desc:'€3 off your first delivery. Minimum spend €15.',verified:true,top:true,expiring:true,expires:'15 Jun 2026',uses:5610},
+    {code:'DELIVFREE3',disc:'Free delivery',desc:'Free delivery on your next 3 orders with a Plus trial.',verified:true,top:false,expiring:false,expires:'30 Sep 2026',uses:1340},
+  ],
+  booking:[
+    {code:'BOOK15OFF',disc:'−15%',desc:'15% off hotels booked 7+ days in advance. Selected properties.',verified:true,top:true,expiring:false,expires:'31 Aug 2026',uses:4300},
+    {code:'BOOKGENIUSNEW',disc:'Genius 10%',desc:'Extra 10% off for new Genius members on first booking.',verified:false,top:false,expiring:false,expires:'No expiry',uses:880},
+  ],
+};
+
+const INVITE_CODES = {
+  zalando:[
+    {id:'z1',user:'marco_r',av:'🧑',premium:true,top:true,date:'2 days ago',code:'MARCO-ZAL9',link:'https://zalando.com/invite/marco',bonus:'€10 credit',alsoBonus:'€5 credit',votes:{ok:48,bad:3}},
+    {id:'z2',user:'sofia_m',av:'👩',premium:false,top:false,date:'5 days ago',code:'SOFIA-ZALA',link:null,bonus:'€10 credit',alsoBonus:'€5 credit',votes:{ok:31,bad:1}},
+    {id:'z3',user:'luca_b88',av:'🧔',premium:false,top:false,date:'1 week ago',code:'LUCA-ZALAMODE',link:'https://zalando.com/invite/luca',bonus:'€10 credit',alsoBonus:'€5 credit',votes:{ok:22,bad:4}},
+    {id:'z4',user:'elena_k',av:'👩‍🦰',premium:true,top:false,date:'2 weeks ago',code:'ELENA-ZAL',link:'https://zalando.com/invite/elena',bonus:'€10 credit',alsoBonus:'€5 credit',votes:{ok:17,bad:2}},
+    {id:'z5',user:'alex_v99',av:'🧑‍💼',premium:false,top:false,date:'3 weeks ago',code:'ALEXZALA99',link:null,bonus:'€10 credit',alsoBonus:'€5 credit',votes:{ok:9,bad:6}},
+    {id:'z6',user:'giulia_r',av:'👱‍♀️',premium:false,top:false,date:'1 month ago',code:'GIULIA-MODE',link:'https://zalando.com/invite/g',bonus:'€10 credit',alsoBonus:'€5 credit',votes:{ok:5,bad:8}},
+  ],
+  uber:[
+    {id:'u1',user:'tom_k',av:'🧑',premium:true,top:true,date:'1 day ago',code:'UBER-TOM5',link:'https://uber.com/invite/tom5',bonus:'€5 ride credit',alsoBonus:'€2 credit',votes:{ok:92,bad:4}},
+    {id:'u2',user:'anna_s',av:'👩',premium:false,top:false,date:'3 days ago',code:'ANNA-UBER',link:'https://uber.com/invite/anna',bonus:'€5 ride credit',alsoBonus:'€2 credit',votes:{ok:61,bad:2}},
+    {id:'u3',user:'max_dm',av:'🧔',premium:true,top:false,date:'1 week ago',code:'MAXUBER99',link:null,bonus:'€5 ride credit',alsoBonus:'€2 credit',votes:{ok:44,bad:5}},
+  ],
+  revolut:[
+    {id:'r1',user:'nina_p',av:'👩‍🦱',premium:true,top:true,date:'1 day ago',code:'NINA-REV5',link:'https://revolut.com/referral/nina',bonus:'Premium 3 months',alsoBonus:'€10 bonus',votes:{ok:118,bad:2}},
+    {id:'r2',user:'davide_c',av:'🧑‍🦱',premium:false,top:false,date:'4 days ago',code:'DAVIDE-REV',link:'https://revolut.com/referral/davide',bonus:'Premium 3 months',alsoBonus:'€10 bonus',votes:{ok:74,bad:3}},
+    {id:'r3',user:'sara_m',av:'👩',premium:false,top:false,date:'2 weeks ago',code:'SARAREVOLT',link:null,bonus:'Premium 3 months',alsoBonus:'€10 bonus',votes:{ok:38,bad:4}},
+  ],
+  deliveroo:[
+    {id:'d1',user:'chris_l',av:'🧑',premium:false,top:true,date:'6 hours ago',code:'CHRIS-DEL',link:'https://deliveroo.com/invite/chris',bonus:'Free delivery 3x',alsoBonus:'£5 credit',votes:{ok:29,bad:1}},
+    {id:'d2',user:'mia_b',av:'👩',premium:true,top:false,date:'2 days ago',code:'MIA-ROOOO',link:'https://deliveroo.com/invite/mia',bonus:'Free delivery 3x',alsoBonus:'£5 credit',votes:{ok:21,bad:2}},
+  ],
+  booking:[
+    {id:'b1',user:'peter_v',av:'🧑‍💻',premium:false,top:true,date:'3 days ago',code:'PETER-BOOK',link:'https://booking.com/invite/peter',bonus:'Genius status',alsoBonus:'Commission credit',votes:{ok:15,bad:3}},
+  ],
+};
+
+const COUNTRIES = ['🇮🇹 Italy','🇩🇪 Germany','🇫🇷 France','🇬🇧 UK','🇪🇸 Spain','🇺🇸 USA','🇵🇱 Poland','🇳🇱 Netherlands','🇧🇪 Belgium','🇦🇹 Austria','🇷🇺 Russia','🇺🇦 Ukraine'];
+
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+const MID = new URLSearchParams(location.search).get('id') || 'zalando';
+const M   = MERCHANTS[MID] || MERCHANTS.zalando;
+const PC  = PROMO_CODES[MID] || [];
+const IC  = INVITE_CODES[MID] || [];
+
+let S = {
+  lang:   detectLang(),
+  panel:  'promo',    // 'promo' | 'invite'
+  sort:   'popular',  // 'all' | 'popular' | 'newest' | 'verified'
+  votes:  {},         // {id: 'ok'|'bad'}
+  shown:  4,
+};
+
+let modalState = {id:null, code:'', verdict:null, countries:[]};
+
+/* ══════════════════════════════════════════════
+   LANG
+══════════════════════════════════════════════ */
+function detectLang(){
+  const s=localStorage.getItem('cf_lang');
+  if(s&&LANGS[s])return s;
+  const n=(navigator.language||'en').toLowerCase();
+  return n.startsWith('it')?'it':n.startsWith('ru')?'ru':'en';
+}
+function t(k,...a){ const v=LANGS[S.lang][k]||LANGS.en[k]; return typeof v==='function'?v(...a):v||k; }
+function setLang(l){ if(!LANGS[l])return; S.lang=l; localStorage.setItem('cf_lang',l); renderAll(); }
+function applyI18n(){
+  document.documentElement.lang=S.lang;
+  document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===S.lang));
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ const v=LANGS[S.lang][el.getAttribute('data-i18n')]; if(v&&typeof v==='string') el.textContent=v; });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ const v=LANGS[S.lang][el.getAttribute('data-i18n-ph')]; if(v) el.placeholder=v; });
+}
+
+/* ══════════════════════════════════════════════
+   RENDER ALL
+══════════════════════════════════════════════ */
+function renderAll(){ applyI18n(); renderHeader(); renderSwitcher(); renderPromos(); renderInviteToolbar(); renderInviteGrid(); renderModalOpts(); renderCountryChips(); }
+
+/* ══════════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════════ */
+function renderHeader(){
+  document.title=`${M.name} — CodiceFacile`;
+  document.getElementById('bc-name').textContent=M.name;
+  document.getElementById('mh-logo').textContent=M.emoji;
+  document.getElementById('mh-name').textContent=M.name;
+  document.getElementById('mh-cat').textContent=M.cat.charAt(0).toUpperCase()+M.cat.slice(1);
+  document.getElementById('mh-desc').textContent=M.desc;
+  document.getElementById('mh-site').href='https://'+M.website;
+  document.getElementById('mh-site-txt').textContent=M.website;
+  document.getElementById('s-total').textContent=M.totalCodes;
+  document.getElementById('s-invites').textContent=M.inviteCodes;
+  document.getElementById('s-rate').textContent=M.success+'%';
+  const bw=document.getElementById('mh-badges');
+  bw.innerHTML='';
+  if(M.verified) bw.innerHTML+=`<span class="badge badge-v">✓ ${t('badge_v')}</span>`;
+  if(M.featured) bw.innerHTML+=`<span class="badge badge-f">⭐ ${t('badge_f')}</span>`;
+}
+
+/* ══════════════════════════════════════════════
+   SECTION SWITCHER
+══════════════════════════════════════════════ */
+function switchSection(panel){
+  S.panel=panel;
+  // Tab states
+  document.getElementById('sw-promo').className='sw-tab promo'+(panel==='promo'?' active':'');
+  document.getElementById('sw-invite').className='sw-tab invite'+(panel==='invite'?' active':'');
+  // Panel visibility
+  document.getElementById('panel-promo').className='section-panel'+(panel==='promo'?' active':'');
+  document.getElementById('panel-invite').className='section-panel'+(panel==='invite'?' active':'');
+}
+function renderSwitcher(){
+  document.getElementById('sw-promo-count').textContent=PC.length;
+  document.getElementById('sw-invite-count').textContent=IC.length;
+  // Re-apply labels after lang change
+  document.getElementById('sw-promo').querySelector('.sw-label').textContent=t('sw_promo');
+  document.getElementById('sw-invite').querySelector('.sw-label').textContent=t('sw_invite');
+  document.getElementById('add-btn-lbl').textContent=t('add_code');
+}
+
+/* ══════════════════════════════════════════════
+   PROMO CARDS
+══════════════════════════════════════════════ */
+function renderPromos(){
+  const g=document.getElementById('promo-grid');
+  g.innerHTML='';
+  if(!PC.length){g.innerHTML=`<p style="color:var(--muted);padding:16px 0;font-size:14px">No promo codes yet.</p>`;return;}
+  PC.forEach((p,i)=>{
+    const c=document.createElement('div');
+    c.className='promo-card'+(p.top?' top-pick':'');
+    c.style.animationDelay=(i*.05)+'s';
+    c.innerHTML=`
+      <div class="promo-top-row">
+        <span class="promo-disc">${p.disc}</span>
+        <span class="pbadges">
+          ${p.top?`<span class="pbadge pbadge-top">★ Top pick</span>`:''}
+          ${p.verified?`<span class="pbadge pbadge-v">✓ ${t('verified')}</span>`:''}
+          ${p.expiring?`<span class="pbadge pbadge-exp">⏳ Expiring</span>`:''}
+        </span>
+      </div>
+      <div class="promo-desc">${p.desc}</div>
+      <div class="promo-code-row">
+        <span class="promo-code-val">${p.code}</span>
+        <button class="copy-btn" onclick="doCopy(this,'${p.code}')">${t('copy')}</button>
+      </div>
+      <div class="promo-meta">
+        <span>↗ ${p.uses.toLocaleString()} ${t('uses')}</span>
+        <span class="${p.expiring?'expiring-soon':''}">📅 ${t('expiry')}: ${p.expires}</span>
+      </div>`;
+    g.appendChild(c);
+  });
+}
+
+/* ══════════════════════════════════════════════
+   INVITE TOOLBAR
+══════════════════════════════════════════════ */
+function renderInviteToolbar(){
+  const tabs=['all','popular','newest','verified'];
+  const wrap=document.getElementById('inv-sort');
+  wrap.innerHTML='';
+  tabs.forEach(tab=>{
+    const b=document.createElement('button');
+    b.className='inv-sort-btn'+(S.sort===tab?' active':'');
+    b.textContent=t('tab_'+tab);
+    b.onclick=()=>{ S.sort=tab; S.shown=4; renderInviteToolbar(); renderInviteGrid(); };
+    wrap.appendChild(b);
+  });
+  const filtered=getInvites();
+  document.getElementById('inv-count-lbl').textContent=t('invite_count',filtered.length);
+}
+
+/* ══════════════════════════════════════════════
+   INVITE GRID
+══════════════════════════════════════════════ */
+function getInvites(){
+  let d=[...IC];
+  if(S.sort==='popular') d.sort((a,b)=>b.votes.ok-a.votes.ok);
+  else if(S.sort==='newest') d.reverse();
+  else if(S.sort==='verified') d=d.filter(c=>{const tot=c.votes.ok+c.votes.bad;return tot>0&&c.votes.ok/tot>=.75;});
+  d.sort((a,b)=>b.premium-a.premium);
+  return d;
+}
+function renderInviteGrid(){
+  const g=document.getElementById('invite-grid');
+  const all=getInvites();
+  const shown=all.slice(0,S.shown);
+  const lmw=document.getElementById('load-more-wrap');
+  lmw.style.display=S.shown>=all.length?'none':'block';
+  g.innerHTML='';
+  shown.forEach((inv,i)=>{ g.appendChild(buildInviteCard(inv,i)); });
+}
+function buildInviteCard(inv,i){
+  const el=document.createElement('div');
+  el.className='invite-card'+(inv.premium?' premium':'');
+  el.style.animationDelay=(i*.05)+'s';
+  const mv=S.votes[inv.id]||null;
+  const okN=inv.votes.ok+(mv==='ok'?1:0);
+  const badN=inv.votes.bad+(mv==='bad'?1:0);
+  const tot=okN+badN;
+  const pct=tot>0?Math.round(okN/tot*100):0;
+  const vClass=mv==='ok'?'voted-ok':mv==='bad'?'voted-bad':'';
+  const vLabel=mv==='ok'?t('voted_ok'):mv==='bad'?t('voted_bad'):t('validate');
+  el.innerHTML=`
+    <div class="ic-user">
+      <div class="ic-av">${inv.av}</div>
+      <div class="ic-info">
+        <div class="ic-name">@${inv.user}</div>
+        <div class="ic-date">${inv.date}</div>
+      </div>
+      <div class="ic-badges">
+        ${inv.premium?`<span class="ub ub-pro">⭐ Pro</span>`:''}
+        ${inv.top?`<span class="ub ub-top">🔥 Top</span>`:''}
+      </div>
+    </div>
+    <div class="ic-body">
+      <div class="ic-code-field">
+        <div class="ic-code-val" onclick="selText(this)" title="${inv.code}">${inv.code}</div>
+        <button class="ic-copy" onclick="doCopy(this,'${inv.code}')">${t('copy')}</button>
+      </div>
+      ${inv.bonus?`<div class="ic-bonus"><span class="ic-bonus-icon">🎁</span><div><strong>${t('bonus_you')}</strong> ${inv.bonus}&nbsp;&nbsp;<strong>${t('bonus_them')}</strong> ${inv.alsoBonus}</div></div>`:''}
+      <div class="ic-actions">
+        ${inv.link
+          ?`<a class="ic-link-btn" href="${inv.link}" target="_blank" rel="noopener">🔗 ${t('open_link')}</a>`
+          :`<span class="ic-link-btn" aria-disabled="true">🔗 ${t('no_link')}</span>`}
+        <button class="ic-validate-btn ${vClass}" onclick="openModal('${inv.id}','${inv.code}')">${vLabel}</button>
+      </div>
+      <div class="ic-vote-bar">
+        <div class="vote-track"><div class="vote-fill" style="width:${pct}%"></div></div>
+        <div class="vote-labels"><span class="ok">✓ ${okN} ${t('works_lbl')}</span><span class="bad">✗ ${badN} ${t('invalid_lbl')}</span></div>
+      </div>
+    </div>`;
+  return el;
+}
+function loadMore(){ S.shown+=4; renderInviteGrid(); }
+
+/* ══════════════════════════════════════════════
+   COPY & SELECT
+══════════════════════════════════════════════ */
+function doCopy(btn,code){
+  navigator.clipboard.writeText(code).then(()=>{
+    const orig=btn.textContent; btn.textContent=t('copied'); btn.classList.add('ok');
+    showToast(t('toast_copy'));
+    setTimeout(()=>{ btn.textContent=orig; btn.classList.remove('ok'); },1800);
+  });
+}
+function selText(el){
+  const r=document.createRange(); r.selectNodeContents(el);
+  const s=window.getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+function showToast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2200);
+}
+
+/* ══════════════════════════════════════════════
+   VALIDATE MODAL
+══════════════════════════════════════════════ */
+function openModal(id,code){
+  modalState={id,code,verdict:null,countries:[]};
+  document.getElementById('modal-emoji').textContent=M.emoji;
+  document.getElementById('modal-merchant').textContent=M.name;
+  document.getElementById('modal-code').textContent=code;
+  document.getElementById('modal-form').style.display='block';
+  document.getElementById('modal-success').classList.remove('show');
+  document.getElementById('modal-submit').disabled=true;
+  document.getElementById('modal-note').value='';
+  document.getElementById('country-sec').classList.remove('show');
+  renderModalOpts(); renderCountryChips();
+  document.getElementById('modal-bg').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal-bg').classList.remove('open');
+  document.body.style.overflow='';
+}
+function bgClose(e){ if(e.target===document.getElementById('modal-bg'))closeModal(); }
+function onAddCode(){ showToast('Sign up to share your code!'); }
+
+function renderModalOpts(){
+  const opts=[
+    {key:'ok', cls:'sel-ok', icon:'✅', lk:'opt_ok', sk:'opt_ok_sub'},
+    {key:'partial', cls:'sel-partial', icon:'🌍', lk:'opt_partial', sk:'opt_partial_sub'},
+    {key:'bad', cls:'sel-bad', icon:'❌', lk:'opt_bad', sk:'opt_bad_sub'},
+  ];
+  const wrap=document.getElementById('modal-opts');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  opts.forEach(o=>{
+    const d=document.createElement('div');
+    d.className='modal-opt'+(modalState.verdict===o.key?' '+o.cls:'');
+    d.innerHTML=`<span class="opt-icon">${o.icon}</span><div><div class="opt-label">${t(o.lk)}</div><div class="opt-sub">${t(o.sk)}</div></div>`;
+    d.onclick=()=>{
+      modalState.verdict=o.key;
+      document.getElementById('modal-submit').disabled=false;
+      document.getElementById('country-sec').classList.toggle('show',o.key==='partial');
+      renderModalOpts();
+    };
+    wrap.appendChild(d);
+  });
+}
+function renderCountryChips(){
+  const wrap=document.getElementById('country-chips');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  COUNTRIES.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='cchip'+(modalState.countries.includes(c)?' sel':'');
+    b.textContent=c;
+    b.onclick=()=>{
+      modalState.countries=modalState.countries.includes(c)?modalState.countries.filter(x=>x!==c):[...modalState.countries,c];
+      renderCountryChips();
+    };
+    wrap.appendChild(b);
+  });
+}
+function submitVal(){
+  if(!modalState.verdict)return;
+  S.votes[modalState.id]=modalState.verdict==='bad'?'bad':'ok';
+  document.getElementById('modal-form').style.display='none';
+  document.getElementById('modal-success').classList.add('show');
+  setTimeout(()=>{ closeModal(); renderInviteGrid(); },2000);
+}
+
+document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeModal(); });
+
+/* ══════════════════════════════════════════════
+   BOOT
+══════════════════════════════════════════════ */
+renderAll();
+</script>
+</body>
+</html>
