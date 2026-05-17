@@ -199,10 +199,9 @@
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Google Identity Services hidden trigger */
-    .gis-hidden { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; overflow: hidden; }
     .btn-social.loading { opacity: 0.7; pointer-events: none; }
-    .btn-social.loading span::after { content: '…'; }
+    .form-error { display: none; font-size: 13px; color: var(--rust); background: rgba(201,74,43,0.08); border: 1px solid rgba(201,74,43,0.2); border-radius: 6px; padding: 10px 14px; margin-bottom: 16px; }
+    .form-error.show { display: block; }
 
     /* Nav logged-in state */
     #nav-auth-logged-out { display: flex; gap: 10px; align-items: center; }
@@ -315,27 +314,9 @@
           No account? <a href="signup.html" data-i18n="login_signup_link">Sign up free →</a>
         </p>
 
-        <!-- Google Sign-In (GIS) -->
+        <!-- Google Sign-In -->
         <div class="social-btns">
-          <!-- Hidden GIS rendered button — triggered by our styled button below -->
-          <div class="gis-hidden">
-            <div id="g_id_onload"
-              data-client_id="689737842459-76irdfo55jfc9t2853bj6a2ud5qrup3d.apps.googleusercontent.com"
-              data-callback="handleGoogleCredential"
-              data-auto_prompt="false"
-              data-context="signin">
-            </div>
-            <div class="g_id_signin"
-              id="gis-btn-login"
-              data-type="standard"
-              data-size="large"
-              data-theme="outline"
-              data-text="signin_with"
-              data-width="400">
-            </div>
-          </div>
-          <!-- Our styled trigger button -->
-          <button class="btn-social" id="google-btn-login" onclick="triggerGoogleLogin()" type="button">
+          <button class="btn-social" id="google-btn-login" type="button">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -373,6 +354,7 @@
             <label for="remember" data-i18n="label_remember">Remember me for 30 days</label>
           </div>
 
+          <div class="form-error" id="login-error"></div>
           <button type="submit" class="btn-submit" data-i18n="btn_login">Log In →</button>
         </form>
 
@@ -404,72 +386,51 @@
 // ── Translations ──────────────────────────────────────────
 const T = {
   en: {
-    nav_signup: 'Sign up free',
-    nav_logout: 'Log out',
-    already_explore: 'Continue to Explore →',
-    already_logout: 'Log out and switch account',
+    nav_signup: 'Sign up free', nav_logout: 'Log out',
+    already_explore: 'Continue to Explore →', already_logout: 'Log out and switch account',
     panel_eyebrow: 'Community · Verified codes',
     panel_heading: 'Welcome<br/>back to<br/><em>CodiceFacile</em>',
     panel_sub: 'Your codes, your community — always there when you return.',
     stat_codes: 'Active codes', stat_merchants: 'Verified merchants', stat_members: 'Community members',
-    login_title: 'Log In',
-    login_subtitle: 'No account?',
-    login_signup_link: 'Sign up free →',
-    social_google: 'Continue with Google',
-    or_email: 'or with email',
+    login_title: 'Log In', login_subtitle: 'No account?', login_signup_link: 'Sign up free →',
+    social_google: 'Continue with Google', or_email: 'or with email',
     label_email: 'Email address', label_password: 'Password', label_remember: 'Remember me for 30 days',
-    forgot_link: 'Forgot password?',
-    btn_login: 'Log In →',
-    err_email: 'Please enter a valid email address.',
-    err_password: 'Password must be at least 6 characters.',
+    forgot_link: 'Forgot password?', btn_login: 'Log In →',
+    err_email: 'Please enter a valid email address.', err_password: 'Password must be at least 6 characters.',
     no_account: "Don't have an account?", footer_signup_link: ' Sign up free',
     gdpr_note: 'Your data is processed in compliance with GDPR (EU 2016/679). Read our <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>. CodiceFacile S.r.l. · Milan, Italy.',
     footer_tos: 'Terms of Service', footer_cookies: 'Cookie settings', footer_dpo: 'Contact & DPO',
     footer_vat: '© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901',
   },
   it: {
-    nav_signup: 'Registrati gratis',
-    nav_logout: 'Esci',
-    already_explore: 'Vai a Esplora →',
-    already_logout: 'Esci e cambia account',
+    nav_signup: 'Registrati gratis', nav_logout: 'Esci',
+    already_explore: 'Vai a Esplora →', already_logout: 'Esci e cambia account',
     panel_eyebrow: 'Community · Codici verificati',
     panel_heading: 'Bentornato<br/>su<br/><em>CodiceFacile</em>',
     panel_sub: 'I tuoi codici, la tua community — sempre lì quando torni.',
     stat_codes: 'Codici attivi', stat_merchants: 'Merchant verificati', stat_members: 'Membri community',
-    login_title: 'Accedi',
-    login_subtitle: 'Non hai un account?',
-    login_signup_link: 'Registrati gratis →',
-    social_google: 'Continua con Google',
-    or_email: 'oppure con email',
+    login_title: 'Accedi', login_subtitle: 'Non hai un account?', login_signup_link: 'Registrati gratis →',
+    social_google: 'Continua con Google', or_email: 'oppure con email',
     label_email: 'Indirizzo email', label_password: 'Password', label_remember: 'Ricordami per 30 giorni',
-    forgot_link: 'Password dimenticata?',
-    btn_login: 'Accedi →',
-    err_email: 'Inserisci un indirizzo email valido.',
-    err_password: 'La password deve contenere almeno 6 caratteri.',
+    forgot_link: 'Password dimenticata?', btn_login: 'Accedi →',
+    err_email: 'Inserisci un indirizzo email valido.', err_password: 'La password deve contenere almeno 6 caratteri.',
     no_account: 'Non hai un account?', footer_signup_link: ' Registrati gratis',
     gdpr_note: 'I tuoi dati sono trattati nel rispetto del GDPR (UE 2016/679). Leggi la nostra <a href="#">Privacy Policy</a> e i <a href="#">Termini di Servizio</a>. CodiceFacile S.r.l. · Milano, Italia.',
     footer_tos: 'Termini di Servizio', footer_cookies: 'Impostazioni cookie', footer_dpo: 'Contatti & DPO',
     footer_vat: '© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901 · I prezzi sono IVA inclusa (22%)',
   },
   ru: {
-    nav_signup: 'Регистрация',
-    nav_logout: 'Выйти',
-    already_explore: 'Перейти к каталогу →',
-    already_logout: 'Выйти и сменить аккаунт',
+    nav_signup: 'Регистрация', nav_logout: 'Выйти',
+    already_explore: 'Перейти к каталогу →', already_logout: 'Выйти и сменить аккаунт',
     panel_eyebrow: 'Сообщество · Проверенные коды',
     panel_heading: 'С возвращением<br/>в<br/><em>CodiceFacile</em>',
     panel_sub: 'Ваши коды, ваше сообщество — всегда здесь.',
     stat_codes: 'Активных кодов', stat_merchants: 'Верифицированных магазинов', stat_members: 'Участников',
-    login_title: 'Войти',
-    login_subtitle: 'Нет аккаунта?',
-    login_signup_link: 'Зарегистрироваться →',
-    social_google: 'Войти через Google',
-    or_email: 'или через email',
+    login_title: 'Войти', login_subtitle: 'Нет аккаунта?', login_signup_link: 'Зарегистрироваться →',
+    social_google: 'Войти через Google', or_email: 'или через email',
     label_email: 'Адрес электронной почты', label_password: 'Пароль', label_remember: 'Запомнить меня на 30 дней',
-    forgot_link: 'Забыли пароль?',
-    btn_login: 'Войти →',
-    err_email: 'Введите корректный адрес электронной почты.',
-    err_password: 'Пароль должен содержать минимум 6 символов.',
+    forgot_link: 'Забыли пароль?', btn_login: 'Войти →',
+    err_email: 'Введите корректный адрес электронной почты.', err_password: 'Пароль должен содержать минимум 6 символов.',
     no_account: 'Нет аккаунта?', footer_signup_link: ' Зарегистрироваться',
     gdpr_note: 'Ваши данные обрабатываются в соответствии с GDPR (ЕС 2016/679). Прочитайте нашу <a href="#">Политику конфиденциальности</a> и <a href="#">Условия использования</a>. CodiceFacile S.r.l. · Милан, Италия.',
     footer_tos: 'Условия использования', footer_cookies: 'Настройки cookie', footer_dpo: 'Контакты & DPO',
@@ -518,10 +479,9 @@ function togglePw(id, btn) {
   else { input.type = 'password'; btn.textContent = '👁'; }
 }
 
-// ── Validate & submit ─────────────────────────────────────
+// ── Email login ───────────────────────────────────────────
 function handleLogin(e) {
   e.preventDefault();
-  const d = T[lang];
   let valid = true;
 
   const emailField = document.getElementById('field-email');
@@ -538,63 +498,74 @@ function handleLogin(e) {
 
   if (!valid) return;
 
+  const errEl = document.getElementById('login-error');
+  if (!Auth.loginEmail(emailVal, pwVal)) {
+    errEl.textContent = lang === 'it' ? 'Email o password non corretti.' : lang === 'ru' ? 'Неверный email или пароль.' : 'Incorrect email or password.';
+    errEl.classList.add('show');
+    return;
+  }
+  errEl.classList.remove('show');
+
   const btn = document.querySelector('.btn-submit');
-  btn.textContent = '…';
+  btn.textContent = '✓';
+  btn.style.background = '#4a7c59';
   btn.disabled = true;
-  setTimeout(() => {
-    btn.textContent = '✓ ' + (lang === 'it' ? 'Accesso effettuato!' : lang === 'ru' ? 'Вход выполнен!' : 'Logged in!');
-    btn.style.background = '#4a7c59';
-  }, 1200);
+  setTimeout(() => { window.location.href = 'explore.html'; }, 700);
 }
 
 // ── Google OAuth ──────────────────────────────────────────
-function triggerGoogleLogin() {
-  const btn = document.getElementById('google-btn-login');
-  btn.classList.add('loading');
-  // Click the hidden GIS-rendered button to open the Google popup
-  const gisBtn = document.querySelector('#gis-btn-login [role="button"], #gis-btn-login iframe');
-  if (gisBtn) {
-    gisBtn.click();
-  } else {
-    // GIS not yet rendered — use google.accounts.id.prompt() as fallback
-    if (window.google?.accounts?.id) {
-      google.accounts.id.prompt();
-    }
-  }
-  setTimeout(() => btn.classList.remove('loading'), 3000);
+const GOOGLE_CLIENT_ID = '689737842459-76irdfo55jfc9t2853bj6a2ud5qrup3d.apps.googleusercontent.com';
+let _gClient = null;
+
+function getGoogleClient() {
+  if (_gClient) return _gClient;
+  if (!window.google?.accounts?.oauth2) return null;
+  _gClient = google.accounts.oauth2.initTokenClient({
+    client_id: GOOGLE_CLIENT_ID,
+    scope: 'email profile',
+    callback: async (resp) => {
+      if (resp.error) { showGoogleError(); return; }
+      try {
+        const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: 'Bearer ' + resp.access_token }
+        });
+        const info = await r.json();
+        Auth.saveUser({ name: info.name, email: info.email, picture: info.picture || '' });
+        window.location.href = 'explore.html';
+      } catch { showGoogleError(); }
+    },
+  });
+  return _gClient;
 }
+
+document.getElementById('google-btn-login').addEventListener('click', () => {
+  const client = getGoogleClient();
+  if (!client) { showGoogleError(); return; }
+  client.requestAccessToken();
+});
 
 function showGoogleError() {
   const btn = document.getElementById('google-btn-login');
-  btn.classList.remove('loading');
-  btn.querySelector('span').textContent =
-    lang === 'it' ? 'Errore Google — riprova' :
-    lang === 'ru' ? 'Ошибка Google — повторите' :
-    'Google error — please try again';
+  const span = btn.querySelector('span');
+  const orig = T[lang].social_google;
+  span.textContent = lang === 'it' ? 'Errore Google — riprova' : lang === 'ru' ? 'Ошибка Google — повторите' : 'Google error — please try again';
   btn.style.borderColor = 'var(--rust)';
   btn.style.color = 'var(--rust)';
-  setTimeout(() => {
-    btn.querySelector('span').textContent = T[lang].social_google;
-    btn.style.borderColor = '';
-    btn.style.color = '';
-  }, 3000);
+  setTimeout(() => { span.textContent = orig; btn.style.borderColor = ''; btn.style.color = ''; }, 3000);
 }
 
 // ── Boot ──────────────────────────────────────────────────
 applyLang();
 Auth.applyNavState();
 
-// If already logged in, show the "already signed in" banner instead of the form
 (function checkAlreadyLoggedIn() {
   const user = Auth.getUser();
   if (!user) return;
 
-  // Hide form, show banner
   document.getElementById('login-form-wrap').style.display = 'none';
   const banner = document.getElementById('already-in-banner');
   banner.classList.add('show');
 
-  // Fill avatar
   const av = document.getElementById('already-in-avatar');
   if (user.picture) {
     av.style.backgroundImage = `url('${user.picture}')`;
@@ -605,34 +576,8 @@ Auth.applyNavState();
   }
   document.getElementById('already-in-name').textContent  = user.name;
   document.getElementById('already-in-email').textContent = user.email;
-
-  // Wire logout button inside banner
-  document.getElementById('already-logout-btn')
-    .addEventListener('click', () => Auth.logout());
+  document.getElementById('already-logout-btn').addEventListener('click', () => Auth.logout());
 })();
-
-// Use Auth.saveUser in the Google handler
-function handleGoogleCredential(response) {
-  const idToken = response.credential;
-  const payload = JSON.parse(atob(idToken.split('.')[1]));
-
-  Auth.saveUser({ name: payload.name, email: payload.email, picture: payload.picture || '', token: idToken });
-
-  const btn = document.getElementById('google-btn-login');
-  if (btn) {
-    btn.querySelector('span').textContent = '✓ ' + payload.name;
-    btn.style.borderColor = 'var(--sage)';
-    btn.style.color = 'var(--sage)';
-  }
-
-  // ── Uncomment when backend is ready ──
-  // fetch('/api/auth/google', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({idToken}) })
-  //   .then(r => r.json())
-  //   .then(data => { localStorage.setItem('cf_session_token', data.token); window.location.href = 'explore.html'; })
-  //   .catch(() => showGoogleError());
-
-  setTimeout(() => { window.location.href = 'explore.html'; }, 800);
-}
 </script>
 </body>
 </html>

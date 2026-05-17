@@ -88,5 +88,24 @@ const Auth = (() => {
     if (logoutBtn) logoutBtn.addEventListener('click', (e) => { e.preventDefault(); logout(); });
   }
 
-  return { getUser, isLoggedIn, saveUser, logout, applyNavState };
+  // ── Email auth ──────────────────────────────────────────
+  function signupEmail(firstName, lastName, email, password) {
+    const accounts = JSON.parse(localStorage.getItem('cf_accounts') || '{}');
+    const key = email.toLowerCase();
+    if (accounts[key]) return false; // already registered
+    accounts[key] = { name: (firstName + ' ' + lastName).trim(), password };
+    localStorage.setItem('cf_accounts', JSON.stringify(accounts));
+    saveUser({ name: accounts[key].name, email: key, picture: '' });
+    return true;
+  }
+
+  function loginEmail(email, password) {
+    const accounts = JSON.parse(localStorage.getItem('cf_accounts') || '{}');
+    const acc = accounts[email.toLowerCase()];
+    if (!acc || acc.password !== password) return false;
+    saveUser({ name: acc.name, email: email.toLowerCase(), picture: '' });
+    return true;
+  }
+
+  return { getUser, isLoggedIn, saveUser, logout, applyNavState, signupEmail, loginEmail };
 })();

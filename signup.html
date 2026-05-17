@@ -224,9 +224,9 @@
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Google Identity Services hidden trigger */
-    .gis-hidden { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; overflow: hidden; }
     .btn-social.loading { opacity: 0.7; pointer-events: none; }
+    .form-error { display: none; font-size: 13px; color: var(--rust); background: rgba(201,74,43,0.08); border: 1px solid rgba(201,74,43,0.2); border-radius: 6px; padding: 10px 14px; margin-bottom: 16px; }
+    .form-error.show { display: block; }
 
     /* Nav logged-in state */
     #nav-auth-logged-out { display: flex; gap: 10px; align-items: center; }
@@ -308,27 +308,9 @@
           <a href="login.html" data-i18n="signup_login_link"> Log in →</a>
         </p>
 
-        <!-- Google Sign-In (GIS) -->
+        <!-- Google Sign-In -->
         <div class="social-btns">
-          <!-- Hidden GIS rendered button — triggered by our styled button below -->
-          <div class="gis-hidden">
-            <div id="g_id_onload"
-              data-client_id="689737842459-76irdfo55jfc9t2853bj6a2ud5qrup3d.apps.googleusercontent.com"
-              data-callback="handleGoogleCredential"
-              data-auto_prompt="false"
-              data-context="signup">
-            </div>
-            <div class="g_id_signin"
-              id="gis-btn-signup"
-              data-type="standard"
-              data-size="large"
-              data-theme="outline"
-              data-text="signup_with"
-              data-width="400">
-            </div>
-          </div>
-          <!-- Our styled trigger button -->
-          <button class="btn-social" id="google-btn-signup" onclick="triggerGoogleSignup()" type="button">
+          <button class="btn-social" id="google-btn-signup" type="button">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -382,6 +364,7 @@
             </label>
           </div>
 
+          <div class="form-error" id="signup-error"></div>
           <button type="submit" class="btn-submit" data-i18n="btn_signup">Create free account →</button>
         </form>
 
@@ -616,7 +599,7 @@ function togglePw(id, btn) {
   else { input.type = 'password'; btn.textContent = '👁'; }
 }
 
-// ── Validate & submit ─────────────────────────────────────
+// ── Email signup ──────────────────────────────────────────
 function handleSignup(e) {
   e.preventDefault();
   let valid = true;
@@ -640,51 +623,73 @@ function handleSignup(e) {
 
   if (!valid) return;
 
+  const errEl = document.getElementById('signup-error');
+  const ok = Auth.signupEmail(
+    document.getElementById('firstname').value.trim(),
+    document.getElementById('lastname').value.trim(),
+    document.getElementById('email').value.trim(),
+    document.getElementById('password').value
+  );
+
+  if (!ok) {
+    errEl.textContent = lang === 'it' ? 'Questa email è già registrata. Accedi.' : lang === 'ru' ? 'Этот email уже зарегистрирован. Войдите.' : 'This email is already registered. Please log in.';
+    errEl.classList.add('show');
+    return;
+  }
+  errEl.classList.remove('show');
+
   const btn = document.querySelector('.btn-submit');
-  btn.textContent = '…';
+  btn.textContent = lang === 'it' ? '✓ Account creato!' : lang === 'ru' ? '✓ Аккаунт создан!' : '✓ Account created!';
+  btn.style.background = '#4a7c59';
   btn.disabled = true;
-  setTimeout(() => {
-    btn.textContent = lang === 'it' ? '✓ Account creato!' : lang === 'ru' ? '✓ Аккаунт создан!' : '✓ Account created!';
-    btn.style.background = '#4a7c59';
-  }, 1400);
+  setTimeout(() => { window.location.href = 'explore.html'; }, 800);
 }
 
 // ── Google OAuth ──────────────────────────────────────────
-function triggerGoogleSignup() {
-  const btn = document.getElementById('google-btn-signup');
-  btn.classList.add('loading');
-  const gisBtn = document.querySelector('#gis-btn-signup [role="button"], #gis-btn-signup iframe');
-  if (gisBtn) {
-    gisBtn.click();
-  } else {
-    if (window.google?.accounts?.id) {
-      google.accounts.id.prompt();
-    }
-  }
-  setTimeout(() => btn.classList.remove('loading'), 3000);
+const GOOGLE_CLIENT_ID = '689737842459-76irdfo55jfc9t2853bj6a2ud5qrup3d.apps.googleusercontent.com';
+let _gClient = null;
+
+function getGoogleClient() {
+  if (_gClient) return _gClient;
+  if (!window.google?.accounts?.oauth2) return null;
+  _gClient = google.accounts.oauth2.initTokenClient({
+    client_id: GOOGLE_CLIENT_ID,
+    scope: 'email profile',
+    callback: async (resp) => {
+      if (resp.error) { showGoogleError(); return; }
+      try {
+        const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: 'Bearer ' + resp.access_token }
+        });
+        const info = await r.json();
+        Auth.saveUser({ name: info.name, email: info.email, picture: info.picture || '' });
+        window.location.href = 'explore.html';
+      } catch { showGoogleError(); }
+    },
+  });
+  return _gClient;
 }
+
+document.getElementById('google-btn-signup').addEventListener('click', () => {
+  const client = getGoogleClient();
+  if (!client) { showGoogleError(); return; }
+  client.requestAccessToken();
+});
 
 function showGoogleError() {
   const btn = document.getElementById('google-btn-signup');
-  btn.classList.remove('loading');
-  btn.querySelector('span').textContent =
-    lang === 'it' ? 'Errore Google — riprova' :
-    lang === 'ru' ? 'Ошибка Google — повторите' :
-    'Google error — please try again';
+  const span = btn.querySelector('span');
+  const orig = T[lang].social_google;
+  span.textContent = lang === 'it' ? 'Errore Google — riprova' : lang === 'ru' ? 'Ошибка Google — повторите' : 'Google error — please try again';
   btn.style.borderColor = 'var(--rust)';
   btn.style.color = 'var(--rust)';
-  setTimeout(() => {
-    btn.querySelector('span').textContent = T[lang].social_google;
-    btn.style.borderColor = '';
-    btn.style.color = '';
-  }, 3000);
+  setTimeout(() => { span.textContent = orig; btn.style.borderColor = ''; btn.style.color = ''; }, 3000);
 }
 
 // ── Boot ──────────────────────────────────────────────────
 applyLang();
 Auth.applyNavState();
 
-// If already logged in, show the "already signed in" banner
 (function checkAlreadyLoggedIn() {
   const user = Auth.getUser();
   if (!user) return;
@@ -703,33 +708,8 @@ Auth.applyNavState();
   }
   document.getElementById('already-in-name').textContent  = user.name;
   document.getElementById('already-in-email').textContent = user.email;
-
-  document.getElementById('already-logout-btn')
-    .addEventListener('click', () => Auth.logout());
+  document.getElementById('already-logout-btn').addEventListener('click', () => Auth.logout());
 })();
-
-// Use Auth.saveUser in the Google handler
-function handleGoogleCredential(response) {
-  const idToken = response.credential;
-  const payload = JSON.parse(atob(idToken.split('.')[1]));
-
-  Auth.saveUser({ name: payload.name, email: payload.email, picture: payload.picture || '', token: idToken });
-
-  const btn = document.getElementById('google-btn-signup');
-  if (btn) {
-    btn.querySelector('span').textContent = '✓ ' + payload.name;
-    btn.style.borderColor = 'var(--sage)';
-    btn.style.color = 'var(--sage)';
-  }
-
-  // ── Uncomment when backend is ready ──
-  // fetch('/api/auth/google', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({idToken}) })
-  //   .then(r => r.json())
-  //   .then(data => { localStorage.setItem('cf_session_token', data.token); window.location.href = 'explore.html'; })
-  //   .catch(() => showGoogleError());
-
-  setTimeout(() => { window.location.href = 'explore.html'; }, 800);
-}
 </script>
 </body>
 </html>
