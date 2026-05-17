@@ -43,6 +43,12 @@
     .btn-ghost:hover{border-color:var(--ink)}
     .btn-primary{background:var(--rust);color:#fff;border-color:var(--rust)}
     .btn-primary:hover{background:var(--rust-dim);transform:translateY(-1px)}
+    #nav-auth-logged-out{display:flex;gap:8px;align-items:center}
+    #nav-auth-logged-in{display:none;gap:8px;align-items:center}
+    .nav-user-avatar{width:30px;height:30px;border-radius:50%;background:var(--rust);color:#fff;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid var(--border);background-size:cover}
+    .nav-user-name{font-size:13px;font-weight:600;color:var(--ink)}
+    .btn-logout{font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--muted);background:none;border:1.5px solid var(--border);border-radius:6px;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap}
+    .btn-logout:hover{border-color:var(--rust);color:var(--rust)}
 
     /* ── HERO BAR ── */
     .page-hero{background:var(--ink);padding:48px 40px 40px;position:relative;overflow:hidden}
@@ -155,8 +161,15 @@
       <button class="lang-btn" data-lang="it" onclick="setLang('it')">IT</button>
       <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
     </div>
-    <a href="login.html" class="btn btn-ghost" data-i18n="nav_login"></a>
-    <a href="signup.html" class="btn btn-primary" data-i18n="nav_signup"></a>
+    <div id="nav-auth-logged-out">
+      <a href="login.html" class="btn btn-ghost" data-i18n="nav_login"></a>
+      <a href="signup.html" class="btn btn-primary" data-i18n="nav_signup"></a>
+    </div>
+    <div id="nav-auth-logged-in">
+      <div class="nav-user-avatar" id="nav-user-avatar"></div>
+      <span class="nav-user-name" id="nav-user-name"></span>
+      <button class="btn-logout" id="nav-logout-btn" data-i18n="nav_logout"></button>
+    </div>
   </div>
 </nav>
 
@@ -184,13 +197,14 @@
   <div class="merchant-grid" id="merchant-grid"></div>
 </div>
 
+<script src="auth.js"></script>
 <script>
 // ════════════════════════════════════════════
 // TRANSLATIONS
 // ════════════════════════════════════════════
 const LANGS = {
   en:{
-    nav_login:'Log in', nav_signup:'Sign up free',
+    nav_login:'Log in', nav_signup:'Sign up free', nav_logout:'Log out',
     page_title:'Explore Merchants — CodiceFacile',
     hero_label:'Community · Verified merchants',
     hero_h1:'Find codes for every <em>brand you love</em>',
@@ -209,7 +223,7 @@ const LANGS = {
     empty_title:'No merchants found', empty_sub:'Try a different search or category.',
   },
   it:{
-    nav_login:'Accedi', nav_signup:'Registrati gratis',
+    nav_login:'Accedi', nav_signup:'Registrati gratis', nav_logout:'Esci',
     page_title:'Esplora Merchant — CodiceFacile',
     hero_label:'Community · Merchant verificati',
     hero_h1:'Trova codici per ogni <em>brand che ami</em>',
@@ -228,7 +242,7 @@ const LANGS = {
     empty_title:'Nessun merchant trovato', empty_sub:'Prova una ricerca o categoria diversa.',
   },
   ru:{
-    nav_login:'Войти', nav_signup:'Регистрация',
+    nav_login:'Войти', nav_signup:'Регистрация', nav_logout:'Выйти',
     page_title:'Магазины — CodiceFacile',
     hero_label:'Сообщество · Верифицированные магазины',
     hero_h1:'Найдите коды для каждого <em>любимого бренда</em>',
@@ -427,6 +441,7 @@ document.getElementById('search-input').addEventListener('input',e=>{
 document.getElementById('sort-sel').addEventListener('change',e=>{ state.sort=e.target.value; render(); });
 
 render();
+Auth.applyNavState();
 </script>
 </body>
 </html>
