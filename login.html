@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="auth.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -203,6 +204,22 @@
     .btn-social.loading { opacity: 0.7; pointer-events: none; }
     .btn-social.loading span::after { content: '…'; }
 
+    /* Nav logged-in state */
+    #nav-auth-logged-out { display: flex; gap: 10px; align-items: center; }
+    #nav-auth-logged-in  { display: none; gap: 10px; align-items: center; }
+    .nav-user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--rust); color: #fff; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 2px solid var(--border); }
+    .nav-user-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+    .btn-logout { font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--muted); background: none; border: 1.5px solid var(--border); border-radius: 6px; padding: 6px 14px; cursor: pointer; transition: all 0.2s; }
+    .btn-logout:hover { border-color: var(--rust); color: var(--rust); }
+
+    /* Already-logged-in banner */
+    .already-in { display: none; flex-direction: column; align-items: center; text-align: center; padding: 48px 24px; gap: 16px; }
+    .already-in.show { display: flex; }
+    .already-in-avatar { width: 72px; height: 72px; border-radius: 50%; background: var(--rust); color: #fff; font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 3px solid var(--border); }
+    .already-in-name { font-family: var(--font-display); font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+    .already-in-email { font-size: 13px; color: var(--muted); }
+    .already-in-btns { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 8px; }
+
     @media (max-width: 900px) {
       .auth-layout { grid-template-columns: 1fr; }
       .auth-panel { display: none; }
@@ -226,8 +243,17 @@
         <button class="lang-btn" data-lang="it" onclick="setLang('it')">IT</button>
         <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
       </div>
-      <a href="index.html" class="btn btn-ghost">← Back</a>
-      <a href="signup.html" class="btn btn-primary" data-i18n="nav_signup">Sign up free</a>
+      <!-- Logged out -->
+      <div id="nav-auth-logged-out">
+        <a href="index.html" class="btn btn-ghost">← Back</a>
+        <a href="signup.html" class="btn btn-primary" data-i18n="nav_signup">Sign up free</a>
+      </div>
+      <!-- Logged in -->
+      <div id="nav-auth-logged-in">
+        <div class="nav-user-avatar" id="nav-user-avatar"></div>
+        <span class="nav-user-name" id="nav-user-name"></span>
+        <button class="btn-logout" id="nav-logout-btn" data-i18n="nav_logout">Log out</button>
+      </div>
     </div>
   </nav>
 
@@ -271,6 +297,19 @@
     <div class="auth-form-wrap">
       <div class="auth-form-inner">
 
+        <!-- Already logged in banner (shown if user visits login while logged in) -->
+        <div class="already-in" id="already-in-banner">
+          <div class="already-in-avatar" id="already-in-avatar"></div>
+          <div class="already-in-name" id="already-in-name"></div>
+          <div class="already-in-email" id="already-in-email"></div>
+          <div class="already-in-btns">
+            <a href="explore.html" class="btn-submit" style="text-decoration:none;text-align:center" data-i18n="already_explore">Continue to Explore →</a>
+            <button class="btn-logout" style="width:100%" id="already-logout-btn" data-i18n="already_logout">Log out and switch account</button>
+          </div>
+        </div>
+
+        <!-- Normal login form (hidden when already logged in) -->
+        <div id="login-form-wrap">
         <h1 class="form-title" data-i18n="login_title">Log In</h1>
         <p class="form-subtitle" data-i18n="login_subtitle">
           No account? <a href="signup.html" data-i18n="login_signup_link">Sign up free →</a>
@@ -345,6 +384,7 @@
         <div class="gdpr-note">
           🔒 <span data-i18n="gdpr_note">Your data is processed in compliance with GDPR (EU 2016/679). Read our <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>. CodiceFacile S.r.l. · Milan, Italy.</span>
         </div>
+        </div><!-- /login-form-wrap -->
       </div>
     </div>
   </div>
@@ -365,6 +405,9 @@
 const T = {
   en: {
     nav_signup: 'Sign up free',
+    nav_logout: 'Log out',
+    already_explore: 'Continue to Explore →',
+    already_logout: 'Log out and switch account',
     panel_eyebrow: 'Community · Verified codes',
     panel_heading: 'Welcome<br/>back to<br/><em>CodiceFacile</em>',
     panel_sub: 'Your codes, your community — always there when you return.',
@@ -386,6 +429,9 @@ const T = {
   },
   it: {
     nav_signup: 'Registrati gratis',
+    nav_logout: 'Esci',
+    already_explore: 'Vai a Esplora →',
+    already_logout: 'Esci e cambia account',
     panel_eyebrow: 'Community · Codici verificati',
     panel_heading: 'Bentornato<br/>su<br/><em>CodiceFacile</em>',
     panel_sub: 'I tuoi codici, la tua community — sempre lì quando torni.',
@@ -407,6 +453,9 @@ const T = {
   },
   ru: {
     nav_signup: 'Регистрация',
+    nav_logout: 'Выйти',
+    already_explore: 'Перейти к каталогу →',
+    already_logout: 'Выйти и сменить аккаунт',
     panel_eyebrow: 'Сообщество · Проверенные коды',
     panel_heading: 'С возвращением<br/>в<br/><em>CodiceFacile</em>',
     panel_sub: 'Ваши коды, ваше сообщество — всегда здесь.',
@@ -515,39 +564,6 @@ function triggerGoogleLogin() {
   setTimeout(() => btn.classList.remove('loading'), 3000);
 }
 
-function handleGoogleCredential(response) {
-  // response.credential is the signed JWT (ID token) from Google
-  const idToken = response.credential;
-
-  // Decode payload for optimistic UI (not for auth — verify server-side!)
-  const payload = JSON.parse(atob(idToken.split('.')[1]));
-
-  const btn = document.getElementById('google-btn-login');
-  btn.querySelector('span').textContent = '✓ ' + payload.name;
-  btn.style.borderColor = 'var(--sage)';
-  btn.style.color = 'var(--sage)';
-
-  // ── Send token to your backend for verification ──
-  // fetch('/api/auth/google', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify({ idToken })
-  // })
-  // .then(r => r.json())
-  // .then(data => {
-  //   localStorage.setItem('cf_session_token', data.token);
-  //   window.location.href = 'explore.html';
-  // })
-  // .catch(() => showGoogleError());
-
-  // ── Demo: store token locally and redirect ──
-  localStorage.setItem('cf_google_token', idToken);
-  localStorage.setItem('cf_user_name', payload.name);
-  localStorage.setItem('cf_user_email', payload.email);
-  localStorage.setItem('cf_user_picture', payload.picture || '');
-  setTimeout(() => { window.location.href = 'explore.html'; }, 800);
-}
-
 function showGoogleError() {
   const btn = document.getElementById('google-btn-login');
   btn.classList.remove('loading');
@@ -566,6 +582,57 @@ function showGoogleError() {
 
 // ── Boot ──────────────────────────────────────────────────
 applyLang();
+Auth.applyNavState();
+
+// If already logged in, show the "already signed in" banner instead of the form
+(function checkAlreadyLoggedIn() {
+  const user = Auth.getUser();
+  if (!user) return;
+
+  // Hide form, show banner
+  document.getElementById('login-form-wrap').style.display = 'none';
+  const banner = document.getElementById('already-in-banner');
+  banner.classList.add('show');
+
+  // Fill avatar
+  const av = document.getElementById('already-in-avatar');
+  if (user.picture) {
+    av.style.backgroundImage = `url('${user.picture}')`;
+    av.style.backgroundSize = 'cover';
+    av.textContent = '';
+  } else {
+    av.textContent = user.name.charAt(0).toUpperCase();
+  }
+  document.getElementById('already-in-name').textContent  = user.name;
+  document.getElementById('already-in-email').textContent = user.email;
+
+  // Wire logout button inside banner
+  document.getElementById('already-logout-btn')
+    .addEventListener('click', () => Auth.logout());
+})();
+
+// Use Auth.saveUser in the Google handler
+function handleGoogleCredential(response) {
+  const idToken = response.credential;
+  const payload = JSON.parse(atob(idToken.split('.')[1]));
+
+  Auth.saveUser({ name: payload.name, email: payload.email, picture: payload.picture || '', token: idToken });
+
+  const btn = document.getElementById('google-btn-login');
+  if (btn) {
+    btn.querySelector('span').textContent = '✓ ' + payload.name;
+    btn.style.borderColor = 'var(--sage)';
+    btn.style.color = 'var(--sage)';
+  }
+
+  // ── Uncomment when backend is ready ──
+  // fetch('/api/auth/google', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({idToken}) })
+  //   .then(r => r.json())
+  //   .then(data => { localStorage.setItem('cf_session_token', data.token); window.location.href = 'explore.html'; })
+  //   .catch(() => showGoogleError());
+
+  setTimeout(() => { window.location.href = 'explore.html'; }, 800);
+}
 </script>
 </body>
 </html>

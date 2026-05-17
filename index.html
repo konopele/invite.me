@@ -61,6 +61,14 @@
     .btn-primary:hover { background: var(--rust-dim); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,74,43,0.3); }
     .btn-lg { padding: 14px 32px; font-size: 16px; border-radius: 8px; }
 
+    /* Nav auth states */
+    #nav-auth-logged-out { display: flex; gap: 10px; align-items: center; }
+    #nav-auth-logged-in  { display: none; gap: 10px; align-items: center; }
+    .nav-user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--rust); color: #fff; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 2px solid var(--border); background-size: cover; }
+    .nav-user-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+    .btn-logout { font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--muted); background: none; border: 1.5px solid var(--border); border-radius: 6px; padding: 6px 14px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .btn-logout:hover { border-color: var(--rust); color: var(--rust); }
+
     /* HERO */
     .hero { min-height: calc(100vh - 64px); display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 80px; position: relative; overflow: hidden; }
     .hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 48px 48px; opacity: 0.35; pointer-events: none; }
@@ -243,8 +251,18 @@
         <button class="lang-btn" data-lang="it" onclick="setLang('it')">IT</button>
         <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
       </div>
-      <a href="login.html" class="btn btn-ghost" data-i18n="nav_login"></a>
-      <a href="signup.html" class="btn btn-primary" data-i18n="nav_signup"></a>
+      <!-- Logged out -->
+      <div id="nav-auth-logged-out">
+        <a href="login.html" class="btn btn-ghost" data-i18n="nav_login"></a>
+        <a href="signup.html" class="btn btn-primary" data-i18n="nav_signup"></a>
+      </div>
+      <!-- Logged in -->
+      <div id="nav-auth-logged-in">
+        <div class="nav-user-avatar" id="nav-user-avatar"></div>
+        <span class="nav-user-name" id="nav-user-name"></span>
+        <a href="explore.html" class="btn btn-ghost" data-i18n="nav_explore"></a>
+        <button class="btn-logout" id="nav-logout-btn" data-i18n="nav_logout"></button>
+      </div>
     </div>
   </nav>
 
@@ -482,6 +500,7 @@
     </div>
   </footer>
 
+<script src="auth.js"></script>
 <script>
 // ════════════════════════════════════════════════════════
 //  TRANSLATION DICTIONARY
@@ -495,7 +514,7 @@ const T = {
     cookie_accept: 'Accept all',
     // nav
     nav_codes: 'Promo Codes', nav_invites: 'Invites', nav_merchants: 'Merchants', nav_premium: 'Premium',
-    nav_login: 'Log in', nav_signup: 'Sign up free',
+    nav_login: 'Log in', nav_signup: 'Sign up free', nav_logout: 'Log out', nav_explore: 'Explore codes',
     // hero
     hero_eyebrow: 'International community · Verified codes',
     hero_h1: 'Save more with<br/><em>community</em> codes',
@@ -552,7 +571,7 @@ const T = {
     cookie_text: 'Utilizziamo cookie per migliorare la tua esperienza e per scopi analitici, nel rispetto del <strong>GDPR</strong> e del Codice del Consumo italiano. <a href="#privacy">Leggi la nostra Privacy Policy.</a>',
     cookie_decline: 'Solo essenziali', cookie_accept: 'Accetta tutti',
     nav_codes: 'Codici Promo', nav_invites: 'Inviti', nav_merchants: 'Merchant', nav_premium: 'Premium',
-    nav_login: 'Accedi', nav_signup: 'Registrati gratis',
+    nav_login: 'Accedi', nav_signup: 'Registrati gratis', nav_logout: 'Esci', nav_explore: 'Esplora codici',
     hero_eyebrow: 'Community internazionale · Codici verificati',
     hero_h1: 'Risparmia di più<br/>con i codici della <em>community</em>',
     hero_sub: 'Trova codici promo e link di invito per i migliori brand. Condividi i tuoi, guadagna visibilità. Tutto verificato dalla community.',
@@ -602,7 +621,7 @@ const T = {
     cookie_text: 'Мы используем файлы cookie для улучшения работы сайта и аналитики в соответствии с <strong>GDPR</strong> и итальянским законодательством о защите потребителей. <a href="#privacy">Политика конфиденциальности.</a>',
     cookie_decline: 'Только необходимые', cookie_accept: 'Принять все',
     nav_codes: 'Промокоды', nav_invites: 'Инвайты', nav_merchants: 'Магазины', nav_premium: 'Премиум',
-    nav_login: 'Войти', nav_signup: 'Регистрация',
+    nav_login: 'Войти', nav_signup: 'Регистрация', nav_logout: 'Выйти', nav_explore: 'Каталог',
     hero_eyebrow: 'Международное сообщество · Проверенные коды',
     hero_h1: 'Экономьте больше с кодами <em>сообщества</em>',
     hero_sub: 'Находите промокоды и инвайт-ссылки для лучших брендов. Делитесь своими, получайте видимость. Всё проверено сообществом.',
@@ -754,6 +773,7 @@ document.querySelectorAll('.step-card, .cat-pill, .trust-item, .plan-card').forE
 //  BOOT
 // ════════════════════════════════════════════════════════
 applyLang();
+Auth.applyNavState();
 </script>
 </body>
 </html>
