@@ -44,6 +44,12 @@
     .btn-primary{background:var(--rust);color:#fff;border-color:var(--rust)}
     .btn-primary:hover{background:var(--rust-dim);transform:translateY(-1px)}
     .btn-sm{padding:6px 14px;font-size:12px}
+    #nav-auth-logged-out{display:flex;gap:8px;align-items:center}
+    #nav-auth-logged-in{display:none;gap:8px;align-items:center}
+    .nav-user-avatar{width:30px;height:30px;border-radius:50%;background:var(--rust);color:#fff;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid var(--border);background-size:cover}
+    .nav-user-name{font-size:13px;font-weight:600;color:var(--ink)}
+    .btn-logout{font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--muted);background:none;border:1.5px solid var(--border);border-radius:6px;padding:5px 12px;cursor:pointer;transition:all .2s;white-space:nowrap}
+    .btn-logout:hover{border-color:var(--rust);color:var(--rust)}
 
     /* ── MERCHANT HEADER ── */
     .merchant-header{background:var(--ink);padding:44px 40px 40px;position:relative;overflow:hidden}
@@ -280,8 +286,15 @@
       <button class="lang-btn" data-lang="it" onclick="setLang('it')">IT</button>
       <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
     </div>
-    <a href="login.html" class="btn btn-ghost btn-sm" data-i18n="nav_login"></a>
-    <a href="signup.html" class="btn btn-primary btn-sm" data-i18n="nav_signup"></a>
+    <div id="nav-auth-logged-out">
+      <a href="login.html" class="btn btn-ghost btn-sm" data-i18n="nav_login"></a>
+      <a href="signup.html" class="btn btn-primary btn-sm" data-i18n="nav_signup"></a>
+    </div>
+    <div id="nav-auth-logged-in">
+      <div class="nav-user-avatar" id="nav-user-avatar"></div>
+      <span class="nav-user-name" id="nav-user-name"></span>
+      <button class="btn-logout" id="nav-logout-btn" data-i18n="nav_logout"></button>
+    </div>
   </div>
 </nav>
 
@@ -411,13 +424,14 @@
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<script src="auth.js"></script>
 <script>
 /* ══════════════════════════════════════════════
    TRANSLATIONS
 ══════════════════════════════════════════════ */
 const LANGS = {
   en:{
-    nav_login:'Log in', nav_signup:'Sign up free',
+    nav_login:'Log in', nav_signup:'Sign up free', nav_logout:'Log out',
     bc_explore:'Explore', back_lbl:'All merchants',
     badge_v:'Verified', badge_f:'Featured',
     s_total:'Total codes', s_invites:'Invite codes', s_rate:'Success rate',
@@ -444,7 +458,7 @@ const LANGS = {
     verified:'Verified',
   },
   it:{
-    nav_login:'Accedi', nav_signup:'Registrati gratis',
+    nav_login:'Accedi', nav_signup:'Registrati gratis', nav_logout:'Esci',
     bc_explore:'Esplora', back_lbl:'Tutti i merchant',
     badge_v:'Verificato', badge_f:'In evidenza',
     s_total:'Codici totali', s_invites:'Codici invito', s_rate:'Tasso successo',
@@ -471,7 +485,7 @@ const LANGS = {
     verified:'Verificato',
   },
   ru:{
-    nav_login:'Войти', nav_signup:'Регистрация',
+    nav_login:'Войти', nav_signup:'Регистрация', nav_logout:'Выйти',
     bc_explore:'Магазины', back_lbl:'Все магазины',
     badge_v:'Проверено', badge_f:'Рекомендуем',
     s_total:'Всего кодов', s_invites:'Инвайтов', s_rate:'Успешность',
@@ -775,8 +789,7 @@ function loadMore(){ S.shown+=4; renderInviteGrid(); }
    AUTH STATE (replace with real session check)
 ══════════════════════════════════════════════ */
 function isLoggedIn(){
-  // Replace with: return !!localStorage.getItem('cf_session_token');
-  return false;
+  return Auth.isLoggedIn();
 }
 
 /* ══════════════════════════════════════════════
@@ -924,6 +937,7 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeModal(); clo
 /* ══════════════════════════════════════════════
    BOOT
 ══════════════════════════════════════════════ */
+Auth.applyNavState();
 renderAll();
 </script>
 </body>
