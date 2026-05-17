@@ -280,8 +280,8 @@
       <button class="lang-btn" data-lang="it" onclick="setLang('it')">IT</button>
       <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
     </div>
-    <a href="#" class="btn btn-ghost btn-sm" data-i18n="nav_login"></a>
-    <a href="#" class="btn btn-primary btn-sm" data-i18n="nav_signup"></a>
+    <a href="login.html" class="btn btn-ghost btn-sm" data-i18n="nav_login"></a>
+    <a href="signup.html" class="btn btn-primary btn-sm" data-i18n="nav_signup"></a>
   </div>
 </nav>
 
@@ -384,6 +384,26 @@
       <div class="success-icon">🎉</div>
       <div class="success-title" data-i18n="modal_ok_title"></div>
       <div class="success-sub" data-i18n="modal_ok_sub"></div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH GATE MODAL -->
+<div class="modal-bg" id="auth-gate-bg" onclick="if(event.target===this)closeAuthGate()">
+  <div class="modal" id="auth-gate-modal">
+    <div style="padding:28px 24px 24px">
+      <div style="font-size:36px;text-align:center;margin-bottom:12px" id="auth-gate-icon">🔐</div>
+      <div class="modal-title" style="text-align:center;margin-bottom:8px" id="auth-gate-title">Sign up to continue</div>
+      <div style="font-size:13px;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:24px" id="auth-gate-sub">
+        Create a free account to copy codes, validate community codes, and share your own.
+      </div>
+      <a href="signup.html" class="btn btn-primary" style="width:100%;justify-content:center;font-size:14px;padding:12px" id="auth-gate-cta">Sign up free →</a>
+      <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--muted)" id="auth-gate-have-row">
+        <span id="auth-gate-have"></span> <a href="login.html" style="color:var(--rust);font-weight:700;text-decoration:none" id="auth-gate-login">Log in</a>
+      </div>
+      <div style="text-align:center;margin-top:10px">
+        <button onclick="closeAuthGate()" style="background:none;border:none;font-size:12px;color:var(--muted);cursor:pointer;font-family:var(--font-body)" id="auth-gate-dismiss">Continue browsing without an account</button>
+      </div>
     </div>
   </div>
 </div>
@@ -752,9 +772,60 @@ function buildInviteCard(inv,i){
 function loadMore(){ S.shown+=4; renderInviteGrid(); }
 
 /* ══════════════════════════════════════════════
+   AUTH STATE (replace with real session check)
+══════════════════════════════════════════════ */
+function isLoggedIn(){
+  // Replace with: return !!localStorage.getItem('cf_session_token');
+  return false;
+}
+
+/* ══════════════════════════════════════════════
+   AUTH GATE MODAL
+══════════════════════════════════════════════ */
+const AUTH_GATE_CONTENT = {
+  copy: {
+    en: { icon:'🏷️', title:'Sign up to copy codes', sub:'Free members can copy all community promo codes and invite links. Takes 30 seconds.', cta:'Sign up free →' },
+    it: { icon:'🏷️', title:'Registrati per copiare i codici', sub:'I membri gratuiti possono copiare tutti i codici promo e i link invito della community. Solo 30 secondi.', cta:'Registrati gratis →' },
+    ru: { icon:'🏷️', title:'Зарегистрируйтесь, чтобы копировать коды', sub:'Бесплатные участники могут копировать все промокоды и инвайт-ссылки сообщества. Займёт 30 секунд.', cta:'Регистрация →' },
+  },
+  validate: {
+    en: { icon:'✅', title:'Sign up to validate codes', sub:'Help the community by confirming whether codes work. Your votes improve reliability scores for everyone.', cta:'Sign up free →' },
+    it: { icon:'✅', title:'Registrati per verificare i codici', sub:'Aiuta la community confermando se i codici funzionano. I tuoi voti migliorano i punteggi di affidabilità per tutti.', cta:'Registrati gratis →' },
+    ru: { icon:'✅', title:'Зарегистрируйтесь, чтобы подтверждать коды', sub:'Помогите сообществу, подтверждая работоспособность кодов. Ваши голоса улучшают рейтинги надёжности.', cta:'Регистрация →' },
+  },
+  add: {
+    en: { icon:'📤', title:'Sign up to share your code', sub:'Add your invite links and promo codes. Premium members get priority visibility at the top of results.', cta:'Sign up free →' },
+    it: { icon:'📤', title:'Registrati per condividere il tuo codice', sub:'Aggiungi i tuoi link invito e codici promo. I Premium ottengono visibilità prioritaria in cima ai risultati.', cta:'Registrati gratis →' },
+    ru: { icon:'📤', title:'Зарегистрируйтесь, чтобы поделиться кодом', sub:'Добавляйте инвайт-ссылки и промокоды. Участники Premium получают приоритетное место в результатах.', cta:'Регистрация →' },
+  },
+};
+const AUTH_GATE_DISMISS = { en:'Continue browsing without an account', it:'Continua a sfogliare senza account', ru:'Продолжить без аккаунта' };
+const AUTH_GATE_LOGIN   = { en:'Log in', it:'Accedi', ru:'Войти' };
+const AUTH_GATE_HAVE    = { en:'Already have an account?', it:'Hai già un account?', ru:'Уже есть аккаунт?' };
+
+function openAuthGate(reason){
+  const l = S.lang;
+  const c = AUTH_GATE_CONTENT[reason][l] || AUTH_GATE_CONTENT[reason].en;
+  document.getElementById('auth-gate-icon').textContent  = c.icon;
+  document.getElementById('auth-gate-title').textContent = c.title;
+  document.getElementById('auth-gate-sub').textContent   = c.sub;
+  document.getElementById('auth-gate-cta').textContent   = c.cta;
+  document.getElementById('auth-gate-dismiss').textContent = AUTH_GATE_DISMISS[l] || AUTH_GATE_DISMISS.en;
+  document.getElementById('auth-gate-login').textContent  = AUTH_GATE_LOGIN[l]   || AUTH_GATE_LOGIN.en;
+  document.getElementById('auth-gate-have').textContent   = AUTH_GATE_HAVE[l]    || AUTH_GATE_HAVE.en;
+  document.getElementById('auth-gate-bg').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAuthGate(){
+  document.getElementById('auth-gate-bg').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ══════════════════════════════════════════════
    COPY & SELECT
 ══════════════════════════════════════════════ */
 function doCopy(btn,code){
+  if(!isLoggedIn()){ openAuthGate('copy'); return; }
   navigator.clipboard.writeText(code).then(()=>{
     const orig=btn.textContent; btn.textContent=t('copied'); btn.classList.add('ok');
     showToast(t('toast_copy'));
@@ -779,6 +850,7 @@ function showToast(msg){
    VALIDATE MODAL
 ══════════════════════════════════════════════ */
 function openModal(id,code){
+  if(!isLoggedIn()){ openAuthGate('validate'); return; }
   modalState={id,code,verdict:null,countries:[]};
   document.getElementById('modal-emoji').textContent=M.emoji;
   document.getElementById('modal-merchant').textContent=M.name;
@@ -797,7 +869,10 @@ function closeModal(){
   document.body.style.overflow='';
 }
 function bgClose(e){ if(e.target===document.getElementById('modal-bg'))closeModal(); }
-function onAddCode(){ showToast('Sign up to share your code!'); }
+function onAddCode(){
+  if(!isLoggedIn()){ openAuthGate('add'); return; }
+  showToast('Add code form coming soon!');
+}
 
 function renderModalOpts(){
   const opts=[
@@ -844,7 +919,7 @@ function submitVal(){
   setTimeout(()=>{ closeModal(); renderInviteGrid(); },2000);
 }
 
-document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeModal(); closeAuthGate(); } });
 
 /* ══════════════════════════════════════════════
    BOOT
