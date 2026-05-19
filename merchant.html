@@ -1022,9 +1022,9 @@ function setShareType(type){
 }
 
 function submitShareCode(){
-  const code=document.getElementById('share-code-input').value.trim();
+  const codeRaw=document.getElementById('share-code-input').value.trim();
   const errEl=document.getElementById('share-code-err');
-  if(!code){
+  if(!codeRaw){
     document.getElementById('share-code-input').classList.add('error');
     errEl.classList.add('show');
     return;
@@ -1032,26 +1032,38 @@ function submitShareCode(){
   document.getElementById('share-code-input').classList.remove('error');
   errEl.classList.remove('show');
 
+  const code=codeRaw.toUpperCase();
   const user=Auth.getUser();
   const bonus=document.getElementById('share-bonus-input').value.trim();
   const note=document.getElementById('share-note-input').value.trim();
-  const link=document.getElementById('share-link-input').value.trim();
-  const id='user_'+Date.now();
+  const link=shareType==='invite'?document.getElementById('share-link-input').value.trim():'';
+  const capturedType=shareType;
 
-  if(shareType==='promo'){
-    M.promoCodes.unshift({id,code,disc:bonus,desc:note,uses:0,ok:0,bad:0,topPick:false,verified:false});
-  } else {
-    M.inviteCodes.unshift({
-      id, user:user?user.name.split(' ')[0]:'You',
-      pic:user?.picture||'', code, link, bonusYou:bonus, bonusThem:'', ok:0, bad:0, premium:false,
-      date:new Date().toLocaleDateString(),
+  if(capturedType==='promo'){
+    PC.unshift({
+      code, disc:bonus||'—', desc:note,
+      verified:false, top:false, expiring:false,
+      expires:'No expiry', uses:0
     });
+  } else {
+    const userName=user?user.name.toLowerCase().replace(/\s+/g,'_'):'you';
+    IC.unshift({
+      id:'user_'+Date.now(),
+      user:userName,
+      av:user?.name?user.name.charAt(0):'😊',
+      premium:false, top:false,
+      date:'Just now',
+      code, link:link||null,
+      bonus, alsoBonus:'',
+      votes:{ok:0,bad:0}
+    });
+    S.shown=IC.length;
   }
 
   document.getElementById('share-modal-form').style.display='none';
   document.getElementById('share-modal-success').classList.add('show');
   applyShareI18n();
-  setTimeout(()=>{ closeShareModal(); renderAll(); },2000);
+  setTimeout(()=>{ closeShareModal(); renderAll(); switchSection(capturedType); },2000);
 }
 
 function onAddCode(){
