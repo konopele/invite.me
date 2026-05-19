@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cookie Policy — CodiceFacile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --ink:#0f0e0c; --paper:#f5f0e8; --cream:#ede7d9; --white:#fff;
+      --rust:#c94a2b; --rust-dim:#a63b22; --muted:#7a7062; --border:#d5cdc0;
+      --font-display:'Playfair Display',Georgia,serif;
+      --font-body:'DM Sans',sans-serif;
+      --font-mono:'DM Mono',monospace;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.7;overflow-x:hidden}
+
+    nav{position:sticky;top:0;z-index:100;background:rgba(245,240,232,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .nav-logo{font-family:var(--font-display);font-size:20px;font-weight:900;color:var(--ink);text-decoration:none;letter-spacing:-.5px}
+    .nav-logo span{color:var(--rust)}
+    .nav-back{font-size:13px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+    .nav-back:hover{color:var(--ink)}
+
+    .page-hero{background:var(--ink);padding:56px 80px 48px;position:relative;overflow:hidden}
+    .page-hero::before{content:'🍪';position:absolute;right:60px;top:10px;font-size:200px;opacity:.04;line-height:1;pointer-events:none;filter:grayscale(1)}
+    .hero-label{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--rust);margin-bottom:12px}
+    .hero-title{font-family:var(--font-display);font-size:clamp(36px,4vw,52px);font-weight:900;color:var(--paper);letter-spacing:-1.5px;line-height:1.05;margin-bottom:12px}
+    .hero-meta{font-size:13px;color:#8a8278}
+
+    .content-wrap{max-width:800px;margin:0 auto;padding:60px 40px 80px}
+
+    .toc{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:48px}
+    .toc-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:14px}
+    .toc ol{padding-left:18px}
+    .toc li{margin-bottom:7px}
+    .toc a{color:var(--rust);text-decoration:none;font-size:14px;font-weight:500}
+    .toc a:hover{text-decoration:underline}
+
+    .section{margin-bottom:44px;scroll-margin-top:80px}
+    .section-num{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);margin-bottom:8px}
+    .section h2{font-family:var(--font-display);font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:18px;line-height:1.2}
+    .section h3{font-size:16px;font-weight:700;margin:20px 0 10px}
+    .section p{margin-bottom:14px;color:#3a3530}
+    .section ul,.section ol{padding-left:22px;margin-bottom:14px}
+    .section li{margin-bottom:7px;color:#3a3530}
+    .section a{color:var(--rust);text-decoration:none}
+    .section a:hover{text-decoration:underline}
+    .highlight-box{background:var(--cream);border-left:3px solid var(--rust);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0;font-size:14px;color:var(--muted)}
+
+    .cookie-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+    .cookie-table th{background:var(--ink);color:var(--paper);padding:10px 14px;text-align:left;font-size:12px;font-weight:600;letter-spacing:.05em}
+    .cookie-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:#3a3530;vertical-align:top}
+    .cookie-table tr:last-child td{border-bottom:none}
+    .cookie-table tr:nth-child(even) td{background:rgba(0,0,0,.02)}
+    .cookie-table code{font-family:var(--font-mono);font-size:12px;background:var(--cream);border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+
+    .cat-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+    .cat-essential{background:#e8f0e8;color:#2a5c2a}
+    .cat-functional{background:#e8eaf0;color:#1a2c6e}
+    .cat-analytics{background:#f0ede8;color:#6e3a10}
+    .cat-marketing{background:#f0e8e8;color:#6e1a1a}
+
+    .opt-out-box{background:var(--ink);color:var(--paper);border-radius:12px;padding:24px 28px;margin:24px 0}
+    .opt-out-box h3{color:var(--paper);margin-bottom:10px;font-size:17px}
+    .opt-out-box p{color:#a09890;font-size:14px;margin-bottom:14px}
+    .opt-out-box p:last-child{margin-bottom:0}
+    .opt-out-box a{color:var(--rust)}
+    .opt-out-box code{font-family:var(--font-mono);font-size:12px;background:rgba(255,255,255,.1);border-radius:4px;padding:1px 5px;color:#d4c8bc}
+
+    .divider{height:1px;background:var(--border);margin:40px 0}
+
+    footer{background:#0a0908;color:#6a6258;padding:28px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .footer-logo{font-family:var(--font-display);font-size:18px;font-weight:900;color:var(--paper)}
+    .footer-logo span{color:var(--rust)}
+    .footer-links{display:flex;gap:20px;flex-wrap:wrap}
+    .footer-links a{color:#6a6258;text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--paper)}
+    .footer-vat{font-size:11px;color:#3a3830}
+
+    @media(max-width:768px){
+      nav,.page-hero,.content-wrap,footer{padding-left:20px;padding-right:20px}
+      .page-hero{padding-top:40px;padding-bottom:32px}
+      .cookie-table{font-size:12px}
+      .cookie-table th,.cookie-table td{padding:8px 10px}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Codice<span>Facile</span></a>
+  <a href="javascript:history.back()" class="nav-back">← Back</a>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-label">Legal</div>
+  <h1 class="hero-title">Cookie Policy</h1>
+  <div class="hero-meta">Effective date: 1 January 2026 &nbsp;·&nbsp; Version 2.1 &nbsp;·&nbsp; CodiceFacile S.r.l. · Milan, Italy</div>
+</div>
+
+<div class="content-wrap">
+
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#s1">What are cookies?</a></li>
+      <li><a href="#s2">Why we use cookies</a></li>
+      <li><a href="#s3">Categories of cookies</a></li>
+      <li><a href="#s4">Cookies we set</a></li>
+      <li><a href="#s5">Third-party cookies</a></li>
+      <li><a href="#s6">Local storage and similar technologies</a></li>
+      <li><a href="#s7">Managing your preferences</a></li>
+      <li><a href="#s8">Do Not Track</a></li>
+      <li><a href="#s9">Changes to this policy</a></li>
+      <li><a href="#s10">Contact</a></li>
+    </ol>
+  </div>
+
+  <div class="highlight-box">
+    This Cookie Policy explains how CodiceFacile S.r.l. ("we", "us") uses cookies and similar tracking technologies when you visit our Platform. It should be read alongside our <a href="privacy.html">Privacy Policy</a>. By continuing to use the Platform after seeing our cookie banner, you consent to the use of non-essential cookies as described below.
+  </div>
+
+  <div class="section" id="s1">
+    <div class="section-num">Section 1</div>
+    <h2>What are cookies?</h2>
+    <p>Cookies are small text files placed on your device (computer, tablet, or smartphone) by a website when you visit it. They are widely used to make websites work, to work more efficiently, and to provide information to site owners.</p>
+    <p>Cookies are not programs and cannot carry viruses or malware. They can only be read by the domain that set them (first-party cookies) or, in the case of third-party cookies, by the domain that placed them regardless of which site you are on.</p>
+    <p>Similar technologies include:</p>
+    <ul>
+      <li><strong>Web beacons / pixel tags:</strong> Tiny invisible images embedded in pages or emails that register when content is loaded, confirming your IP address, browser, and time of access.</li>
+      <li><strong>Local storage (localStorage / sessionStorage):</strong> Browser-side key-value stores that persist data without an expiry (localStorage) or only for the browser session (sessionStorage).</li>
+      <li><strong>Fingerprinting:</strong> We do <em>not</em> use device fingerprinting for tracking purposes.</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s2">
+    <div class="section-num">Section 2</div>
+    <h2>Why we use cookies</h2>
+    <p>We use cookies and similar technologies to:</p>
+    <ul>
+      <li>Keep you signed in and remember your session across page loads.</li>
+      <li>Remember your language and display preferences.</li>
+      <li>Protect the Platform against CSRF and other security threats.</li>
+      <li>Understand how visitors use our Platform so we can improve it.</li>
+      <li>Measure the effectiveness of features and A/B tests.</li>
+      <li>Send relevant communications where you have opted in to marketing.</li>
+    </ul>
+    <p>We do <strong>not</strong> use cookies to serve third-party advertising, build advertising profiles, or sell your data to data brokers.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s3">
+    <div class="section-num">Section 3</div>
+    <h2>Categories of cookies</h2>
+    <p>We classify cookies by purpose. The categories align with the guidance of the Italian Garante and the ePrivacy Directive (2002/58/EC as amended):</p>
+
+    <h3>3.1 Strictly necessary (Essential)</h3>
+    <p>Required for the Platform to function. They cannot be switched off. They do not require consent under the ePrivacy Directive and GDPR because they are set in response to actions you take (e.g., logging in, setting a language). Examples: session tokens, CSRF protection tokens, load-balancing cookies.</p>
+
+    <h3>3.2 Functional</h3>
+    <p>Enable enhanced functionality and personalisation. They may be set by us or by third-party providers whose services we have added to our pages. If you do not allow these cookies, some services may not function properly. Examples: language preference, display theme.</p>
+
+    <h3>3.3 Analytics / Performance</h3>
+    <p>Allow us to count visits and measure traffic sources so we can improve the performance of the Platform. All information collected is aggregated and therefore anonymous. If you disable these cookies we will not know when you have visited. Examples: Matomo analytics.</p>
+
+    <h3>3.4 Marketing</h3>
+    <p>Set through our Platform by email marketing partners. They may be used to build a profile of your interests and show you relevant messages in our emails. They do not store directly personal information but are based on uniquely identifying your browser. Consent is required. Example: Mailgun tracking pixel in emails.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s4">
+    <div class="section-num">Section 4</div>
+    <h2>Cookies we set</h2>
+    <p>The following table lists the first-party cookies and localStorage keys set by CodiceFacile:</p>
+
+    <table class="cookie-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Category</th>
+          <th>Purpose</th>
+          <th>Expiry</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>cf_session</code></td>
+          <td>Cookie (HTTP-only, Secure)</td>
+          <td><span class="cat-badge cat-essential">Essential</span></td>
+          <td>Maintains your login session server-side. Contains a randomly generated token; no personal data is stored in the cookie itself.</td>
+          <td>30 days (rolling)</td>
+        </tr>
+        <tr>
+          <td><code>cf_csrf</code></td>
+          <td>Cookie (SameSite=Strict)</td>
+          <td><span class="cat-badge cat-essential">Essential</span></td>
+          <td>Cross-Site Request Forgery protection token. Verified on every state-changing request.</td>
+          <td>Session</td>
+        </tr>
+        <tr>
+          <td><code>cf_cookie_consent</code></td>
+          <td>Cookie</td>
+          <td><span class="cat-badge cat-essential">Essential</span></td>
+          <td>Records your cookie consent choices so the banner is not shown on every page load.</td>
+          <td>12 months</td>
+        </tr>
+        <tr>
+          <td><code>cf_lang</code></td>
+          <td>localStorage</td>
+          <td><span class="cat-badge cat-functional">Functional</span></td>
+          <td>Stores your selected language (EN / IT / RU) so the correct locale is applied on return visits.</td>
+          <td>Persistent (until cleared)</td>
+        </tr>
+        <tr>
+          <td><code>cf_user_name</code><br/><code>cf_user_email</code><br/><code>cf_user_picture</code><br/><code>cf_google_token</code></td>
+          <td>localStorage</td>
+          <td><span class="cat-badge cat-essential">Essential</span></td>
+          <td>Client-side auth state: display name, email, avatar URL, and OAuth access token. Cleared on logout.</td>
+          <td>Persistent until logout</td>
+        </tr>
+        <tr>
+          <td><code>cf_accounts</code></td>
+          <td>localStorage</td>
+          <td><span class="cat-badge cat-essential">Essential</span></td>
+          <td>Demo-mode credential store. Stores email-to-name mappings for email/password accounts (no backend in current demo build).</td>
+          <td>Persistent until cleared</td>
+        </tr>
+        <tr>
+          <td><code>_pk_id.*</code></td>
+          <td>Cookie</td>
+          <td><span class="cat-badge cat-analytics">Analytics</span></td>
+          <td>Matomo analytics: identifies a unique visitor. The ID is random and not linked to personal data. IP is anonymised before storage.</td>
+          <td>13 months</td>
+        </tr>
+        <tr>
+          <td><code>_pk_ses.*</code></td>
+          <td>Cookie</td>
+          <td><span class="cat-badge cat-analytics">Analytics</span></td>
+          <td>Matomo analytics: marks an active session to attribute pageviews to a single visit.</td>
+          <td>30 minutes</td>
+        </tr>
+        <tr>
+          <td><code>cf_ab_variant</code></td>
+          <td>Cookie</td>
+          <td><span class="cat-badge cat-analytics">Analytics</span></td>
+          <td>A/B test bucket assignment. Ensures you see the same variant during and across visits. Contains only a variant identifier (e.g., "A" or "B").</td>
+          <td>30 days</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s5">
+    <div class="section-num">Section 5</div>
+    <h2>Third-party cookies</h2>
+    <p>Some cookies are placed by third-party services that appear on our pages. We have no direct control over these cookies; each third party's own privacy policy governs their use.</p>
+
+    <table class="cookie-table">
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Category</th>
+          <th>Purpose</th>
+          <th>Privacy policy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Google Identity Services (GIS)</td>
+          <td><span class="cat-badge cat-essential">Essential</span></td>
+          <td>Powers the "Sign in with Google" OAuth popup. Google may set cookies on accounts.google.com domain during the authentication flow. We receive only the profile data you authorise.</td>
+          <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></td>
+        </tr>
+        <tr>
+          <td>Google Fonts</td>
+          <td><span class="cat-badge cat-functional">Functional</span></td>
+          <td>Loads webfonts (Playfair Display, DM Sans, DM Mono) from Google's CDN. Google may log the request including your IP address. No personal cookie is set.</td>
+          <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></td>
+        </tr>
+        <tr>
+          <td>Stripe</td>
+          <td><span class="cat-badge cat-essential">Essential</span></td>
+          <td>Payment processing. Stripe sets cookies for fraud prevention and to remember payment method details on their hosted fields. Only present on checkout pages.</td>
+          <td><a href="https://stripe.com/privacy" target="_blank" rel="noopener">stripe.com/privacy</a></td>
+        </tr>
+        <tr>
+          <td>Mailgun</td>
+          <td><span class="cat-badge cat-marketing">Marketing</span></td>
+          <td>Email delivery tracking. If you open a marketing email from us, a tracking pixel registers the open event. This can be disabled by blocking remote images in your email client.</td>
+          <td><a href="https://www.mailgun.com/legal/privacy-policy/" target="_blank" rel="noopener">mailgun.com/legal/privacy-policy</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>We review and update this list whenever new third-party integrations are added. The most recent audit was performed on 1 January 2026.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s6">
+    <div class="section-num">Section 6</div>
+    <h2>Local storage and similar technologies</h2>
+    <p>In addition to cookies, we use the browser's <strong>localStorage</strong> API to persist certain preferences and authentication state on your device. Unlike cookies, localStorage data is never automatically sent to our servers with every request — it is read and written exclusively by client-side JavaScript running on the Platform.</p>
+    <p>The specific localStorage keys we use are listed in the table in Section 4. You can inspect and clear localStorage at any time using your browser's developer tools:</p>
+    <ul>
+      <li><strong>Chrome/Edge:</strong> DevTools → Application → Local Storage → <code>codicefacile.it</code> → right-click to delete individual keys or "Clear All".</li>
+      <li><strong>Firefox:</strong> DevTools → Storage → Local Storage → <code>codicefacile.it</code>.</li>
+      <li><strong>Safari:</strong> Web Inspector → Storage → Local Storage → <code>codicefacile.it</code>.</li>
+    </ul>
+    <p>We do not use <strong>IndexedDB</strong>, <strong>Web SQL</strong>, or <strong>Cache API</strong> for storing personal data.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s7">
+    <div class="section-num">Section 7</div>
+    <h2>Managing your preferences</h2>
+
+    <h3>7.1 Cookie preference centre</h3>
+    <p>When you first visit the Platform, a cookie consent banner allows you to accept all cookies, reject non-essential cookies, or customise your preferences by category. You can change your preferences at any time by clicking <strong>"Cookie settings"</strong> in the footer of any page.</p>
+
+    <h3>7.2 Browser settings</h3>
+    <p>You can configure your browser to refuse some or all cookies, or to alert you when websites set or access cookies. Note that disabling strictly necessary cookies will prevent you from logging in or using core Platform features.</p>
+
+    <div class="opt-out-box">
+      <h3>Browser-specific instructions</h3>
+      <p><strong>Google Chrome:</strong> Settings → Privacy and security → Cookies and other site data → Block third-party cookies (or "See all site data and permissions" to manage per-site).</p>
+      <p><strong>Mozilla Firefox:</strong> Settings → Privacy &amp; Security → Enhanced Tracking Protection → Custom → select cookie blocking level. To clear cookies: Settings → Privacy &amp; Security → Cookies and Site Data → Clear Data.</p>
+      <p><strong>Apple Safari:</strong> Preferences → Privacy → "Prevent cross-site tracking" and "Block all cookies" (note: blocking all cookies may break sign-in).</p>
+      <p><strong>Microsoft Edge:</strong> Settings → Cookies and site permissions → Cookies and site data → Manage and delete cookies.</p>
+    </div>
+
+    <h3>7.3 Opt-out tools</h3>
+    <p>For analytics cookies specifically, Matomo respects the browser's <code>Do Not Track</code> signal and also provides an opt-out mechanism:</p>
+    <ul>
+      <li><strong>Matomo opt-out:</strong> Available via the cookie preference centre. Sets a persistent <code>mtm_consent_removed</code> cookie in your browser. Clearing your cookies will reset this preference — return to the preference centre to re-apply.</li>
+      <li><strong>Google opt-out (for GIS):</strong> You can manage what data Google collects via <a href="https://myaccount.google.com/data-and-privacy" target="_blank" rel="noopener">myaccount.google.com/data-and-privacy</a>.</li>
+    </ul>
+
+    <h3>7.4 Effect of disabling cookies</h3>
+    <p>Disabling essential cookies will prevent you from logging in, maintaining a session, or using the code-sharing features of the Platform. Disabling functional cookies means your language preference will not be saved between visits. Disabling analytics cookies has no effect on the features you can use; we will simply have less data for product improvements.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s8">
+    <div class="section-num">Section 8</div>
+    <h2>Do Not Track</h2>
+    <p>Some browsers include a "Do Not Track" (DNT) feature that signals to websites that you do not want your browsing activity tracked. There is currently no universally accepted standard for how websites should respond to DNT signals.</p>
+    <p>However, <strong>Matomo analytics</strong> — the only analytics tool we use — is configured to honour DNT signals. If your browser sends a DNT header, Matomo will not track your visit. No cross-site tracking of any kind is performed by CodiceFacile regardless of DNT status.</p>
+    <p>We do not use advertising networks or retargeting services, so third-party ad tracking is not applicable to the CodiceFacile Platform.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s9">
+    <div class="section-num">Section 9</div>
+    <h2>Changes to this policy</h2>
+    <p>We may update this Cookie Policy to reflect new technologies, legal requirements, or changes in our cookie usage. When we add new non-essential cookies we will update this page and, where required by the ePrivacy Directive and GDPR, seek fresh consent via the cookie preference centre.</p>
+    <p>The "Effective date" at the top of this page indicates when the policy was last revised. Material changes will be highlighted in the cookie consent banner for 30 days following the update.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s10">
+    <div class="section-num">Section 10</div>
+    <h2>Contact</h2>
+    <p>If you have any questions about our use of cookies or this Cookie Policy, please contact us:</p>
+    <ul>
+      <li><strong>Data Protection Officer:</strong> <a href="mailto:privacy@codicefacile.it">privacy@codicefacile.it</a></li>
+      <li><strong>General enquiries:</strong> <a href="mailto:support@codicefacile.it">support@codicefacile.it</a></li>
+      <li><strong>Registered office:</strong> CodiceFacile S.r.l., Via Torino 12, 20123 Milan, Italy</li>
+    </ul>
+    <p>You also have the right to lodge a complaint with the Italian supervisory authority, the <strong>Garante per la protezione dei dati personali</strong> (<a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">garanteprivacy.it</a>), if you believe that our use of cookies violates applicable data protection law.</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">Codice<span>Facile</span></div>
+  <div class="footer-links">
+    <a href="tos.html">Terms of Service</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="cookies.html">Cookie Policy</a>
+  </div>
+  <div class="footer-vat">© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901 · Milan, Italy</div>
+</footer>
+
+</body>
+</html>

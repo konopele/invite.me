@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terms of Service — CodiceFacile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --ink:#0f0e0c; --paper:#f5f0e8; --cream:#ede7d9; --white:#fff;
+      --rust:#c94a2b; --rust-dim:#a63b22; --muted:#7a7062; --border:#d5cdc0;
+      --font-display:'Playfair Display',Georgia,serif;
+      --font-body:'DM Sans',sans-serif;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.7;overflow-x:hidden}
+
+    nav{position:sticky;top:0;z-index:100;background:rgba(245,240,232,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .nav-logo{font-family:var(--font-display);font-size:20px;font-weight:900;color:var(--ink);text-decoration:none;letter-spacing:-.5px}
+    .nav-logo span{color:var(--rust)}
+    .nav-back{font-size:13px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+    .nav-back:hover{color:var(--ink)}
+
+    .page-hero{background:var(--ink);padding:56px 80px 48px;position:relative;overflow:hidden}
+    .page-hero::before{content:'§';position:absolute;right:60px;top:-20px;font-family:var(--font-display);font-size:240px;font-weight:900;color:rgba(255,255,255,.03);line-height:1;pointer-events:none}
+    .hero-label{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--rust);margin-bottom:12px}
+    .hero-title{font-family:var(--font-display);font-size:clamp(36px,4vw,52px);font-weight:900;color:var(--paper);letter-spacing:-1.5px;line-height:1.05;margin-bottom:12px}
+    .hero-meta{font-size:13px;color:#8a8278}
+
+    .content-wrap{max-width:800px;margin:0 auto;padding:60px 40px 80px}
+
+    .toc{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:48px}
+    .toc-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:14px}
+    .toc ol{padding-left:18px}
+    .toc li{margin-bottom:7px}
+    .toc a{color:var(--rust);text-decoration:none;font-size:14px;font-weight:500}
+    .toc a:hover{text-decoration:underline}
+
+    .section{margin-bottom:44px;scroll-margin-top:80px}
+    .section-num{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);margin-bottom:8px}
+    .section h2{font-family:var(--font-display);font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:18px;line-height:1.2}
+    .section h3{font-size:16px;font-weight:700;margin:20px 0 10px}
+    .section p{margin-bottom:14px;color:#3a3530}
+    .section ul,.section ol{padding-left:22px;margin-bottom:14px}
+    .section li{margin-bottom:7px;color:#3a3530}
+    .section a{color:var(--rust);text-decoration:none}
+    .section a:hover{text-decoration:underline}
+    .highlight-box{background:var(--cream);border-left:3px solid var(--rust);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0;font-size:14px;color:var(--muted)}
+
+    .divider{height:1px;background:var(--border);margin:40px 0}
+
+    footer{background:#0a0908;color:#6a6258;padding:28px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .footer-logo{font-family:var(--font-display);font-size:18px;font-weight:900;color:var(--paper)}
+    .footer-logo span{color:var(--rust)}
+    .footer-links{display:flex;gap:20px;flex-wrap:wrap}
+    .footer-links a{color:#6a6258;text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--paper)}
+    .footer-vat{font-size:11px;color:#3a3830}
+
+    @media(max-width:768px){
+      nav,.page-hero,.content-wrap,footer{padding-left:20px;padding-right:20px}
+      .page-hero{padding-top:40px;padding-bottom:32px}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Codice<span>Facile</span></a>
+  <a href="javascript:history.back()" class="nav-back">← Back</a>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-label">Legal</div>
+  <h1 class="hero-title">Terms of Service</h1>
+  <div class="hero-meta">Effective date: 1 January 2026 &nbsp;·&nbsp; Version 2.1 &nbsp;·&nbsp; CodiceFacile S.r.l. · Milan, Italy</div>
+</div>
+
+<div class="content-wrap">
+
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#s1">Definitions and scope</a></li>
+      <li><a href="#s2">Registration and account</a></li>
+      <li><a href="#s3">Permitted use and prohibited conduct</a></li>
+      <li><a href="#s4">User-generated content</a></li>
+      <li><a href="#s5">Premium plans and payments</a></li>
+      <li><a href="#s6">Intellectual property</a></li>
+      <li><a href="#s7">Disclaimer of warranties</a></li>
+      <li><a href="#s8">Limitation of liability</a></li>
+      <li><a href="#s9">Indemnification</a></li>
+      <li><a href="#s10">Termination</a></li>
+      <li><a href="#s11">Governing law and jurisdiction</a></li>
+      <li><a href="#s12">Changes to these Terms</a></li>
+      <li><a href="#s13">Contact</a></li>
+    </ol>
+  </div>
+
+  <div class="highlight-box">
+    Please read these Terms carefully before using CodiceFacile. By creating an account or using the platform you agree to be bound by these Terms and our <a href="privacy.html">Privacy Policy</a> and <a href="cookies.html">Cookie Policy</a>.
+  </div>
+
+  <div class="section" id="s1">
+    <div class="section-num">Article 1</div>
+    <h2>Definitions and scope</h2>
+    <p><strong>"CodiceFacile"</strong>, <strong>"we"</strong>, <strong>"us"</strong> or <strong>"Company"</strong> means CodiceFacile S.r.l., a company incorporated under Italian law with registered office in Milan, Italy (P.IVA IT12345678901).</p>
+    <p><strong>"Platform"</strong> means the website available at codicefacile.it and all related subdomains, mobile applications, and APIs operated by CodiceFacile.</p>
+    <p><strong>"User"</strong> or <strong>"you"</strong> means any natural person who accesses or uses the Platform, whether registered or not.</p>
+    <p><strong>"Content"</strong> means any text, code, link, image, or other material submitted to or published on the Platform by a User.</p>
+    <p><strong>"Promo Code"</strong> means a promotional discount code, coupon, or voucher shared on the Platform.</p>
+    <p><strong>"Invite Code"</strong> means a personal referral code or link that may entitle both the referrer and referee to a bonus.</p>
+    <p><strong>"Merchant"</strong> means a business whose codes or links are listed on the Platform.</p>
+    <p>These Terms govern your access to and use of the Platform. They constitute a legally binding agreement between you and CodiceFacile under Italian law (D.Lgs. 206/2005, Codice del Consumo) and applicable EU regulations.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s2">
+    <div class="section-num">Article 2</div>
+    <h2>Registration and account</h2>
+    <h3>2.1 Eligibility</h3>
+    <p>You must be at least 16 years of age to create an account. If you are between 16 and 18 years old, you confirm that you have obtained parental or guardian consent. By registering you represent that all information you provide is accurate, complete, and up to date.</p>
+    <h3>2.2 Account security</h3>
+    <p>You are responsible for maintaining the confidentiality of your login credentials and for all activities that occur under your account. You must notify us immediately at <a href="mailto:support@codicefacile.it">support@codicefacile.it</a> if you suspect any unauthorised access to your account.</p>
+    <h3>2.3 One account per person</h3>
+    <p>Each User may hold only one account. Creating multiple accounts to circumvent restrictions or gain an unfair advantage is prohibited and will result in termination of all associated accounts.</p>
+    <h3>2.4 Third-party login</h3>
+    <p>You may register using your Google account. When doing so, you authorise CodiceFacile to retrieve basic profile information (name, email address, profile picture) from Google in accordance with Google's terms and our Privacy Policy.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s3">
+    <div class="section-num">Article 3</div>
+    <h2>Permitted use and prohibited conduct</h2>
+    <h3>3.1 Permitted use</h3>
+    <p>You may use the Platform to browse, copy, and share Promo Codes and Invite Codes for personal, non-commercial purposes. Free accounts may add unlimited codes with standard visibility. Premium accounts receive enhanced features as described in Article 5.</p>
+    <h3>3.2 Prohibited conduct</h3>
+    <p>You may not, and may not permit others to:</p>
+    <ul>
+      <li>Post codes or links that are fraudulent, expired (when known), or obtained through illicit means.</li>
+      <li>Impersonate another person or entity or misrepresent your affiliation with any person or entity.</li>
+      <li>Use automated tools (bots, scrapers, crawlers) to access or extract data from the Platform without prior written consent.</li>
+      <li>Engage in activities designed to manipulate community ratings or voting systems.</li>
+      <li>Post spam, unsolicited advertisements, or content unrelated to the purpose of the Platform.</li>
+      <li>Upload content containing malware, phishing links, or any code designed to harm users or systems.</li>
+      <li>Attempt to reverse-engineer, decompile, or otherwise derive source code from the Platform.</li>
+      <li>Circumvent, disable, or interfere with security-related features of the Platform.</li>
+      <li>Violate any applicable local, national, or international law or regulation, including GDPR and Italian privacy law.</li>
+    </ul>
+    <p>CodiceFacile reserves the right to remove any Content that, in its sole discretion, violates these Terms or is otherwise inappropriate.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s4">
+    <div class="section-num">Article 4</div>
+    <h2>User-generated content</h2>
+    <h3>4.1 Your content</h3>
+    <p>You retain ownership of any Content you submit to the Platform. By submitting Content, you grant CodiceFacile a worldwide, royalty-free, non-exclusive, sublicensable licence to use, reproduce, display, distribute, and adapt that Content solely for the purpose of operating and improving the Platform.</p>
+    <h3>4.2 Content standards</h3>
+    <p>You represent and warrant that your Content: (a) does not infringe any third-party intellectual property rights; (b) is not defamatory, obscene, or offensive; (c) complies with all applicable laws; and (d) is accurate to the best of your knowledge at the time of submission.</p>
+    <h3>4.3 Community moderation</h3>
+    <p>The Platform relies on community voting to assess the validity of codes. Users may flag Content that appears fraudulent or expired. Verified Moderators appointed by CodiceFacile may remove or suspend Content within 24 hours of a valid report.</p>
+    <h3>4.4 No endorsement</h3>
+    <p>CodiceFacile does not endorse or verify Merchants listed on the Platform unless expressly marked as "Verified". Merchant listings reflect community data and do not constitute a commercial recommendation.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s5">
+    <div class="section-num">Article 5</div>
+    <h2>Premium plans and payments</h2>
+    <h3>5.1 Plans</h3>
+    <p>CodiceFacile offers optional paid plans ("Pro" and "Business") that provide enhanced features including priority code visibility, a verified badge, and a Merchant analytics dashboard. Current pricing is displayed on the Platform and includes VAT at the applicable Italian rate (22%).</p>
+    <h3>5.2 Billing</h3>
+    <p>Paid plans are billed monthly in advance. By subscribing you authorise CodiceFacile (or its payment processor) to charge the payment method on file on each billing date. All prices are inclusive of VAT (22%). Electronic invoices are available upon request in compliance with Italian fiscal obligations (D.P.R. 633/1972).</p>
+    <h3>5.3 Right of withdrawal</h3>
+    <p>In accordance with Article 52 of the Italian Consumer Code (D.Lgs. 206/2005), registered consumers have the right to withdraw from a subscription contract within 14 days of the initial purchase without providing any reason. To exercise this right, contact us at <a href="mailto:billing@codicefacile.it">billing@codicefacile.it</a>. The withdrawal right does not apply once a digital service has been fully performed with the consumer's prior express consent.</p>
+    <h3>5.4 Cancellation</h3>
+    <p>You may cancel a subscription at any time from your account settings. Cancellation takes effect at the end of the current billing period. No refunds are issued for partial months except where required by applicable law.</p>
+    <h3>5.5 Single Boost</h3>
+    <p>The Single Boost is a one-time purchase that pins a specific code to the top of results for 7 days at a price of €1.99 including VAT. It is non-refundable once activated.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s6">
+    <div class="section-num">Article 6</div>
+    <h2>Intellectual property</h2>
+    <p>All intellectual property rights in the Platform and its original content (excluding User-generated Content), features, and functionality are and will remain the exclusive property of CodiceFacile S.r.l. and its licensors. You may not copy, modify, distribute, sell, or lease any part of the Platform without our prior written consent.</p>
+    <p>The trademarks "CodiceFacile" and related logos are registered or unregistered trade marks of CodiceFacile S.r.l. Nothing in these Terms grants you the right to use our trade marks.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s7">
+    <div class="section-num">Article 7</div>
+    <h2>Disclaimer of warranties</h2>
+    <p>THE PLATFORM IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, CODICEFACILE DISCLAIMS ALL WARRANTIES, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>
+    <p>CodiceFacile does not warrant that: (a) the Platform will be uninterrupted or error-free; (b) any codes listed are valid, unexpired, or will produce the advertised discount; (c) Merchant information is accurate or current.</p>
+    <p>Nothing in these Terms excludes or limits any statutory rights you may have as a consumer under Italian or EU law that cannot be waived by contract.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s8">
+    <div class="section-num">Article 8</div>
+    <h2>Limitation of liability</h2>
+    <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, CODICEFACILE'S TOTAL CUMULATIVE LIABILITY TO YOU FOR ANY CLAIM ARISING OUT OF OR RELATING TO THE PLATFORM SHALL NOT EXCEED THE GREATER OF (A) THE AMOUNT YOU PAID TO CODICEFACILE IN THE 12 MONTHS PRECEDING THE CLAIM, OR (B) €50.</p>
+    <p>IN NO EVENT WILL CODICEFACILE BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING LOSS OF PROFITS, DATA, OR GOODWILL.</p>
+    <p>The foregoing limitations do not apply to liability that cannot be excluded or limited under applicable Italian or EU consumer law, including liability for death or personal injury caused by negligence, fraud, or fraudulent misrepresentation.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s9">
+    <div class="section-num">Article 9</div>
+    <h2>Indemnification</h2>
+    <p>You agree to indemnify, defend, and hold harmless CodiceFacile, its officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, and expenses (including reasonable legal fees) arising out of or in any way connected with: (a) your access to or use of the Platform; (b) your breach of these Terms; or (c) your violation of any third-party rights or applicable law.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s10">
+    <div class="section-num">Article 10</div>
+    <h2>Termination</h2>
+    <p>CodiceFacile may suspend or terminate your account immediately, without prior notice or liability, if you breach these Terms or engage in conduct that CodiceFacile reasonably determines to be harmful to the Platform, other users, or third parties.</p>
+    <p>You may delete your account at any time from account settings. Upon deletion, we will process your personal data in accordance with our <a href="privacy.html">Privacy Policy</a>.</p>
+    <p>Provisions of these Terms that by their nature should survive termination shall survive, including Sections 4.1, 6, 7, 8, 9, and 11.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s11">
+    <div class="section-num">Article 11</div>
+    <h2>Governing law and jurisdiction</h2>
+    <p>These Terms are governed by and construed in accordance with the laws of Italy, without regard to conflict of law principles.</p>
+    <p>Any dispute arising out of or in connection with these Terms shall be subject to the exclusive jurisdiction of the courts of Milan, Italy, except that: (a) if you are a consumer resident in another EU member state, you may also bring proceedings before the courts of your country of residence; and (b) nothing prevents either party from seeking urgent injunctive relief in any competent court.</p>
+    <p>In accordance with Article 141-sexies of the Italian Consumer Code, disputes may also be submitted to the out-of-court dispute resolution body (<em>Organismo ADR</em>) registered with the Ministry of Enterprise and Made in Italy, or to the EU Online Dispute Resolution platform at <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s12">
+    <div class="section-num">Article 12</div>
+    <h2>Changes to these Terms</h2>
+    <p>We may revise these Terms from time to time. When we make material changes, we will notify registered users by email and/or by displaying a prominent notice on the Platform at least 14 days before the changes take effect.</p>
+    <p>Your continued use of the Platform after the effective date of revised Terms constitutes your acceptance of the changes. If you do not agree to the revised Terms, you must stop using the Platform and may delete your account.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s13">
+    <div class="section-num">Article 13</div>
+    <h2>Contact</h2>
+    <p>For questions or complaints regarding these Terms, please contact us:</p>
+    <ul>
+      <li><strong>Email:</strong> <a href="mailto:legal@codicefacile.it">legal@codicefacile.it</a></li>
+      <li><strong>Registered office:</strong> CodiceFacile S.r.l., Via Torino 12, 20123 Milan, Italy</li>
+      <li><strong>P.IVA:</strong> IT12345678901</li>
+      <li><strong>DPO / Privacy:</strong> <a href="mailto:privacy@codicefacile.it">privacy@codicefacile.it</a></li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">Codice<span>Facile</span></div>
+  <div class="footer-links">
+    <a href="tos.html">Terms of Service</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="cookies.html">Cookie Policy</a>
+  </div>
+  <div class="footer-vat">© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901 · Milan, Italy</div>
+</footer>
+
+</body>
+</html>

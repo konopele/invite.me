@@ -247,6 +247,21 @@
     .success-title{font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:8px}
     .success-sub{font-size:14px;color:var(--muted)}
 
+    /* ── SHARE MODAL ── */
+    .share-type-row{display:flex;gap:6px;margin-bottom:16px}
+    .share-type-btn{flex:1;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);background:transparent;font-family:var(--font-body);font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .2s}
+    .share-type-btn.active{border-color:var(--rust);background:var(--rust-pale);color:var(--rust)}
+    .share-field{margin-bottom:13px}
+    .share-field label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px}
+    .share-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--font-body);font-size:14px;color:var(--ink);outline:none;transition:border-color .2s;background:var(--white)}
+    .share-input:focus{border-color:var(--rust)}
+    .share-input.mono{font-family:var(--font-mono);font-size:15px;font-weight:600;letter-spacing:.07em}
+    .share-input.error{border-color:var(--rust)}
+    .share-textarea{width:100%;min-height:60px;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-family:var(--font-body);font-size:13px;color:var(--ink);resize:none;outline:none;background:var(--cream);transition:border-color .2s}
+    .share-textarea:focus{border-color:var(--rust);background:var(--white)}
+    .share-err{display:none;font-size:12px;color:var(--rust);margin-top:4px}
+    .share-err.show{display:block}
+
     /* ── TOAST ── */
     .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:var(--paper);padding:10px 22px;border-radius:100px;font-size:13px;font-weight:600;z-index:600;opacity:0;transition:all .3s var(--ease);pointer-events:none;white-space:nowrap}
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -421,6 +436,51 @@
   </div>
 </div>
 
+<!-- SHARE CODE MODAL -->
+<div class="modal-bg" id="share-modal-bg" onclick="if(event.target===this)closeShareModal()">
+  <div class="modal" id="share-modal">
+    <div class="modal-head">
+      <div class="modal-title" id="share-modal-title"></div>
+      <div class="modal-preview">
+        <div class="modal-preview-emoji" id="share-modal-emoji"></div>
+        <div class="modal-preview-merchant" id="share-modal-merchant"></div>
+      </div>
+    </div>
+    <div class="modal-body" id="share-modal-form">
+      <div class="share-type-row">
+        <button class="share-type-btn active" id="share-type-promo" onclick="setShareType('promo')" data-i18n="share_type_promo"></button>
+        <button class="share-type-btn" id="share-type-invite" onclick="setShareType('invite')" data-i18n="share_type_invite"></button>
+      </div>
+      <div class="share-field">
+        <label data-i18n="share_code_label"></label>
+        <input class="share-input mono" type="text" id="share-code-input" />
+        <div class="share-err" id="share-code-err" data-i18n="share_code_err"></div>
+      </div>
+      <div class="share-field" id="share-link-field" style="display:none">
+        <label data-i18n="share_link_label"></label>
+        <input class="share-input" type="url" id="share-link-input" />
+      </div>
+      <div class="share-field">
+        <label data-i18n="share_bonus_label"></label>
+        <input class="share-input" type="text" id="share-bonus-input" />
+      </div>
+      <div class="share-field" style="margin-bottom:18px">
+        <label data-i18n="share_note_label"></label>
+        <textarea class="share-textarea" id="share-note-input"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-cancel" onclick="closeShareModal()" data-i18n="modal_cancel"></button>
+        <button class="modal-submit" id="share-submit-btn" onclick="submitShareCode()" data-i18n="share_submit"></button>
+      </div>
+    </div>
+    <div class="modal-success" id="share-modal-success">
+      <div class="success-icon">🎉</div>
+      <div class="success-title" data-i18n="share_ok_title"></div>
+      <div class="success-sub" data-i18n="share_ok_sub"></div>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -456,6 +516,15 @@ const LANGS = {
     invite_count:n=>`${n} invite codes`,
     expiry:'Expires', uses:'uses',
     verified:'Verified',
+    share_type_promo:'Promo Code', share_type_invite:'Invite Code / Link',
+    share_code_label:'Your code', share_code_ph:'e.g. MYCODE20',
+    share_link_label:'Invite link (optional)', share_link_ph:'https://…',
+    share_bonus_label:'Bonus / discount', share_bonus_ph:'e.g. −20% or €5 bonus',
+    share_note_label:'Note (optional)', share_note_ph:'e.g. first order only, new accounts…',
+    share_code_err:'Please enter your code.',
+    share_submit:'Share code',
+    share_ok_title:'Code shared!', share_ok_sub:'Your code is now visible to the community. Thank you!',
+    share_modal_title:'Share a code for',
   },
   it:{
     nav_login:'Accedi', nav_signup:'Registrati gratis', nav_logout:'Esci',
@@ -483,6 +552,15 @@ const LANGS = {
     invite_count:n=>`${n} codici invito`,
     expiry:'Scade', uses:'usi',
     verified:'Verificato',
+    share_type_promo:'Codice Promo', share_type_invite:'Codice Invito / Link',
+    share_code_label:'Il tuo codice', share_code_ph:'es. MIOCODICE20',
+    share_link_label:'Link di invito (opzionale)', share_link_ph:'https://…',
+    share_bonus_label:'Bonus / sconto', share_bonus_ph:'es. −20% o €5 di bonus',
+    share_note_label:'Nota (opzionale)', share_note_ph:'es. solo primo ordine, solo nuovi account…',
+    share_code_err:'Inserisci il tuo codice.',
+    share_submit:'Condividi codice',
+    share_ok_title:'Codice condiviso!', share_ok_sub:'Il tuo codice è ora visibile alla community. Grazie!',
+    share_modal_title:'Condividi un codice per',
   },
   ru:{
     nav_login:'Войти', nav_signup:'Регистрация', nav_logout:'Выйти',
@@ -510,6 +588,15 @@ const LANGS = {
     invite_count:n=>`${n} инвайт-кодов`,
     expiry:'Истекает', uses:'использований',
     verified:'Проверено',
+    share_type_promo:'Промокод', share_type_invite:'Инвайт-код / ссылка',
+    share_code_label:'Ваш код', share_code_ph:'напр. МОЙКОД20',
+    share_link_label:'Инвайт-ссылка (опционально)', share_link_ph:'https://…',
+    share_bonus_label:'Бонус / скидка', share_bonus_ph:'напр. −20% или €5 бонус',
+    share_note_label:'Заметка (опционально)', share_note_ph:'напр. только первый заказ…',
+    share_code_err:'Пожалуйста, введите ваш код.',
+    share_submit:'Поделиться кодом',
+    share_ok_title:'Код опубликован!', share_ok_sub:'Ваш код теперь виден сообществу. Спасибо!',
+    share_modal_title:'Поделиться кодом для',
   }
 };
 
@@ -882,9 +969,93 @@ function closeModal(){
   document.body.style.overflow='';
 }
 function bgClose(e){ if(e.target===document.getElementById('modal-bg'))closeModal(); }
-function onAddCode(){
+/* ══════════════════════════════════════════════
+   SHARE CODE MODAL
+══════════════════════════════════════════════ */
+let shareType='promo';
+
+function applyShareI18n(){
+  const l=S.lang;
+  document.getElementById('share-modal-title').textContent=t('share_modal_title')+' '+M.name;
+  document.getElementById('share-type-promo').textContent=t('share_type_promo');
+  document.getElementById('share-type-invite').textContent=t('share_type_invite');
+  document.getElementById('share-code-input').placeholder=t('share_code_ph');
+  document.getElementById('share-link-input').placeholder=t('share_link_ph');
+  document.getElementById('share-bonus-input').placeholder=t('share_bonus_ph');
+  document.getElementById('share-note-input').placeholder=t('share_note_ph');
+  document.querySelectorAll('#share-modal-bg [data-i18n]').forEach(el=>{
+    el.textContent=t(el.getAttribute('data-i18n'));
+  });
+}
+
+function openShareModal(){
   if(!isLoggedIn()){ openAuthGate('add'); return; }
-  showToast('Add code form coming soon!');
+  shareType='promo';
+  document.getElementById('share-type-promo').classList.add('active');
+  document.getElementById('share-type-invite').classList.remove('active');
+  document.getElementById('share-link-field').style.display='none';
+  document.getElementById('share-code-input').value='';
+  document.getElementById('share-link-input').value='';
+  document.getElementById('share-bonus-input').value='';
+  document.getElementById('share-note-input').value='';
+  document.getElementById('share-code-input').classList.remove('error');
+  document.getElementById('share-code-err').classList.remove('show');
+  document.getElementById('share-modal-emoji').textContent=M.emoji;
+  document.getElementById('share-modal-merchant').textContent=M.name;
+  document.getElementById('share-modal-form').style.display='block';
+  document.getElementById('share-modal-success').classList.remove('show');
+  applyShareI18n();
+  document.getElementById('share-modal-bg').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeShareModal(){
+  document.getElementById('share-modal-bg').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function setShareType(type){
+  shareType=type;
+  document.getElementById('share-type-promo').classList.toggle('active',type==='promo');
+  document.getElementById('share-type-invite').classList.toggle('active',type==='invite');
+  document.getElementById('share-link-field').style.display=type==='invite'?'block':'none';
+}
+
+function submitShareCode(){
+  const code=document.getElementById('share-code-input').value.trim();
+  const errEl=document.getElementById('share-code-err');
+  if(!code){
+    document.getElementById('share-code-input').classList.add('error');
+    errEl.classList.add('show');
+    return;
+  }
+  document.getElementById('share-code-input').classList.remove('error');
+  errEl.classList.remove('show');
+
+  const user=Auth.getUser();
+  const bonus=document.getElementById('share-bonus-input').value.trim();
+  const note=document.getElementById('share-note-input').value.trim();
+  const link=document.getElementById('share-link-input').value.trim();
+  const id='user_'+Date.now();
+
+  if(shareType==='promo'){
+    M.promoCodes.unshift({id,code,disc:bonus,desc:note,uses:0,ok:0,bad:0,topPick:false,verified:false});
+  } else {
+    M.inviteCodes.unshift({
+      id, user:user?user.name.split(' ')[0]:'You',
+      pic:user?.picture||'', code, link, bonusYou:bonus, bonusThem:'', ok:0, bad:0, premium:false,
+      date:new Date().toLocaleDateString(),
+    });
+  }
+
+  document.getElementById('share-modal-form').style.display='none';
+  document.getElementById('share-modal-success').classList.add('show');
+  applyShareI18n();
+  setTimeout(()=>{ closeShareModal(); renderAll(); },2000);
+}
+
+function onAddCode(){
+  openShareModal();
 }
 
 function renderModalOpts(){
@@ -932,7 +1103,7 @@ function submitVal(){
   setTimeout(()=>{ closeModal(); renderInviteGrid(); },2000);
 }
 
-document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeModal(); closeAuthGate(); } });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeModal(); closeAuthGate(); closeShareModal(); } });
 
 /* ══════════════════════════════════════════════
    BOOT

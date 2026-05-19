@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Privacy Policy — CodiceFacile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --ink:#0f0e0c; --paper:#f5f0e8; --cream:#ede7d9; --white:#fff;
+      --rust:#c94a2b; --rust-dim:#a63b22; --muted:#7a7062; --border:#d5cdc0;
+      --font-display:'Playfair Display',Georgia,serif;
+      --font-body:'DM Sans',sans-serif;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.7;overflow-x:hidden}
+
+    nav{position:sticky;top:0;z-index:100;background:rgba(245,240,232,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .nav-logo{font-family:var(--font-display);font-size:20px;font-weight:900;color:var(--ink);text-decoration:none;letter-spacing:-.5px}
+    .nav-logo span{color:var(--rust)}
+    .nav-back{font-size:13px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+    .nav-back:hover{color:var(--ink)}
+
+    .page-hero{background:var(--ink);padding:56px 80px 48px;position:relative;overflow:hidden}
+    .page-hero::before{content:'🔒';position:absolute;right:60px;top:10px;font-size:180px;opacity:.04;line-height:1;pointer-events:none;filter:grayscale(1)}
+    .hero-label{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--rust);margin-bottom:12px}
+    .hero-title{font-family:var(--font-display);font-size:clamp(36px,4vw,52px);font-weight:900;color:var(--paper);letter-spacing:-1.5px;line-height:1.05;margin-bottom:12px}
+    .hero-meta{font-size:13px;color:#8a8278}
+
+    .content-wrap{max-width:800px;margin:0 auto;padding:60px 40px 80px}
+
+    .toc{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:48px}
+    .toc-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:14px}
+    .toc ol{padding-left:18px}
+    .toc li{margin-bottom:7px}
+    .toc a{color:var(--rust);text-decoration:none;font-size:14px;font-weight:500}
+    .toc a:hover{text-decoration:underline}
+
+    .section{margin-bottom:44px;scroll-margin-top:80px}
+    .section-num{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);margin-bottom:8px}
+    .section h2{font-family:var(--font-display);font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:18px;line-height:1.2}
+    .section h3{font-size:16px;font-weight:700;margin:20px 0 10px}
+    .section p{margin-bottom:14px;color:#3a3530}
+    .section ul,.section ol{padding-left:22px;margin-bottom:14px}
+    .section li{margin-bottom:7px;color:#3a3530}
+    .section a{color:var(--rust);text-decoration:none}
+    .section a:hover{text-decoration:underline}
+    .highlight-box{background:var(--cream);border-left:3px solid var(--rust);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0;font-size:14px;color:var(--muted)}
+
+    .rights-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+    .right-card{background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+    .right-card strong{display:block;font-size:13px;font-weight:700;margin-bottom:4px;color:var(--ink)}
+    .right-card span{font-size:13px;color:var(--muted)}
+
+    .data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+    .data-table th{background:var(--ink);color:var(--paper);padding:10px 14px;text-align:left;font-size:12px;font-weight:600;letter-spacing:.05em}
+    .data-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:#3a3530;vertical-align:top}
+    .data-table tr:last-child td{border-bottom:none}
+    .data-table tr:nth-child(even) td{background:rgba(0,0,0,.02)}
+
+    .divider{height:1px;background:var(--border);margin:40px 0}
+
+    footer{background:#0a0908;color:#6a6258;padding:28px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .footer-logo{font-family:var(--font-display);font-size:18px;font-weight:900;color:var(--paper)}
+    .footer-logo span{color:var(--rust)}
+    .footer-links{display:flex;gap:20px;flex-wrap:wrap}
+    .footer-links a{color:#6a6258;text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--paper)}
+    .footer-vat{font-size:11px;color:#3a3830}
+
+    @media(max-width:768px){
+      nav,.page-hero,.content-wrap,footer{padding-left:20px;padding-right:20px}
+      .page-hero{padding-top:40px;padding-bottom:32px}
+      .rights-grid{grid-template-columns:1fr}
+      .data-table{font-size:13px}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Codice<span>Facile</span></a>
+  <a href="javascript:history.back()" class="nav-back">← Back</a>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-label">Legal</div>
+  <h1 class="hero-title">Privacy Policy</h1>
+  <div class="hero-meta">Effective date: 1 January 2026 &nbsp;·&nbsp; Version 2.1 &nbsp;·&nbsp; CodiceFacile S.r.l. · Milan, Italy</div>
+</div>
+
+<div class="content-wrap">
+
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#s1">Data controller and DPO</a></li>
+      <li><a href="#s2">Data we collect</a></li>
+      <li><a href="#s3">How we use your data</a></li>
+      <li><a href="#s4">Legal bases for processing</a></li>
+      <li><a href="#s5">Sharing and disclosure</a></li>
+      <li><a href="#s6">International transfers</a></li>
+      <li><a href="#s7">Retention periods</a></li>
+      <li><a href="#s8">Your rights under GDPR</a></li>
+      <li><a href="#s9">Children's privacy</a></li>
+      <li><a href="#s10">Security measures</a></li>
+      <li><a href="#s11">Third-party links</a></li>
+      <li><a href="#s12">Changes to this policy</a></li>
+      <li><a href="#s13">Contact and complaints</a></li>
+    </ol>
+  </div>
+
+  <div class="highlight-box">
+    CodiceFacile is committed to protecting your personal data. This Privacy Policy explains what information we collect, why we collect it, how we use it, and what rights you have under the General Data Protection Regulation (GDPR — EU 2016/679) and the Italian Privacy Code (D.Lgs. 196/2003 as amended by D.Lgs. 101/2018).
+  </div>
+
+  <div class="section" id="s1">
+    <div class="section-num">Article 1</div>
+    <h2>Data controller and DPO</h2>
+    <p><strong>Data Controller:</strong> CodiceFacile S.r.l., Via Torino 12, 20123 Milan, Italy (P.IVA IT12345678901).</p>
+    <p><strong>Data Protection Officer (DPO):</strong> We have appointed a DPO who can be contacted at <a href="mailto:privacy@codicefacile.it">privacy@codicefacile.it</a> or by post to the registered office address above, marked "Attn: DPO".</p>
+    <p>The DPO is responsible for overseeing compliance with GDPR and serves as the point of contact for the Italian supervisory authority (Garante per la protezione dei dati personali — "Garante").</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s2">
+    <div class="section-num">Article 2</div>
+    <h2>Data we collect</h2>
+    <h3>2.1 Data you provide directly</h3>
+    <ul>
+      <li><strong>Registration data:</strong> First name, last name, email address, and password (stored as a one-way hash using bcrypt) when you create an account with email and password.</li>
+      <li><strong>Profile data:</strong> Display name, profile photo URL (when provided via Google), optional bio or preferences you add to your profile.</li>
+      <li><strong>Content you submit:</strong> Promo codes, invite codes, referral links, notes, and any other content you publish on the Platform.</li>
+      <li><strong>Payment data:</strong> For paid plans, billing name, address, and the last four digits of the payment card. Full card details are processed exclusively by our PCI-DSS-compliant payment processor and are never stored on our servers.</li>
+      <li><strong>Communications:</strong> Messages you send to our support team, feedback forms, or any correspondence with CodiceFacile.</li>
+    </ul>
+    <h3>2.2 Data we collect automatically</h3>
+    <ul>
+      <li><strong>Usage data:</strong> Pages visited, features used, code searches performed, clicks, timestamps, and session duration.</li>
+      <li><strong>Device and technical data:</strong> IP address (anonymised after 30 days), browser type and version, operating system, screen resolution, language preferences, and referring URL.</li>
+      <li><strong>Cookies and similar technologies:</strong> See our <a href="cookies.html">Cookie Policy</a> for a full breakdown of cookies set, their purpose, and how to opt out.</li>
+      <li><strong>Log data:</strong> Server logs including request method, URL, HTTP status code, bytes transferred, and timestamp, retained for security and debugging for up to 90 days.</li>
+    </ul>
+    <h3>2.3 Data from third parties</h3>
+    <ul>
+      <li><strong>Google OAuth:</strong> If you sign in with Google, we receive your name, email address, and profile picture URL from Google's OAuth 2.0 endpoint. We do not receive your Google password.</li>
+      <li><strong>Analytics providers:</strong> Aggregated and anonymised traffic statistics from analytics tools (see our Cookie Policy).</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s3">
+    <div class="section-num">Article 3</div>
+    <h2>How we use your data</h2>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Purpose</th><th>Data used</th><th>Legal basis</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Creating and managing your account</td>
+          <td>Registration data, profile data</td>
+          <td>Contract (Art. 6(1)(b) GDPR)</td>
+        </tr>
+        <tr>
+          <td>Providing the Platform's core features</td>
+          <td>All account data, content you submit</td>
+          <td>Contract (Art. 6(1)(b) GDPR)</td>
+        </tr>
+        <tr>
+          <td>Processing payments and subscriptions</td>
+          <td>Payment data, email address</td>
+          <td>Contract (Art. 6(1)(b) GDPR)</td>
+        </tr>
+        <tr>
+          <td>Sending transactional emails (receipts, password reset, account notices)</td>
+          <td>Email address, account data</td>
+          <td>Contract (Art. 6(1)(b) GDPR)</td>
+        </tr>
+        <tr>
+          <td>Sending marketing emails and newsletters</td>
+          <td>Email address, usage data</td>
+          <td>Consent (Art. 6(1)(a) GDPR)</td>
+        </tr>
+        <tr>
+          <td>Improving and personalising the Platform</td>
+          <td>Usage data, device data, cookies</td>
+          <td>Legitimate interest (Art. 6(1)(f) GDPR)</td>
+        </tr>
+        <tr>
+          <td>Security, fraud prevention, and abuse detection</td>
+          <td>IP address, log data, usage patterns</td>
+          <td>Legitimate interest (Art. 6(1)(f) GDPR)</td>
+        </tr>
+        <tr>
+          <td>Complying with legal obligations (e.g., tax records, court orders)</td>
+          <td>Account data, payment data</td>
+          <td>Legal obligation (Art. 6(1)(c) GDPR)</td>
+        </tr>
+        <tr>
+          <td>Aggregated analytics and reporting</td>
+          <td>Anonymised usage data (no personal identifiers)</td>
+          <td>Legitimate interest (Art. 6(1)(f) GDPR)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>We will never sell your personal data to third parties or use it for purposes incompatible with those listed above.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s4">
+    <div class="section-num">Article 4</div>
+    <h2>Legal bases for processing</h2>
+    <p>Under GDPR Article 6, every processing activity must rest on a valid legal basis. We rely on the following bases:</p>
+    <h3>4.1 Performance of a contract (Art. 6(1)(b))</h3>
+    <p>Processing necessary to deliver the service you signed up for — account creation, code sharing, payment processing, and support. Without this data we cannot provide the Platform.</p>
+    <h3>4.2 Legitimate interests (Art. 6(1)(f))</h3>
+    <p>We process certain data for our legitimate interests in operating a secure, high-quality service: security monitoring, fraud detection, performance analytics, and product improvement. We have carried out balancing tests and determined that our interests are not overridden by your rights. You may object to processing on this basis at any time (see Article 8).</p>
+    <h3>4.3 Consent (Art. 6(1)(a))</h3>
+    <p>For marketing emails and non-essential cookies, we rely on your freely given, specific, informed consent. You may withdraw consent at any time using the unsubscribe link in any marketing email or through the cookie preference centre accessible from the footer of every page. Withdrawal does not affect the lawfulness of processing carried out before withdrawal.</p>
+    <h3>4.4 Legal obligation (Art. 6(1)(c))</h3>
+    <p>We may process and retain data when required to do so by Italian law, including fiscal and accounting obligations under D.P.R. 633/1972 and anti-money-laundering rules under D.Lgs. 231/2007.</p>
+    <h3>4.5 Special category data</h3>
+    <p>We do not intentionally collect special category data (Art. 9 GDPR) such as health information, political opinions, or biometric data. If you inadvertently include such data in a code submission or support message, please contact us so we can remove it.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s5">
+    <div class="section-num">Article 5</div>
+    <h2>Sharing and disclosure</h2>
+    <h3>5.1 Service providers (processors)</h3>
+    <p>We share data with carefully selected third-party service providers who process it on our behalf under data processing agreements (DPAs) as required by GDPR Article 28:</p>
+    <ul>
+      <li><strong>Cloud infrastructure:</strong> Amazon Web Services EMEA SARL (Frankfurt region) — hosting and database.</li>
+      <li><strong>Email delivery:</strong> Mailgun Technologies Inc. — transactional and marketing emails, operating under Standard Contractual Clauses.</li>
+      <li><strong>Payments:</strong> Stripe Payments Europe Ltd — payment processing; see Stripe's privacy policy for their data practices.</li>
+      <li><strong>Analytics:</strong> Matomo (self-hosted on our EU servers) — privacy-preserving web analytics.</li>
+      <li><strong>Error monitoring:</strong> Sentry.io — anonymised crash and error reports.</li>
+    </ul>
+    <h3>5.2 Business transfers</h3>
+    <p>If CodiceFacile is involved in a merger, acquisition, or asset sale, your personal data may be transferred as part of that transaction. We will notify registered users by email and/or prominent site notice before any such transfer and before data becomes subject to a different privacy policy.</p>
+    <h3>5.3 Legal disclosures</h3>
+    <p>We may disclose your data if required by applicable law, regulation, legal process, or governmental request — for example, in response to a court order or a request from the Italian Guardia di Finanza or other competent authority. Where permitted, we will notify you of such requests.</p>
+    <h3>5.4 Public content</h3>
+    <p>Codes, links, and notes you publish on the Platform are visible to all users (registered or not) by design. Do not include personal information in publicly shared codes or notes.</p>
+    <h3>5.5 No third-party advertising</h3>
+    <p>We do not share your personal data with advertising networks or data brokers for the purpose of serving third-party advertisements.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s6">
+    <div class="section-num">Article 6</div>
+    <h2>International transfers</h2>
+    <p>CodiceFacile is based in the EU (Italy) and stores all primary data within the European Economic Area (EEA). Some of our service providers are located in or transfer data to third countries, including the United States.</p>
+    <p>For any transfer of personal data outside the EEA, we ensure an adequate level of protection through one of the following mechanisms:</p>
+    <ul>
+      <li>The European Commission's adequacy decision for the destination country (GDPR Art. 45).</li>
+      <li>EU Standard Contractual Clauses (SCCs) approved by the European Commission under Decision 2021/914/EU (GDPR Art. 46(2)(c)).</li>
+      <li>Binding Corporate Rules where the recipient is part of a group that has obtained BCR approval.</li>
+    </ul>
+    <p>You may request a copy of the applicable transfer safeguards by contacting <a href="mailto:privacy@codicefacile.it">privacy@codicefacile.it</a>.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s7">
+    <div class="section-num">Article 7</div>
+    <h2>Retention periods</h2>
+    <p>We retain personal data only as long as necessary for the purposes for which it was collected, or as required by law:</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Data category</th><th>Retention period</th><th>Basis</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Account data (name, email, hashed password)</td>
+          <td>Duration of account + 30 days after deletion request</td>
+          <td>Contract / legitimate interest</td>
+        </tr>
+        <tr>
+          <td>Content (codes, links, notes)</td>
+          <td>Duration of account; anonymised copies may persist in aggregated data</td>
+          <td>Contract</td>
+        </tr>
+        <tr>
+          <td>Payment records and invoices</td>
+          <td>10 years from transaction date</td>
+          <td>Italian fiscal law (D.P.R. 633/1972)</td>
+        </tr>
+        <tr>
+          <td>Marketing consent records</td>
+          <td>3 years from last interaction or until consent withdrawn</td>
+          <td>Consent</td>
+        </tr>
+        <tr>
+          <td>Server logs (full IP)</td>
+          <td>90 days</td>
+          <td>Legitimate interest (security)</td>
+        </tr>
+        <tr>
+          <td>Anonymised analytics data</td>
+          <td>36 months (no personal identifiers)</td>
+          <td>Legitimate interest (product improvement)</td>
+        </tr>
+        <tr>
+          <td>Support communications</td>
+          <td>2 years from ticket closure</td>
+          <td>Legitimate interest</td>
+        </tr>
+        <tr>
+          <td>Backup snapshots</td>
+          <td>Overwritten on a rolling 30-day cycle</td>
+          <td>Contract / legitimate interest</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>When the applicable retention period expires, data is securely deleted or irreversibly anonymised. You may request early deletion in accordance with Article 8.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s8">
+    <div class="section-num">Article 8</div>
+    <h2>Your rights under GDPR</h2>
+    <p>Under GDPR Articles 15–22, you have the following rights as a data subject. To exercise any of these rights, contact us at <a href="mailto:privacy@codicefacile.it">privacy@codicefacile.it</a>. We will respond within 30 days (extendable by a further two months for complex requests, with notice).</p>
+
+    <div class="rights-grid">
+      <div class="right-card">
+        <strong>Right of access (Art. 15)</strong>
+        <span>Request a copy of all personal data we hold about you and information about how it is processed.</span>
+      </div>
+      <div class="right-card">
+        <strong>Right to rectification (Art. 16)</strong>
+        <span>Ask us to correct inaccurate or incomplete personal data without undue delay.</span>
+      </div>
+      <div class="right-card">
+        <strong>Right to erasure (Art. 17)</strong>
+        <span>Request deletion of your personal data where it is no longer necessary, or where you withdraw consent. Subject to legal retention obligations.</span>
+      </div>
+      <div class="right-card">
+        <strong>Right to restrict processing (Art. 18)</strong>
+        <span>Ask us to pause processing of your data while a dispute is resolved or while we verify an objection.</span>
+      </div>
+      <div class="right-card">
+        <strong>Right to data portability (Art. 20)</strong>
+        <span>Receive your personal data in a structured, commonly used, machine-readable format (JSON or CSV) and transmit it to another controller.</span>
+      </div>
+      <div class="right-card">
+        <strong>Right to object (Art. 21)</strong>
+        <span>Object at any time to processing based on legitimate interests or for direct marketing. We will stop unless we demonstrate compelling legitimate grounds.</span>
+      </div>
+      <div class="right-card">
+        <strong>Rights re: automated decisions (Art. 22)</strong>
+        <span>Not to be subject to decisions based solely on automated processing that produce legal or similarly significant effects.</span>
+      </div>
+      <div class="right-card">
+        <strong>Right to withdraw consent (Art. 7(3))</strong>
+        <span>Withdraw consent at any time where processing is based on consent. Withdrawal does not affect past processing.</span>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      You also have the right to lodge a complaint with the Italian supervisory authority: <strong>Garante per la protezione dei dati personali</strong>, Piazza Venezia 11, 00187 Rome, Italy · <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">garanteprivacy.it</a> · +39 06 696771.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s9">
+    <div class="section-num">Article 9</div>
+    <h2>Children's privacy</h2>
+    <p>The Platform is not directed at children under 16 years of age. We do not knowingly collect personal data from children under 16. If we discover that a child under 16 has created an account without verifiable parental consent, we will promptly delete the account and all associated data.</p>
+    <p>If you are a parent or guardian and believe your child under 16 has provided personal data to us without your consent, please contact <a href="mailto:privacy@codicefacile.it">privacy@codicefacile.it</a> immediately.</p>
+    <p>For users aged 16–18, processing is permitted under GDPR Article 8(1) as implemented by Italian law (D.Lgs. 196/2003, Art. 2-quinquies), which sets the digital consent age at 14 for information society services. CodiceFacile applies the more protective threshold of 16.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s10">
+    <div class="section-num">Article 10</div>
+    <h2>Security measures</h2>
+    <p>We implement appropriate technical and organisational measures to protect your personal data against unauthorised access, loss, destruction, or alteration (GDPR Art. 25 and Art. 32), including:</p>
+    <ul>
+      <li>Encryption of data in transit using TLS 1.3.</li>
+      <li>Encryption of data at rest using AES-256.</li>
+      <li>Password hashing using bcrypt with a high work factor (no plaintext passwords are stored).</li>
+      <li>Role-based access control limiting employee access to personal data on a need-to-know basis.</li>
+      <li>Regular security assessments, penetration tests, and vulnerability scanning.</li>
+      <li>Automated anomaly detection and intrusion monitoring.</li>
+      <li>Documented incident response procedures aligned with the 72-hour breach notification obligation under GDPR Art. 33.</li>
+    </ul>
+    <p>In the event of a personal data breach that is likely to result in a high risk to your rights and freedoms, we will notify you without undue delay as required by GDPR Article 34.</p>
+    <p>Despite our best efforts, no system is completely secure. We encourage you to use a strong, unique password and to enable two-factor authentication when available.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s11">
+    <div class="section-num">Article 11</div>
+    <h2>Third-party links</h2>
+    <p>The Platform may contain links to third-party websites, Merchant storefronts, or external resources. This Privacy Policy applies only to CodiceFacile and our own processing activities. When you follow a link to a third-party site, that site's own privacy policy governs the collection and use of your personal data.</p>
+    <p>We recommend reviewing the privacy policy of any third-party site before providing personal data. CodiceFacile accepts no responsibility or liability for the privacy practices of third parties.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s12">
+    <div class="section-num">Article 12</div>
+    <h2>Changes to this policy</h2>
+    <p>We may update this Privacy Policy from time to time to reflect changes in our practices, technology, legal requirements, or other factors. When we make material changes, we will notify registered users by email at least 14 days before the changes take effect and will update the "Effective date" at the top of this page.</p>
+    <p>If required by applicable law (e.g., where we change the legal basis for processing or begin processing data for a new purpose), we will seek fresh consent before the changes take effect.</p>
+    <p>Your continued use of the Platform after the effective date of a revised Privacy Policy constitutes your acknowledgement of the changes. Archived versions of this policy are available on request.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="s13">
+    <div class="section-num">Article 13</div>
+    <h2>Contact and complaints</h2>
+    <p>For any questions, requests, or concerns about this Privacy Policy or our data practices, please contact:</p>
+    <ul>
+      <li><strong>Data Protection Officer:</strong> <a href="mailto:privacy@codicefacile.it">privacy@codicefacile.it</a></li>
+      <li><strong>General enquiries:</strong> <a href="mailto:support@codicefacile.it">support@codicefacile.it</a></li>
+      <li><strong>Registered office:</strong> CodiceFacile S.r.l., Via Torino 12, 20123 Milan, Italy</li>
+      <li><strong>P.IVA:</strong> IT12345678901</li>
+    </ul>
+    <p>We aim to address all requests within 30 days. If you are not satisfied with our response, you have the right to lodge a complaint with:</p>
+    <ul>
+      <li><strong>Garante per la protezione dei dati personali</strong> — Piazza Venezia 11, 00187 Rome, Italy · <a href="mailto:garante@garanteprivacy.it">garante@garanteprivacy.it</a> · <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">garanteprivacy.it</a></li>
+      <li>The supervisory authority of the EU member state where you reside, work, or where the alleged infringement occurred.</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">Codice<span>Facile</span></div>
+  <div class="footer-links">
+    <a href="tos.html">Terms of Service</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="cookies.html">Cookie Policy</a>
+  </div>
+  <div class="footer-vat">© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901 · Milan, Italy</div>
+</footer>
+
+</body>
+</html>
