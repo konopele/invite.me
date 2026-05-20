@@ -341,15 +341,15 @@
 <div class="switcher-bar">
   <div class="switcher-inner">
     <div class="section-switcher">
-      <button class="sw-tab promo active" id="sw-promo" onclick="switchSection('promo')">
-        <span class="sw-icon">🏷</span>
-        <span class="sw-label" data-i18n="sw_promo"></span>
-        <span class="sw-count" id="sw-promo-count">0</span>
-      </button>
-      <button class="sw-tab invite" id="sw-invite" onclick="switchSection('invite')">
+      <button class="sw-tab invite active" id="sw-invite" onclick="switchSection('invite')">
         <span class="sw-icon">🔗</span>
         <span class="sw-label" data-i18n="sw_invite"></span>
         <span class="sw-count" id="sw-invite-count">0</span>
+      </button>
+      <button class="sw-tab promo" id="sw-promo" onclick="switchSection('promo')">
+        <span class="sw-icon">🏷</span>
+        <span class="sw-label" data-i18n="sw_promo"></span>
+        <span class="sw-count" id="sw-promo-count">0</span>
       </button>
     </div>
     <div class="switcher-actions">
@@ -362,12 +362,12 @@
 <div class="page-body">
 
   <!-- PROMO PANEL -->
-  <div class="section-panel active" id="panel-promo">
+  <div class="section-panel" id="panel-promo">
     <div class="promo-grid" id="promo-grid"></div>
   </div>
 
   <!-- INVITE PANEL -->
-  <div class="section-panel" id="panel-invite">
+  <div class="section-panel active" id="panel-invite">
     <div class="invite-toolbar">
       <div class="inv-sort" id="inv-sort"></div>
       <span class="invite-count-lbl" id="inv-count-lbl"></span>
@@ -684,7 +684,7 @@ const IC  = INVITE_CODES[MID] || [];
 
 let S = {
   lang:   detectLang(),
-  panel:  'promo',    // 'promo' | 'invite'
+  panel:  'invite',   // 'promo' | 'invite'
   sort:   'popular',  // 'all' | 'popular' | 'newest' | 'verified'
   votes:  {},         // {id: 'ok'|'bad'}
   shown:  4,
@@ -990,10 +990,10 @@ function applyShareI18n(){
 
 function openShareModal(){
   if(!isLoggedIn()){ openAuthGate('add'); return; }
-  shareType='promo';
-  document.getElementById('share-type-promo').classList.add('active');
-  document.getElementById('share-type-invite').classList.remove('active');
-  document.getElementById('share-link-field').style.display='none';
+  shareType='invite';
+  document.getElementById('share-type-invite').classList.add('active');
+  document.getElementById('share-type-promo').classList.remove('active');
+  document.getElementById('share-link-field').style.display='block';
   document.getElementById('share-code-input').value='';
   document.getElementById('share-link-input').value='';
   document.getElementById('share-bonus-input').value='';

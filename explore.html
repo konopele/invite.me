@@ -206,9 +206,9 @@ const LANGS = {
   en:{
     nav_login:'Log in', nav_signup:'Sign up free', nav_logout:'Log out',
     page_title:'Explore Merchants — CodiceFacile',
-    hero_label:'Community · Verified merchants',
-    hero_h1:'Find codes for every <em>brand you love</em>',
-    hero_sub:'Browse verified merchants. Click any card to see all community promo codes and personal invite links.',
+    hero_label:'Earn · Community referral rewards',
+    hero_h1:'Earn real rewards by sharing <em>your invite links</em>',
+    hero_sub:'Share your personal invite codes across 840+ verified brands. Every time a friend signs up through your link, you both earn — cash bonuses, credits, and exclusive perks.',
     search_ph:'Search merchants, categories…',
     results_lbl:'merchants',
     sort_popular:'Most codes', sort_codes:'Top rated', sort_newest:'Newest', sort_alpha:'A → Z',
@@ -216,18 +216,18 @@ const LANGS = {
     cat_mobility:'🚗 Mobility', cat_fintech:'💳 Fintech', cat_gaming:'🎮 Gaming',
     cat_tech:'📱 Tech', cat_streaming:'🎬 Streaming', cat_energy:'⚡ Energy',
     badge_verified:'Verified', badge_featured:'Featured', badge_new:'New',
-    stat_codes:'Codes', stat_invites:'Invites', stat_success:'Success',
-    best_code_lbl:'Best active code',
-    view_all:'View all codes →',
+    stat_invites:'Invite codes', stat_promos:'Promo codes', stat_success:'Success rate',
+    best_code_lbl:'Best referral bonus',
+    view_all:'See invite codes →',
     trust_community:'Community verified',
     empty_title:'No merchants found', empty_sub:'Try a different search or category.',
   },
   it:{
     nav_login:'Accedi', nav_signup:'Registrati gratis', nav_logout:'Esci',
     page_title:'Esplora Merchant — CodiceFacile',
-    hero_label:'Community · Merchant verificati',
-    hero_h1:'Trova codici per ogni <em>brand che ami</em>',
-    hero_sub:'Sfoglia i merchant verificati. Clicca su una scheda per vedere tutti i codici promo e gli inviti della community.',
+    hero_label:'Guadagna · Premi referral della community',
+    hero_h1:'Guadagna premi reali condividendo <em>i tuoi link di invito</em>',
+    hero_sub:'Condividi i tuoi codici personali su 840+ brand verificati. Ogni volta che un amico si registra tramite il tuo link, guadagnate entrambi — bonus in contanti, crediti e vantaggi esclusivi.',
     search_ph:'Cerca merchant, categorie…',
     results_lbl:'merchant',
     sort_popular:'Più codici', sort_codes:'Meglio valutati', sort_newest:'Più recenti', sort_alpha:'A → Z',
@@ -235,18 +235,18 @@ const LANGS = {
     cat_mobility:'🚗 Mobilità', cat_fintech:'💳 Fintech', cat_gaming:'🎮 Gaming',
     cat_tech:'📱 Tech', cat_streaming:'🎬 Streaming', cat_energy:'⚡ Energia',
     badge_verified:'Verificato', badge_featured:'In evidenza', badge_new:'Nuovo',
-    stat_codes:'Codici', stat_invites:'Inviti', stat_success:'Successo',
-    best_code_lbl:'Miglior codice attivo',
-    view_all:'Vedi tutti i codici →',
+    stat_invites:'Codici invito', stat_promos:'Codici promo', stat_success:'Successo',
+    best_code_lbl:'Miglior bonus referral',
+    view_all:'Vedi i codici invito →',
     trust_community:'Verificato dalla community',
     empty_title:'Nessun merchant trovato', empty_sub:'Prova una ricerca o categoria diversa.',
   },
   ru:{
     nav_login:'Войти', nav_signup:'Регистрация', nav_logout:'Выйти',
     page_title:'Магазины — CodiceFacile',
-    hero_label:'Сообщество · Верифицированные магазины',
-    hero_h1:'Найдите коды для каждого <em>любимого бренда</em>',
-    hero_sub:'Просматривайте верифицированные магазины. Нажмите на карточку, чтобы увидеть все промокоды и инвайты сообщества.',
+    hero_label:'Зарабатывайте · Реферальные бонусы сообщества',
+    hero_h1:'Зарабатывайте реальные бонусы, делясь <em>инвайт-ссылками</em>',
+    hero_sub:'Делитесь своими персональными кодами в 840+ верифицированных брендах. Каждый раз, когда друг регистрируется по вашей ссылке, вы оба зарабатываете — деньги, кредиты и эксклюзивные бонусы.',
     search_ph:'Поиск магазинов, категорий…',
     results_lbl:'магазинов',
     sort_popular:'Больше кодов', sort_codes:'Лучший рейтинг', sort_newest:'Новые', sort_alpha:'А → Я',
@@ -254,9 +254,9 @@ const LANGS = {
     cat_mobility:'🚗 Транспорт', cat_fintech:'💳 Финтех', cat_gaming:'🎮 Игры',
     cat_tech:'📱 Технологии', cat_streaming:'🎬 Стриминг', cat_energy:'⚡ Энергетика',
     badge_verified:'Проверено', badge_featured:'Рекомендуем', badge_new:'Новый',
-    stat_codes:'Кодов', stat_invites:'Инвайтов', stat_success:'Успешность',
-    best_code_lbl:'Лучший активный код',
-    view_all:'Смотреть все коды →',
+    stat_invites:'Инвайт-кодов', stat_promos:'Промокодов', stat_success:'Успешность',
+    best_code_lbl:'Лучший реферальный бонус',
+    view_all:'Смотреть инвайт-коды →',
     trust_community:'Проверено сообществом',
     empty_title:'Магазины не найдены', empty_sub:'Попробуйте другой запрос или категорию.',
   }
@@ -413,8 +413,8 @@ function renderGrid(){
         <div class="merchant-cat-label">${t('cat_'+m.cat).replace(/^[^\s]+\s/,'')}</div>
         <div class="merchant-desc">${m.desc}</div>
         <div class="card-stats">
-          <div class="stat-cell"><div class="stat-val rust">${m.codes+m.invites}</div><div class="stat-key">${t('stat_codes')}</div></div>
           <div class="stat-cell"><div class="stat-val gold">${m.invites}</div><div class="stat-key">${t('stat_invites')}</div></div>
+          <div class="stat-cell"><div class="stat-val rust">${m.codes}</div><div class="stat-key">${t('stat_promos')}</div></div>
           <div class="stat-cell"><div class="stat-val sage">${m.success}%</div><div class="stat-key">${t('stat_success')}</div></div>
         </div>
         <div class="best-code">
