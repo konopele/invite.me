@@ -27,12 +27,7 @@
     html { scroll-behavior: smooth; }
     body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
 
-    /* LANG SWITCHER */
-    .lang-switcher { display: flex; align-items: center; background: var(--cream); border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; flex-shrink: 0; }
-    .lang-btn { padding: 6px 12px; font-family: var(--font-body); font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--muted); background: transparent; border: none; cursor: pointer; transition: all 0.18s; border-right: 1px solid var(--border); line-height: 1.5; }
-    .lang-btn:last-child { border-right: none; }
-    .lang-btn:hover { color: var(--ink); background: rgba(201,74,43,0.07); }
-    .lang-btn.active { background: var(--rust); color: #fff; }
+    /* LANG SWITCHER — styles injected by lang-switcher.js */
 
     /* COOKIE BANNER */
     #cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: var(--ink); color: #e8e2d8; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; z-index: 1000; font-size: 13px; transform: translateY(100%); animation: slideUp 0.6s 1.2s var(--ease-out-expo) forwards; }
@@ -246,11 +241,7 @@
       <li><a href="#premium" data-i18n="nav_premium"></a></li>
     </ul>
     <div class="nav-right">
-      <div class="lang-switcher" role="group" aria-label="Language">
-        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
-        <button class="lang-btn" data-lang="it" onclick="setLang('it')">IT</button>
-        <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
-      </div>
+      <div id="lang-sw"></div>
       <!-- Logged out -->
       <div id="nav-auth-logged-out">
         <a href="login.html" class="btn btn-ghost" data-i18n="nav_login"></a>
@@ -502,6 +493,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="supabase.js"></script>
+<script src="lang-switcher.js"></script>
 <script src="auth.js"></script>
 <script>
 // ════════════════════════════════════════════════════════
@@ -713,10 +705,7 @@ function applyLang() {
     }
   });
 
-  // Update active switcher button
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-  });
+  LangSwitcher.update(lang);
 
   // Subtle fade
   document.body.classList.remove('lang-fade');
@@ -774,6 +763,7 @@ document.querySelectorAll('.step-card, .cat-pill, .trust-item, .plan-card').forE
 // ════════════════════════════════════════════════════════
 //  BOOT
 // ════════════════════════════════════════════════════════
+LangSwitcher.init('lang-sw', lang, setLang);
 applyLang();
 Auth.applyNavState();
 </script>

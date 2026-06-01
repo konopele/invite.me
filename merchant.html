@@ -34,10 +34,7 @@
     .nav-breadcrumb a:hover{color:var(--ink)}
     .nav-breadcrumb .sep{opacity:.35}
     .nav-right{display:flex;gap:8px;align-items:center;flex-shrink:0}
-    .lang-sw{display:flex;background:var(--cream);border:1.5px solid var(--border);border-radius:7px;overflow:hidden}
-    .lang-btn{padding:5px 11px;font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--muted);background:transparent;border:none;cursor:pointer;transition:all .15s;border-right:1px solid var(--border);line-height:1.6}
-    .lang-btn:last-child{border-right:none}
-    .lang-btn.active{background:var(--rust);color:#fff}
+    /* LANG SWITCHER — styles injected by lang-switcher.js */
     .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:6px;font-family:var(--font-body);font-weight:600;font-size:13px;text-decoration:none;cursor:pointer;border:1.5px solid transparent;transition:all .2s;line-height:1;white-space:nowrap}
     .btn-ghost{color:var(--ink);border-color:var(--border);background:transparent}
     .btn-ghost:hover{border-color:var(--ink)}
@@ -296,11 +293,7 @@
     <span id="bc-name">—</span>
   </div>
   <div class="nav-right">
-    <div class="lang-sw">
-      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" data-lang="it" onclick="setLang('it')">IT</button>
-      <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
-    </div>
+    <div id="lang-sw"></div>
     <div id="nav-auth-logged-out">
       <a href="login.html" class="btn btn-ghost btn-sm" data-i18n="nav_login"></a>
       <a href="signup.html" class="btn btn-primary btn-sm" data-i18n="nav_signup"></a>
@@ -486,6 +479,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="supabase.js"></script>
+<script src="lang-switcher.js"></script>
 <script src="auth.js"></script>
 <script>
 /* ══════════════════════════════════════════════
@@ -707,7 +701,7 @@ function t(k,...a){ const v=LANGS[S.lang][k]||LANGS.en[k]; return typeof v==='fu
 function setLang(l){ if(!LANGS[l])return; S.lang=l; localStorage.setItem('cf_lang',l); renderAll(); }
 function applyI18n(){
   document.documentElement.lang=S.lang;
-  document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===S.lang));
+  LangSwitcher.update(S.lang);
   document.querySelectorAll('[data-i18n]').forEach(el=>{ const v=LANGS[S.lang][el.getAttribute('data-i18n')]; if(v&&typeof v==='string') el.textContent=v; });
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ const v=LANGS[S.lang][el.getAttribute('data-i18n-ph')]; if(v) el.placeholder=v; });
 }
@@ -1122,6 +1116,7 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeModal(); clo
 /* ══════════════════════════════════════════════
    BOOT
 ══════════════════════════════════════════════ */
+LangSwitcher.init('lang-sw', S.lang, setLang);
 Auth.applyNavState();
 renderAll();
 </script>

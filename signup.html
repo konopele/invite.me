@@ -10,6 +10,7 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="supabase.js"></script>
+  <script src="lang-switcher.js"></script>
   <script src="auth.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,12 +43,7 @@
     .btn-primary { background: var(--rust); color: #fff; border-color: var(--rust); }
     .btn-primary:hover { background: var(--rust-dim); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,74,43,0.3); }
 
-    /* LANG SWITCHER */
-    .lang-switcher { display: flex; align-items: center; background: var(--cream); border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; flex-shrink: 0; }
-    .lang-btn { padding: 6px 12px; font-family: var(--font-body); font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--muted); background: transparent; border: none; cursor: pointer; transition: all 0.18s; border-right: 1px solid var(--border); line-height: 1.5; }
-    .lang-btn:last-child { border-right: none; }
-    .lang-btn:hover { color: var(--ink); background: rgba(201,74,43,0.07); }
-    .lang-btn.active { background: var(--rust); color: #fff; }
+    /* LANG SWITCHER — styles injected by lang-switcher.js */
 
     /* MAIN LAYOUT — signup has form on LEFT, panel on RIGHT */
     .auth-layout { flex: 1; display: grid; grid-template-columns: 1fr 1fr; }
@@ -265,11 +261,7 @@
   <nav>
     <a href="index.html" class="nav-logo">Codice<span>Facile</span></a>
     <div class="nav-right">
-      <div class="lang-switcher" role="group" aria-label="Language">
-        <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
-        <button class="lang-btn" data-lang="it" onclick="setLang('it')">IT</button>
-        <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
-      </div>
+      <div id="lang-sw"></div>
       <!-- Logged out -->
       <div id="nav-auth-logged-out">
         <a href="index.html" class="btn btn-ghost">← Back</a>
@@ -563,9 +555,7 @@ function applyLang() {
     if (HTML_KEYS.has(key)) el.innerHTML = d[key];
     else el.textContent = d[key];
   });
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-  });
+  LangSwitcher.update(lang);
 }
 
 // ── Password strength ─────────────────────────────────────
@@ -689,6 +679,7 @@ function showGoogleError() {
 }
 
 // ── Boot ──────────────────────────────────────────────────
+LangSwitcher.init('lang-sw', lang, setLang);
 applyLang();
 Auth.applyNavState();
 

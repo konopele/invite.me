@@ -34,10 +34,7 @@
     .nav-search:focus{border-color:var(--rust);box-shadow:0 0 0 3px rgba(201,74,43,.1)}
     .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;color:var(--muted)}
     .nav-right{display:flex;gap:8px;align-items:center;flex-shrink:0}
-    .lang-switcher{display:flex;background:var(--cream);border:1.5px solid var(--border);border-radius:7px;overflow:hidden}
-    .lang-btn{padding:5px 11px;font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--muted);background:transparent;border:none;cursor:pointer;transition:all .15s;border-right:1px solid var(--border);line-height:1.6}
-    .lang-btn:last-child{border-right:none}
-    .lang-btn.active{background:var(--rust);color:#fff}
+    /* LANG SWITCHER — styles injected by lang-switcher.js */
     .btn{display:inline-flex;align-items:center;gap:5px;padding:8px 18px;border-radius:6px;font-family:var(--font-body);font-weight:600;font-size:13px;text-decoration:none;cursor:pointer;border:1.5px solid transparent;transition:all .2s;line-height:1}
     .btn-ghost{color:var(--ink);border-color:var(--border);background:transparent}
     .btn-ghost:hover{border-color:var(--ink)}
@@ -156,11 +153,7 @@
     </div>
   </div>
   <div class="nav-right">
-    <div class="lang-switcher">
-      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" data-lang="it" onclick="setLang('it')">IT</button>
-      <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
-    </div>
+    <div id="lang-sw"></div>
     <div id="nav-auth-logged-out">
       <a href="login.html" class="btn btn-ghost" data-i18n="nav_login"></a>
       <a href="signup.html" class="btn btn-primary" data-i18n="nav_signup"></a>
@@ -199,6 +192,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="supabase.js"></script>
+<script src="lang-switcher.js"></script>
 <script src="auth.js"></script>
 <script>
 // ════════════════════════════════════════════
@@ -346,7 +340,7 @@ function applyStaticI18n(){
     else el.textContent=t(k);
   });
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ el.placeholder=t(el.getAttribute('data-i18n-ph')); });
-  document.querySelectorAll('[data-lang]').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-lang')===state.lang));
+  LangSwitcher.update(state.lang);
   document.querySelectorAll('#sort-sel option[data-i18n]').forEach(o=>o.textContent=t(o.getAttribute('data-i18n')));
 }
 
@@ -442,6 +436,7 @@ document.getElementById('search-input').addEventListener('input',e=>{
 });
 document.getElementById('sort-sel').addEventListener('change',e=>{ state.sort=e.target.value; render(); });
 
+LangSwitcher.init('lang-sw', state.lang, setLang);
 render();
 Auth.applyNavState();
 </script>
