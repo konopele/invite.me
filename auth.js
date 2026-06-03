@@ -1,63 +1,140 @@
 /**
- * auth.js — CodiceFacile shared auth state
- * -----------------------------------------
- * Reads/writes session from localStorage.
- * When you add a real backend, swap the localStorage calls
- * for API calls here — all pages update automatically.
+ * auth.js — Supabase-backed auth module
  *
- * Keys stored:
- *   cf_user_name    — display name
- *   cf_user_email   — email address
- *   cf_user_picture — avatar URL (may be empty)
- *   cf_google_token — raw Google ID token (demo only)
+ * getUser() reads synchronously from localStorage cache so nav renders
+ * without a flash. All write operations (login/signup/logout) are async.
+ * Pages keep their existing synchronous boot sequences unchanged.
  */
-
 const Auth = (() => {
 
-  // ── Read ────────────────────────────────────────────────
+  // ── Session cache ──────────────────────────────────────────────────────────
+  // Supabase persists the session in localStorage under sb-*-auth-token.
+  // Read it synchronously so applyNavState() works immediately on page load.
+  let _user = _readCache();
+
+  function _readCache() {
+    try {
+      const key = Object.keys(localStorage).find(
+        k => k.startsWith('sb-') && k.endsWith('-auth-token')
+      );
+      if (!key) return null;
+      const s = JSON.parse(localStorage.getItem(key) || 'null');
+      return s?.user ?? null;
+    } catch { return null; }
+  }
+
+  // Validate + refresh session in background; keep _user current
+  SupabaseClient.auth.getSession().then(({ data: { session } }) => {
+    _user = session?.user ?? null;
+  });
+  SupabaseClient.auth.onAuthStateChange((_event, session) => {
+    _user = session?.user ?? null;
+  });
+
+  // ── Read ───────────────────────────────────────────────────────────────────
   function getUser() {
-    const name = localStorage.getItem('cf_user_name');
-    if (!name) return null;
+    if (!_user) return null;
+    const m = _user.user_metadata || {};
     return {
-      name:    name,
-      email:   localStorage.getItem('cf_user_email')   || '',
-      picture: localStorage.getItem('cf_user_picture') || '',
-      token:   localStorage.getItem('cf_google_token') || '',
-      source:  localStorage.getItem('cf_user_source')  || '',
+      name:    m.full_name || m.name || _user.phone || _user.email?.split('@')[0] || '',
+      email:   _user.email  || '',
+      phone:   _user.phone  || '',
+      picture: m.avatar_url || m.picture || '',
+      source:  m.source     || '',
     };
   }
 
-  function isLoggedIn() {
-    return !!getUser();
+  function isLoggedIn() { return !!_user; }
+
+  // ── Email / password ───────────────────────────────────────────────────────
+  async function signupEmail(firstName, lastName, email, password, source) {
+    const { error } = await SupabaseClient.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: `${firstName} ${lastName}`.trim(),
+          source: source || window.location.hostname,
+        },
+      },
+    });
+    return error?.message ?? null; // null = success
   }
 
-  // ── Write ───────────────────────────────────────────────
-  function saveUser(payload) {
-    localStorage.setItem('cf_user_name',    payload.name);
-    localStorage.setItem('cf_user_email',   payload.email);
-    localStorage.setItem('cf_user_picture', payload.picture || '');
-    localStorage.setItem('cf_google_token', payload.token   || '');
-    localStorage.setItem('cf_user_source',  payload.source  || window.location.hostname);
+  async function loginEmail(email, password) {
+    const { error } = await SupabaseClient.auth.signInWithPassword({ email, password });
+    return error?.message ?? null;
   }
 
-  function logout() {
-    ['cf_user_name','cf_user_email','cf_user_picture','cf_google_token','cf_user_source']
-      .forEach(k => localStorage.removeItem(k));
-    // Also sign out from Google so the One-Tap prompt reappears on next login
-    if (window.google?.accounts?.id) {
-      google.accounts.id.disableAutoSelect();
+  // ── Google OAuth (Supabase redirect flow) ──────────────────────────────────
+  async function loginGoogle() {
+    const { error } = await SupabaseClient.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin + '/explore.html',
+        queryParams: { prompt: 'select_account' },
+      },
+    });
+    return error?.message ?? null;
+  }
+
+  // ── Phone OTP ──────────────────────────────────────────────────────────────
+  async function sendPhoneOtp(phone) {
+    const { error } = await SupabaseClient.auth.signInWithOtp({ phone });
+    return error?.message ?? null;
+  }
+
+  async function verifyPhoneOtp(phone, token) {
+    const { error } = await SupabaseClient.auth.verifyOtp({
+      phone, token, type: 'sms',
+    });
+    return error?.message ?? null;
+  }
+
+  // ── Telegram (Edge Function verifies hash → returns magic link) ────────────
+  async function loginTelegram(tgUser) {
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/functions/v1/verify-telegram`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_ANON}`,
+          },
+          body: JSON.stringify({ ...tgUser, source: window.location.hostname }),
+        }
+      );
+      const json = await res.json();
+      if (json.error) return json.error;
+      // Edge Function returns a Supabase magic link — redirect into it
+      window.location.href = json.action_link;
+      return null;
+    } catch (e) {
+      return e.message;
     }
+  }
+
+  // ── VK OAuth (redirect flow → vk-callback.html → Edge Function) ───────────
+  function loginVK() {
+    if (!window.VK_APP_ID) {
+      console.error('VK_APP_ID not configured');
+      return 'VK app not configured';
+    }
+    const redirect = encodeURIComponent(window.location.origin + '/vk-callback.html');
+    window.location.href =
+      `https://oauth.vk.com/authorize?client_id=${window.VK_APP_ID}` +
+      `&display=page&redirect_uri=${redirect}&scope=email&response_type=code&v=5.199`;
+  }
+
+  // ── Logout ─────────────────────────────────────────────────────────────────
+  async function logout() {
+    await SupabaseClient.auth.signOut();
+    if (window.google?.accounts?.id) google.accounts.id.disableAutoSelect();
     window.location.href = 'index.html';
   }
 
-  // ── Nav helpers ─────────────────────────────────────────
-  // Call this once per page to wire up the standard nav.
-  // Expects these elements to exist with these IDs:
-  //   #nav-auth-logged-out  — wrapper shown when logged out  (login + signup btns)
-  //   #nav-auth-logged-in   — wrapper shown when logged in   (avatar + name + logout)
-  //   #nav-user-name        — text node for name
-  //   #nav-user-avatar      — <img> or emoji div for avatar
-  //   #nav-logout-btn       — logout button/link
+  // ── Nav state ──────────────────────────────────────────────────────────────
   function applyNavState() {
     const user = getUser();
     const out = document.getElementById('nav-auth-logged-out');
@@ -67,10 +144,8 @@ const Auth = (() => {
     if (user) {
       out.style.display = 'none';
       inn.style.display = 'flex';
-
       const nameEl = document.getElementById('nav-user-name');
-      if (nameEl) nameEl.textContent = user.name.split(' ')[0]; // first name only
-
+      if (nameEl) nameEl.textContent = user.name.split(' ')[0];
       const avatarEl = document.getElementById('nav-user-avatar');
       if (avatarEl) {
         if (user.picture) {
@@ -78,7 +153,7 @@ const Auth = (() => {
           avatarEl.style.backgroundSize  = 'cover';
           avatarEl.textContent = '';
         } else {
-          avatarEl.textContent = user.name.charAt(0).toUpperCase();
+          avatarEl.textContent = (user.name.charAt(0) || '?').toUpperCase();
         }
       }
     } else {
@@ -87,28 +162,19 @@ const Auth = (() => {
     }
 
     const logoutBtn = document.getElementById('nav-logout-btn');
-    if (logoutBtn) logoutBtn.addEventListener('click', (e) => { e.preventDefault(); logout(); });
+    if (logoutBtn) logoutBtn.onclick = e => { e.preventDefault(); logout(); };
   }
 
-  // ── Email auth ──────────────────────────────────────────
-  function signupEmail(firstName, lastName, email, password, source) {
-    const accounts = JSON.parse(localStorage.getItem('cf_accounts') || '{}');
-    const key = email.toLowerCase();
-    if (accounts[key]) return false; // already registered
-    const src = source || window.location.hostname;
-    accounts[key] = { name: (firstName + ' ' + lastName).trim(), password, source: src };
-    localStorage.setItem('cf_accounts', JSON.stringify(accounts));
-    saveUser({ name: accounts[key].name, email: key, picture: '', source: src });
-    return true;
-  }
+  // Legacy shim — kept so old pages that still call saveUser() don't crash
+  function saveUser() {}
 
-  function loginEmail(email, password) {
-    const accounts = JSON.parse(localStorage.getItem('cf_accounts') || '{}');
-    const acc = accounts[email.toLowerCase()];
-    if (!acc || acc.password !== password) return false;
-    saveUser({ name: acc.name, email: email.toLowerCase(), picture: '' });
-    return true;
-  }
-
-  return { getUser, isLoggedIn, saveUser, logout, applyNavState, signupEmail, loginEmail };
+  return {
+    getUser, isLoggedIn,
+    signupEmail, loginEmail,
+    loginGoogle,
+    sendPhoneOtp, verifyPhoneOtp,
+    loginTelegram, loginVK,
+    logout, applyNavState,
+    saveUser,
+  };
 })();

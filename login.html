@@ -201,6 +201,29 @@
     .form-error { display: none; font-size: 13px; color: var(--rust); background: rgba(201,74,43,0.08); border: 1px solid rgba(201,74,43,0.2); border-radius: 6px; padding: 10px 14px; margin-bottom: 16px; }
     .form-error.show { display: block; }
 
+    /* Method tabs */
+    .method-tabs { display: flex; gap: 6px; margin-bottom: 20px; }
+    .method-tab { flex: 1; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 8px; background: transparent; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all .18s; }
+    .method-tab:hover { border-color: var(--ink); color: var(--ink); }
+    .method-tab.active { border-color: var(--rust); background: rgba(201,74,43,.07); color: var(--rust); }
+    .method-panel { display: none; }
+    .method-panel.active { display: block; }
+
+    /* Phone OTP */
+    .phone-wrap { display: flex; gap: 8px; }
+    .phone-prefix { display: flex; align-items: center; padding: 11px 12px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--cream); font-size: 14px; font-weight: 600; white-space: nowrap; }
+    .phone-wrap input { flex: 1; }
+    .otp-input { letter-spacing: .3em; font-size: 22px; font-family: var(--font-mono); text-align: center; }
+    .otp-back { background: none; border: none; color: var(--muted); font-size: 13px; cursor: pointer; padding: 6px 0; text-decoration: underline; }
+    .otp-back:hover { color: var(--rust); }
+    .otp-hint { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+
+    /* VK button colour */
+    .btn-social.vk { border-color: #0077ff22; }
+    .btn-social.vk:hover { border-color: #0077ff; }
+    .btn-social.tg { border-color: #229ED922; }
+    .btn-social.tg:hover { border-color: #229ED9; }
+
     /* Nav logged-in state */
     #nav-auth-logged-out { display: flex; gap: 10px; align-items: center; }
     #nav-auth-logged-in  { display: none; gap: 10px; align-items: center; }
@@ -308,49 +331,87 @@
           No account? <a href="signup.html" data-i18n="login_signup_link">Sign up free →</a>
         </p>
 
-        <!-- Google Sign-In -->
+        <!-- Social buttons -->
         <div class="social-btns">
-          <button class="btn-social" id="google-btn-login" type="button">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-            </svg>
+          <button class="btn-social" id="google-btn-login" type="button" onclick="handleGoogle()">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
             <span data-i18n="social_google">Continue with Google</span>
+          </button>
+          <button class="btn-social tg" id="tg-btn-login" type="button" onclick="handleTelegram()">
+            <svg viewBox="0 0 24 24" fill="#229ED9"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.88 13.47l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.834.946z"/></svg>
+            <span data-i18n="social_telegram">Continue with Telegram</span>
+          </button>
+          <button class="btn-social vk" id="vk-btn-login" type="button" onclick="handleVK()">
+            <svg viewBox="0 0 24 24" fill="#0077FF"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.677-1.253.677-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4 8.408 4 7.932c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.677.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.767c-.068-1.186-.695-1.287-.695-1.71 0-.204.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.762-.491h1.744c.525 0 .643.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.49-.085.745-.576.745z"/></svg>
+            <span data-i18n="social_vk">Continue with VK</span>
           </button>
         </div>
 
-        <div class="divider"><span data-i18n="or_email">or with email</span></div>
+        <!-- Hidden Telegram widget (loaded dynamically when needed) -->
+        <div id="tg-widget-container" style="display:none"></div>
 
-        <!-- Email/password form -->
-        <form id="login-form" novalidate onsubmit="handleLogin(event)">
-          <div class="field" id="field-email">
-            <label for="email" data-i18n="label_email">Email address</label>
-            <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" />
-            <span class="field-error" data-i18n="err_email">Please enter a valid email address.</span>
-          </div>
+        <div class="divider"><span data-i18n="or_continue">or continue with</span></div>
 
-          <div class="field" id="field-password">
-            <div class="field-row">
-              <label for="password" data-i18n="label_password">Password</label>
-              <a href="#" class="forgot-link" data-i18n="forgot_link">Forgot password?</a>
+        <!-- Method tabs -->
+        <div class="method-tabs">
+          <button class="method-tab active" id="tab-email" onclick="switchMethod('email')" data-i18n="tab_email">✉️ Email</button>
+          <button class="method-tab" id="tab-phone" onclick="switchMethod('phone')" data-i18n="tab_phone">📱 Phone</button>
+        </div>
+
+        <!-- ── Email panel ── -->
+        <div class="method-panel active" id="panel-email">
+          <form id="login-form" novalidate onsubmit="handleLogin(event)">
+            <div class="field" id="field-email">
+              <label for="email" data-i18n="label_email">Email address</label>
+              <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" />
+              <span class="field-error" data-i18n="err_email">Please enter a valid email address.</span>
             </div>
-            <div class="password-wrap">
-              <input type="password" id="password" name="password" autocomplete="current-password" placeholder="••••••••" />
-              <button type="button" class="toggle-pw" onclick="togglePw('password', this)" aria-label="Show/hide password">👁</button>
+            <div class="field" id="field-password">
+              <div class="field-row">
+                <label for="password" data-i18n="label_password">Password</label>
+                <a href="#" class="forgot-link" data-i18n="forgot_link">Forgot password?</a>
+              </div>
+              <div class="password-wrap">
+                <input type="password" id="password" name="password" autocomplete="current-password" placeholder="••••••••" />
+                <button type="button" class="toggle-pw" onclick="togglePw('password', this)" aria-label="Show/hide password">👁</button>
+              </div>
+              <span class="field-error" data-i18n="err_password">Password must be at least 6 characters.</span>
             </div>
-            <span class="field-error" data-i18n="err_password">Password must be at least 6 characters.</span>
-          </div>
+            <div class="remember-row">
+              <input type="checkbox" id="remember" name="remember" />
+              <label for="remember" data-i18n="label_remember">Remember me for 30 days</label>
+            </div>
+            <div class="form-error" id="login-error"></div>
+            <button type="submit" class="btn-submit" data-i18n="btn_login">Log In →</button>
+          </form>
+        </div>
 
-          <div class="remember-row">
-            <input type="checkbox" id="remember" name="remember" />
-            <label for="remember" data-i18n="label_remember">Remember me for 30 days</label>
+        <!-- ── Phone panel ── -->
+        <div class="method-panel" id="panel-phone">
+          <!-- Step 1: enter phone -->
+          <div id="phone-step-1">
+            <div class="field">
+              <label for="phone-input" data-i18n="label_phone">Phone number</label>
+              <div class="phone-wrap">
+                <span class="phone-prefix">+</span>
+                <input type="tel" id="phone-input" placeholder="7 999 123 45 67" autocomplete="tel" />
+              </div>
+            </div>
+            <div class="form-error" id="phone-error"></div>
+            <button class="btn-submit" onclick="sendOtp()" data-i18n="btn_send_code">Send code →</button>
           </div>
-
-          <div class="form-error" id="login-error"></div>
-          <button type="submit" class="btn-submit" data-i18n="btn_login">Log In →</button>
-        </form>
+          <!-- Step 2: enter OTP -->
+          <div id="phone-step-2" style="display:none">
+            <p class="otp-hint" id="otp-hint">Code sent to +<span id="phone-display"></span></p>
+            <div class="field">
+              <label for="otp-input" data-i18n="label_otp">6-digit code</label>
+              <input type="text" id="otp-input" maxlength="6" placeholder="123456" class="otp-input" inputmode="numeric" autocomplete="one-time-code" />
+            </div>
+            <div class="form-error" id="otp-error"></div>
+            <button class="btn-submit" onclick="verifyOtp()" data-i18n="btn_verify">Verify →</button>
+            <button class="otp-back" onclick="showPhoneStep(1)" data-i18n="btn_change_number">← Change number</button>
+          </div>
+        </div>
 
         <p class="form-footer">
           <span data-i18n="no_account">Don't have an account?</span>
@@ -377,173 +438,232 @@
   </footer>
 
 <script>
+// ── Config — fill in after creating bot / app ─────────────
+const TELEGRAM_BOT = '';  // e.g. 'InviteBroBot'
+window.VK_APP_ID   = ''; // e.g. '51234567'
+
 // ── Translations ──────────────────────────────────────────
 const T = {
   en: {
-    nav_signup: 'Sign up free', nav_logout: 'Log out',
-    already_explore: 'Continue to Explore →', already_logout: 'Log out and switch account',
-    panel_eyebrow: 'Community · Verified codes',
-    panel_heading: 'Welcome<br/>back to<br/><em>CodiceFacile</em>',
-    panel_sub: 'Your codes, your community — always there when you return.',
-    stat_codes: 'Active codes', stat_merchants: 'Verified merchants', stat_members: 'Community members',
-    login_title: 'Log In', login_subtitle: 'No account?', login_signup_link: 'Sign up free →',
-    social_google: 'Continue with Google', or_email: 'or with email',
-    label_email: 'Email address', label_password: 'Password', label_remember: 'Remember me for 30 days',
-    forgot_link: 'Forgot password?', btn_login: 'Log In →',
-    err_email: 'Please enter a valid email address.', err_password: 'Password must be at least 6 characters.',
-    no_account: "Don't have an account?", footer_signup_link: ' Sign up free',
-    gdpr_note: 'Your data is processed in compliance with GDPR (EU 2016/679). Read our <a href="privacy.html">Privacy Policy</a> and <a href="tos.html">Terms of Service</a>. CodiceFacile S.r.l. · Milan, Italy.',
-    footer_tos: 'Terms of Service', footer_cookies: 'Cookie settings', footer_dpo: 'Contact & DPO',
-    footer_vat: '© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901',
+    nav_signup:'Sign up free', nav_logout:'Log out',
+    already_explore:'Continue to Explore →', already_logout:'Log out and switch account',
+    panel_eyebrow:'Community · Verified codes',
+    panel_heading:'Welcome<br/>back to<br/><em>CodiceFacile</em>',
+    panel_sub:'Your codes, your community — always there when you return.',
+    stat_codes:'Active codes', stat_merchants:'Verified merchants', stat_members:'Community members',
+    login_title:'Log In', login_subtitle:'No account?', login_signup_link:'Sign up free →',
+    social_google:'Continue with Google', social_telegram:'Continue with Telegram', social_vk:'Continue with VK',
+    or_continue:'or continue with',
+    tab_email:'✉️ Email', tab_phone:'📱 Phone',
+    label_email:'Email address', label_password:'Password', label_remember:'Remember me for 30 days',
+    forgot_link:'Forgot password?', btn_login:'Log In →',
+    label_phone:'Phone number', btn_send_code:'Send code →',
+    label_otp:'6-digit code', btn_verify:'Verify →', btn_change_number:'← Change number',
+    err_email:'Please enter a valid email address.', err_password:'Password must be at least 6 characters.',
+    err_phone:'Please enter a valid phone number (digits only).', err_otp:'Invalid code — please try again.',
+    no_account:"Don't have an account?", footer_signup_link:' Sign up free',
+    gdpr_note:'Your data is processed in compliance with GDPR (EU 2016/679). Read our <a href="privacy.html">Privacy Policy</a> and <a href="tos.html">Terms of Service</a>.',
+    footer_tos:'Terms of Service', footer_cookies:'Cookie settings', footer_dpo:'Contact & DPO',
+    footer_vat:'© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901',
   },
   it: {
-    nav_signup: 'Registrati gratis', nav_logout: 'Esci',
-    already_explore: 'Vai a Esplora →', already_logout: 'Esci e cambia account',
-    panel_eyebrow: 'Community · Codici verificati',
-    panel_heading: 'Bentornato<br/>su<br/><em>CodiceFacile</em>',
-    panel_sub: 'I tuoi codici, la tua community — sempre lì quando torni.',
-    stat_codes: 'Codici attivi', stat_merchants: 'Merchant verificati', stat_members: 'Membri community',
-    login_title: 'Accedi', login_subtitle: 'Non hai un account?', login_signup_link: 'Registrati gratis →',
-    social_google: 'Continua con Google', or_email: 'oppure con email',
-    label_email: 'Indirizzo email', label_password: 'Password', label_remember: 'Ricordami per 30 giorni',
-    forgot_link: 'Password dimenticata?', btn_login: 'Accedi →',
-    err_email: 'Inserisci un indirizzo email valido.', err_password: 'La password deve contenere almeno 6 caratteri.',
-    no_account: 'Non hai un account?', footer_signup_link: ' Registrati gratis',
-    gdpr_note: 'I tuoi dati sono trattati nel rispetto del GDPR (UE 2016/679). Leggi la nostra <a href="privacy.html">Privacy Policy</a> e i <a href="tos.html">Termini di Servizio</a>. CodiceFacile S.r.l. · Milano, Italia.',
-    footer_tos: 'Termini di Servizio', footer_cookies: 'Impostazioni cookie', footer_dpo: 'Contatti & DPO',
-    footer_vat: '© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901 · I prezzi sono IVA inclusa (22%)',
+    nav_signup:'Registrati gratis', nav_logout:'Esci',
+    already_explore:'Vai a Esplora →', already_logout:'Esci e cambia account',
+    panel_eyebrow:'Community · Codici verificati',
+    panel_heading:'Bentornato<br/>su<br/><em>CodiceFacile</em>',
+    panel_sub:'I tuoi codici, la tua community — sempre lì quando torni.',
+    stat_codes:'Codici attivi', stat_merchants:'Merchant verificati', stat_members:'Membri community',
+    login_title:'Accedi', login_subtitle:'Non hai un account?', login_signup_link:'Registrati gratis →',
+    social_google:'Continua con Google', social_telegram:'Continua con Telegram', social_vk:'Continua con VK',
+    or_continue:'oppure continua con',
+    tab_email:'✉️ Email', tab_phone:'📱 Telefono',
+    label_email:'Indirizzo email', label_password:'Password', label_remember:'Ricordami per 30 giorni',
+    forgot_link:'Password dimenticata?', btn_login:'Accedi →',
+    label_phone:'Numero di telefono', btn_send_code:'Invia codice →',
+    label_otp:'Codice a 6 cifre', btn_verify:'Verifica →', btn_change_number:'← Cambia numero',
+    err_email:'Inserisci un indirizzo email valido.', err_password:'La password deve avere almeno 6 caratteri.',
+    err_phone:'Inserisci un numero valido (solo cifre).', err_otp:'Codice non valido — riprova.',
+    no_account:'Non hai un account?', footer_signup_link:' Registrati gratis',
+    gdpr_note:'I tuoi dati sono trattati nel rispetto del GDPR (UE 2016/679). Leggi la nostra <a href="privacy.html">Privacy Policy</a> e i <a href="tos.html">Termini di Servizio</a>.',
+    footer_tos:'Termini di Servizio', footer_cookies:'Impostazioni cookie', footer_dpo:'Contatti & DPO',
+    footer_vat:'© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901 · IVA inclusa (22%)',
   },
   ru: {
-    nav_signup: 'Регистрация', nav_logout: 'Выйти',
-    already_explore: 'Перейти к каталогу →', already_logout: 'Выйти и сменить аккаунт',
-    panel_eyebrow: 'Сообщество · Проверенные коды',
-    panel_heading: 'С возвращением<br/>в<br/><em>CodiceFacile</em>',
-    panel_sub: 'Ваши коды, ваше сообщество — всегда здесь.',
-    stat_codes: 'Активных кодов', stat_merchants: 'Верифицированных магазинов', stat_members: 'Участников',
-    login_title: 'Войти', login_subtitle: 'Нет аккаунта?', login_signup_link: 'Зарегистрироваться →',
-    social_google: 'Войти через Google', or_email: 'или через email',
-    label_email: 'Адрес электронной почты', label_password: 'Пароль', label_remember: 'Запомнить меня на 30 дней',
-    forgot_link: 'Забыли пароль?', btn_login: 'Войти →',
-    err_email: 'Введите корректный адрес электронной почты.', err_password: 'Пароль должен содержать минимум 6 символов.',
-    no_account: 'Нет аккаунта?', footer_signup_link: ' Зарегистрироваться',
-    gdpr_note: 'Ваши данные обрабатываются в соответствии с GDPR (ЕС 2016/679). Прочитайте нашу <a href="privacy.html">Политику конфиденциальности</a> и <a href="tos.html">Условия использования</a>. CodiceFacile S.r.l. · Милан, Италия.',
-    footer_tos: 'Условия использования', footer_cookies: 'Настройки cookie', footer_dpo: 'Контакты & DPO',
-    footer_vat: '© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901',
+    nav_signup:'Регистрация', nav_logout:'Выйти',
+    already_explore:'Перейти к каталогу →', already_logout:'Выйти и сменить аккаунт',
+    panel_eyebrow:'Сообщество · Проверенные коды',
+    panel_heading:'С возвращением<br/>в<br/><em>CodiceFacile</em>',
+    panel_sub:'Ваши коды, ваше сообщество — всегда здесь.',
+    stat_codes:'Активных кодов', stat_merchants:'Верифицированных магазинов', stat_members:'Участников',
+    login_title:'Войти', login_subtitle:'Нет аккаунта?', login_signup_link:'Зарегистрироваться →',
+    social_google:'Войти через Google', social_telegram:'Войти через Telegram', social_vk:'Войти через ВКонтакте',
+    or_continue:'или через',
+    tab_email:'✉️ Email', tab_phone:'📱 Телефон',
+    label_email:'Электронная почта', label_password:'Пароль', label_remember:'Запомнить на 30 дней',
+    forgot_link:'Забыли пароль?', btn_login:'Войти →',
+    label_phone:'Номер телефона', btn_send_code:'Отправить код →',
+    label_otp:'6-значный код', btn_verify:'Подтвердить →', btn_change_number:'← Изменить номер',
+    err_email:'Введите корректный email.', err_password:'Пароль минимум 6 символов.',
+    err_phone:'Введите корректный номер (только цифры).', err_otp:'Неверный код — попробуйте снова.',
+    no_account:'Нет аккаунта?', footer_signup_link:' Зарегистрироваться',
+    gdpr_note:'Ваши данные обрабатываются в соответствии с GDPR (ЕС 2016/679). Прочитайте нашу <a href="privacy.html">Политику конфиденциальности</a> и <a href="tos.html">Условия использования</a>.',
+    footer_tos:'Условия использования', footer_cookies:'Настройки cookie', footer_dpo:'Контакты & DPO',
+    footer_vat:'© 2026 CodiceFacile S.r.l. · P.IVA IT12345678901',
   }
 };
-
 const HTML_KEYS = new Set(['panel_heading','login_subtitle','gdpr_note','footer_vat']);
 
 function detectLang() {
-  const saved = localStorage.getItem('cf_lang');
-  if (saved && T[saved]) return saved;
-  const nav = (navigator.language || 'en').toLowerCase();
-  if (nav.startsWith('it')) return 'it';
-  if (nav.startsWith('ru')) return 'ru';
-  return 'en';
+  const s = localStorage.getItem('cf_lang');
+  if (s && T[s]) return s;
+  const n = (navigator.language||'en').toLowerCase();
+  return n.startsWith('it')?'it':n.startsWith('ru')?'ru':'en';
 }
-
 let lang = detectLang();
-
-function setLang(l) {
-  if (!T[l]) return;
-  lang = l;
-  localStorage.setItem('cf_lang', l);
-  applyLang();
-}
-
+function setLang(l) { if(!T[l])return; lang=l; localStorage.setItem('cf_lang',l); applyLang(); }
 function applyLang() {
-  const d = T[lang];
-  document.documentElement.lang = lang;
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (d[key] == null) return;
-    if (HTML_KEYS.has(key)) el.innerHTML = d[key];
-    else el.textContent = d[key];
+  const d=T[lang]; document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n'); if(d[k]==null)return;
+    if(HTML_KEYS.has(k)) el.innerHTML=d[k]; else el.textContent=d[k];
   });
   LangSwitcher.update(lang);
 }
 
+// ── Method tabs ───────────────────────────────────────────
+function switchMethod(method) {
+  document.querySelectorAll('.method-tab').forEach(t => t.classList.toggle('active', t.id === 'tab-'+method));
+  document.querySelectorAll('.method-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-'+method));
+}
+
 // ── Toggle password visibility ────────────────────────────
 function togglePw(id, btn) {
-  const input = document.getElementById(id);
-  if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
-  else { input.type = 'password'; btn.textContent = '👁'; }
+  const el=document.getElementById(id);
+  if(el.type==='password'){el.type='text'; btn.textContent='🙈';}
+  else{el.type='password'; btn.textContent='👁';}
 }
 
 // ── Email login ───────────────────────────────────────────
-function handleLogin(e) {
+async function handleLogin(e) {
   e.preventDefault();
-  let valid = true;
-
   const emailField = document.getElementById('field-email');
-  const emailVal = document.getElementById('email').value.trim();
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
+  const emailVal   = document.getElementById('email').value.trim();
+  const emailOk    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
   emailField.classList.toggle('has-error', !emailOk);
-  if (!emailOk) valid = false;
 
   const pwField = document.getElementById('field-password');
-  const pwVal = document.getElementById('password').value;
-  const pwOk = pwVal.length >= 6;
+  const pwVal   = document.getElementById('password').value;
+  const pwOk    = pwVal.length >= 6;
   pwField.classList.toggle('has-error', !pwOk);
-  if (!pwOk) valid = false;
 
-  if (!valid) return;
+  if (!emailOk || !pwOk) return;
 
   const errEl = document.getElementById('login-error');
-  if (!Auth.loginEmail(emailVal, pwVal)) {
-    errEl.textContent = lang === 'it' ? 'Email o password non corretti.' : lang === 'ru' ? 'Неверный email или пароль.' : 'Incorrect email or password.';
+  const btn   = document.querySelector('#panel-email .btn-submit');
+  btn.textContent = '…'; btn.disabled = true;
+
+  const err = await Auth.loginEmail(emailVal, pwVal);
+  if (err) {
+    errEl.textContent = lang==='ru' ? 'Неверный email или пароль.' : lang==='it' ? 'Email o password non corretti.' : 'Incorrect email or password.';
     errEl.classList.add('show');
+    btn.textContent = T[lang].btn_login; btn.disabled = false;
     return;
   }
   errEl.classList.remove('show');
-
-  const btn = document.querySelector('.btn-submit');
-  btn.textContent = '✓';
-  btn.style.background = '#4a7c59';
-  btn.disabled = true;
-  setTimeout(() => { window.location.href = 'explore.html'; }, 700);
+  btn.textContent = '✓'; btn.style.background = '#4a7c59';
+  setTimeout(() => window.location.href = 'explore.html', 700);
 }
 
-// ── Google OAuth ──────────────────────────────────────────
-const GOOGLE_CLIENT_ID = '689737842459-76irdfo55jfc9t2853bj6a2ud5qrup3d.apps.googleusercontent.com';
-let _gClient = null;
-
-function getGoogleClient() {
-  if (_gClient) return _gClient;
-  if (!window.google?.accounts?.oauth2) return null;
-  _gClient = google.accounts.oauth2.initTokenClient({
-    client_id: GOOGLE_CLIENT_ID,
-    scope: 'email profile',
-    callback: async (resp) => {
-      if (resp.error) { showGoogleError(); return; }
-      try {
-        const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-          headers: { Authorization: 'Bearer ' + resp.access_token }
-        });
-        const info = await r.json();
-        Auth.saveUser({ name: info.name, email: info.email, picture: info.picture || '' });
-        window.location.href = 'explore.html';
-      } catch { showGoogleError(); }
-    },
-  });
-  return _gClient;
-}
-
-document.getElementById('google-btn-login').addEventListener('click', () => {
-  const client = getGoogleClient();
-  if (!client) { showGoogleError(); return; }
-  client.requestAccessToken();
-});
-
-function showGoogleError() {
+// ── Google ────────────────────────────────────────────────
+async function handleGoogle() {
   const btn = document.getElementById('google-btn-login');
-  const span = btn.querySelector('span');
-  const orig = T[lang].social_google;
-  span.textContent = lang === 'it' ? 'Errore Google — riprova' : lang === 'ru' ? 'Ошибка Google — повторите' : 'Google error — please try again';
-  btn.style.borderColor = 'var(--rust)';
-  btn.style.color = 'var(--rust)';
-  setTimeout(() => { span.textContent = orig; btn.style.borderColor = ''; btn.style.color = ''; }, 3000);
+  btn.classList.add('loading');
+  const err = await Auth.loginGoogle();
+  if (err) {
+    btn.classList.remove('loading');
+    const sp = btn.querySelector('span');
+    sp.textContent = lang==='ru'?'Ошибка — повторите':lang==='it'?'Errore — riprova':'Error — please retry';
+    setTimeout(() => { sp.textContent = T[lang].social_google; }, 3000);
+  }
+  // on success: Supabase redirects to explore.html automatically
+}
+
+// ── Telegram ──────────────────────────────────────────────
+function handleTelegram() {
+  if (!TELEGRAM_BOT) { alert('Telegram bot not configured yet.'); return; }
+  // Inject the official widget script once, targeting our hidden container
+  const c = document.getElementById('tg-widget-container');
+  c.style.display = 'block';
+  if (c.querySelector('script')) return; // already injected
+  const s = document.createElement('script');
+  s.src = 'https://telegram.org/js/telegram-widget.js?22';
+  s.setAttribute('data-telegram-login', TELEGRAM_BOT);
+  s.setAttribute('data-size', 'large');
+  s.setAttribute('data-onauth', 'onTelegramAuth(user)');
+  s.setAttribute('data-request-access', 'write');
+  s.async = true;
+  c.appendChild(s);
+}
+
+window.onTelegramAuth = async function(user) {
+  const btn = document.getElementById('tg-btn-login');
+  btn.classList.add('loading');
+  const err = await Auth.loginTelegram(user);
+  if (err) {
+    btn.classList.remove('loading');
+    alert('Telegram login failed: ' + err);
+  }
+  // on success: Auth.loginTelegram redirects to action_link
+};
+
+// ── VK ────────────────────────────────────────────────────
+function handleVK() {
+  if (!window.VK_APP_ID) { alert('VK app not configured yet.'); return; }
+  Auth.loginVK();
+}
+
+// ── Phone OTP ─────────────────────────────────────────────
+let _phone = '';
+
+function showPhoneStep(n) {
+  document.getElementById('phone-step-1').style.display = n===1 ? '' : 'none';
+  document.getElementById('phone-step-2').style.display = n===2 ? '' : 'none';
+}
+
+async function sendOtp() {
+  const raw = document.getElementById('phone-input').value.replace(/\s/g,'');
+  const errEl = document.getElementById('phone-error');
+  if (!/^\d{7,15}$/.test(raw)) {
+    errEl.textContent = T[lang].err_phone; errEl.classList.add('show'); return;
+  }
+  errEl.classList.remove('show');
+  _phone = '+' + raw;
+  const btn = document.querySelector('#phone-step-1 .btn-submit');
+  btn.textContent = '…'; btn.disabled = true;
+  const err = await Auth.sendPhoneOtp(_phone);
+  btn.textContent = T[lang].btn_send_code; btn.disabled = false;
+  if (err) { errEl.textContent = err; errEl.classList.add('show'); return; }
+  document.getElementById('phone-display').textContent = _phone.slice(1);
+  showPhoneStep(2);
+}
+
+async function verifyOtp() {
+  const token  = document.getElementById('otp-input').value.trim();
+  const errEl  = document.getElementById('otp-error');
+  if (!/^\d{6}$/.test(token)) {
+    errEl.textContent = T[lang].err_otp; errEl.classList.add('show'); return;
+  }
+  errEl.classList.remove('show');
+  const btn = document.querySelector('#phone-step-2 .btn-submit');
+  btn.textContent = '…'; btn.disabled = true;
+  const err = await Auth.verifyPhoneOtp(_phone, token);
+  if (err) {
+    errEl.textContent = err; errEl.classList.add('show');
+    btn.textContent = T[lang].btn_verify; btn.disabled = false;
+    return;
+  }
+  btn.textContent = '✓'; btn.style.background = '#4a7c59';
+  setTimeout(() => window.location.href = 'explore.html', 700);
 }
 
 // ── Boot ──────────────────────────────────────────────────
@@ -554,21 +674,14 @@ Auth.applyNavState();
 (function checkAlreadyLoggedIn() {
   const user = Auth.getUser();
   if (!user) return;
-
   document.getElementById('login-form-wrap').style.display = 'none';
   const banner = document.getElementById('already-in-banner');
   banner.classList.add('show');
-
   const av = document.getElementById('already-in-avatar');
-  if (user.picture) {
-    av.style.backgroundImage = `url('${user.picture}')`;
-    av.style.backgroundSize = 'cover';
-    av.textContent = '';
-  } else {
-    av.textContent = user.name.charAt(0).toUpperCase();
-  }
+  if (user.picture) { av.style.backgroundImage=`url('${user.picture}')`; av.style.backgroundSize='cover'; av.textContent=''; }
+  else av.textContent = user.name.charAt(0).toUpperCase();
   document.getElementById('already-in-name').textContent  = user.name;
-  document.getElementById('already-in-email').textContent = user.email;
+  document.getElementById('already-in-email').textContent = user.email || user.phone;
   document.getElementById('already-logout-btn').addEventListener('click', () => Auth.logout());
 })();
 </script>

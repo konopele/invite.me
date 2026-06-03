@@ -592,7 +592,7 @@ function togglePw(id, btn) {
 }
 
 // ── Email signup ──────────────────────────────────────────
-function handleSignup(e) {
+async function handleSignup(e) {
   e.preventDefault();
   let valid = true;
 
@@ -616,7 +616,10 @@ function handleSignup(e) {
   if (!valid) return;
 
   const errEl = document.getElementById('signup-error');
-  const ok = Auth.signupEmail(
+  const btn   = document.querySelector('.btn-submit');
+  btn.textContent = '…'; btn.disabled = true;
+
+  const err = await Auth.signupEmail(
     document.getElementById('firstname').value.trim(),
     document.getElementById('lastname').value.trim(),
     document.getElementById('email').value.trim(),
@@ -624,17 +627,16 @@ function handleSignup(e) {
     window.location.hostname
   );
 
-  if (!ok) {
+  if (err) {
     errEl.textContent = lang === 'it' ? 'Questa email è già registrata. Accedi.' : lang === 'ru' ? 'Этот email уже зарегистрирован. Войдите.' : 'This email is already registered. Please log in.';
     errEl.classList.add('show');
+    btn.textContent = lang === 'ru' ? 'Создать аккаунт →' : lang === 'it' ? 'Crea account →' : 'Create account →';
+    btn.disabled = false;
     return;
   }
   errEl.classList.remove('show');
-
-  const btn = document.querySelector('.btn-submit');
   btn.textContent = lang === 'it' ? '✓ Account creato!' : lang === 'ru' ? '✓ Аккаунт создан!' : '✓ Account created!';
   btn.style.background = '#4a7c59';
-  btn.disabled = true;
   setTimeout(() => { window.location.href = 'explore.html'; }, 800);
 }
 
