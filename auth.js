@@ -23,6 +23,7 @@ const Auth = (() => {
       email:   localStorage.getItem('cf_user_email')   || '',
       picture: localStorage.getItem('cf_user_picture') || '',
       token:   localStorage.getItem('cf_google_token') || '',
+      source:  localStorage.getItem('cf_user_source')  || '',
     };
   }
 
@@ -36,10 +37,11 @@ const Auth = (() => {
     localStorage.setItem('cf_user_email',   payload.email);
     localStorage.setItem('cf_user_picture', payload.picture || '');
     localStorage.setItem('cf_google_token', payload.token   || '');
+    localStorage.setItem('cf_user_source',  payload.source  || window.location.hostname);
   }
 
   function logout() {
-    ['cf_user_name','cf_user_email','cf_user_picture','cf_google_token']
+    ['cf_user_name','cf_user_email','cf_user_picture','cf_google_token','cf_user_source']
       .forEach(k => localStorage.removeItem(k));
     // Also sign out from Google so the One-Tap prompt reappears on next login
     if (window.google?.accounts?.id) {
@@ -89,13 +91,14 @@ const Auth = (() => {
   }
 
   // ── Email auth ──────────────────────────────────────────
-  function signupEmail(firstName, lastName, email, password) {
+  function signupEmail(firstName, lastName, email, password, source) {
     const accounts = JSON.parse(localStorage.getItem('cf_accounts') || '{}');
     const key = email.toLowerCase();
     if (accounts[key]) return false; // already registered
-    accounts[key] = { name: (firstName + ' ' + lastName).trim(), password };
+    const src = source || window.location.hostname;
+    accounts[key] = { name: (firstName + ' ' + lastName).trim(), password, source: src };
     localStorage.setItem('cf_accounts', JSON.stringify(accounts));
-    saveUser({ name: accounts[key].name, email: key, picture: '' });
+    saveUser({ name: accounts[key].name, email: key, picture: '', source: src });
     return true;
   }
 
