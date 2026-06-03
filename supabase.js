@@ -1,5 +1,5 @@
-/**
- * supabase.js — CodiceFacile Supabase client
+﻿/**
+ * supabase.js — InviteBro Supabase client
  * -------------------------------------------
  * Single source of truth for the Supabase connection.
  * All pages load this before auth.js.
