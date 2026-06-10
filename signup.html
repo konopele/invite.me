@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>InviteBro — Sign Up Free</title>
+  <title>Регистрация — InviteBro</title>
+  <meta name="description" content="Создайте бесплатный аккаунт InviteBro и начните делиться реферальными кодами. Зарабатывайте бонусы за каждого приглашённого друга." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://invitebro.ru/signup.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -625,7 +628,7 @@ async function handleSignup(e) {
   const btn   = document.querySelector('.btn-submit');
   btn.textContent = '…'; btn.disabled = true;
 
-  const err = await Auth.signupEmail(
+  const result = await Auth.signupEmail(
     document.getElementById('firstname').value.trim(),
     document.getElementById('lastname').value.trim(),
     document.getElementById('email').value.trim(),
@@ -633,15 +636,32 @@ async function handleSignup(e) {
     window.location.hostname
   );
 
-  if (err) {
-    errEl.textContent = lang === 'it' ? 'Questa email è già registrata. Accedi.' : lang === 'ru' ? 'Этот email уже зарегистрирован. Войдите.' : 'This email is already registered. Please log in.';
+  if (result?.error) {
+    const msg = result.error.includes('already registered') || result.error.includes('already been registered')
+      ? (lang==='ru' ? 'Этот email уже зарегистрирован. Войдите.' : lang==='it' ? 'Email già registrata. Accedi.' : 'Email already registered. Please log in.')
+      : result.error;
+    errEl.textContent = msg;
     errEl.classList.add('show');
-    btn.textContent = lang === 'ru' ? 'Создать аккаунт →' : lang === 'it' ? 'Crea account →' : 'Create account →';
+    btn.textContent = lang==='ru' ? 'Создать аккаунт →' : lang==='it' ? 'Crea account →' : 'Create account →';
     btn.disabled = false;
     return;
   }
+
+  if (result?.confirm) {
+    // Email confirmation required
+    errEl.classList.remove('show');
+    document.getElementById('signup-form-wrap').innerHTML =
+      `<div style="text-align:center;padding:32px 0">
+        <div style="font-size:48px;margin-bottom:16px">📬</div>
+        <h2 style="font-family:var(--font-display);font-size:26px;font-weight:900;margin-bottom:12px">${lang==='ru'?'Проверьте почту':lang==='it'?'Controlla la tua email':'Check your email'}</h2>
+        <p style="color:var(--muted);font-size:14px;line-height:1.6">${lang==='ru'?'Мы отправили ссылку для подтверждения на <strong>'+document.getElementById('email')?.value+'</strong>. Нажмите на неё, чтобы активировать аккаунт.':lang==='it'?'Abbiamo inviato un link di conferma a <strong>'+document.getElementById('email')?.value+'</strong>.':'We sent a confirmation link to <strong>'+document.getElementById('email')?.value+'</strong>. Click it to activate your account.'}</p>
+        <a href="login.html" style="display:inline-block;margin-top:24px;color:var(--rust);font-weight:600;text-decoration:none">← ${lang==='ru'?'Войти после подтверждения':lang==='it'?'Accedi dopo la conferma':'Go to login after confirming'}</a>
+      </div>`;
+    return;
+  }
+
   errEl.classList.remove('show');
-  btn.textContent = lang === 'it' ? '✓ Account creato!' : lang === 'ru' ? '✓ Аккаунт создан!' : '✓ Account created!';
+  btn.textContent = lang==='it' ? '✓ Account creato!' : lang==='ru' ? '✓ Аккаунт создан!' : '✓ Account created!';
   btn.style.background = '#4a7c59';
   setTimeout(() => { window.location.href = 'explore.html'; }, 800);
 }

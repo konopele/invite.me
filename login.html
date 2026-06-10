@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>InviteBro — Log In</title>
+  <title>Войти — InviteBro</title>
+  <meta name="description" content="Войдите в InviteBro через Google, Telegram, ВКонтакте или email, чтобы делиться кодами и зарабатывать на реферальных программах." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://invitebro.ru/login.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -568,7 +571,13 @@ async function handleLogin(e) {
 
   const err = await Auth.loginEmail(emailVal, pwVal);
   if (err) {
-    errEl.textContent = lang==='ru' ? 'Неверный email или пароль.' : lang==='it' ? 'Email o password non corretti.' : 'Incorrect email or password.';
+    // Map common Supabase errors to friendly messages
+    const msg = err.includes('Invalid login') || err.includes('invalid_credentials')
+      ? (lang==='ru' ? 'Неверный email или пароль.' : lang==='it' ? 'Email o password non corretti.' : 'Incorrect email or password.')
+      : err.includes('Email not confirmed')
+        ? (lang==='ru' ? 'Подтвердите email — проверьте почту.' : lang==='it' ? 'Conferma la tua email.' : 'Please confirm your email first.')
+        : err;
+    errEl.textContent = msg;
     errEl.classList.add('show');
     btn.textContent = T[lang].btn_login; btn.disabled = false;
     return;

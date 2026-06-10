@@ -48,7 +48,7 @@ const Auth = (() => {
 
   // ── Email / password ───────────────────────────────────────────────────────
   async function signupEmail(firstName, lastName, email, password, source) {
-    const { error } = await SupabaseClient.auth.signUp({
+    const { data, error } = await SupabaseClient.auth.signUp({
       email,
       password,
       options: {
@@ -58,7 +58,10 @@ const Auth = (() => {
         },
       },
     });
-    return error?.message ?? null; // null = success
+    if (error) return { error: error.message };
+    // Supabase returns session=null when email confirmation is required
+    if (!data.session) return { confirm: true };
+    return null; // null = fully signed in
   }
 
   async function loginEmail(email, password) {
