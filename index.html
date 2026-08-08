@@ -239,6 +239,7 @@
       .btn-ghost { display: none; }
     }
   </style>
+  <link rel="stylesheet" href="win95.css" />
 </head>
 <body>
 
@@ -251,7 +252,22 @@
     </div>
   </div>
 
-  <!-- NAV -->
+  <!-- WIN95 WINDOW WRAPPER -->
+  <div class="w95-desktop">
+  <div class="w95-window">
+
+  <!-- TITLE BAR -->
+  <div class="w95-titlebar">
+    <span class="w95-titlebar-icon">💾</span>
+    <span class="w95-titlebar-text">InviteBro — Реферальные коды и инвайты</span>
+    <div class="w95-titlebar-btns">
+      <button class="w95-tb-btn" onclick="alert('Нельзя свернуть!')">_</button>
+      <button class="w95-tb-btn">□</button>
+      <button class="w95-tb-btn" onclick="alert('Нельзя закрыть InviteBro 😈')">✕</button>
+    </div>
+  </div>
+
+  <!-- NAV (restyled as Win95 menu bar) -->
   <nav>
     <a href="#" class="nav-logo">Invite<span>Bro</span></a>
     <ul class="nav-links">
@@ -276,6 +292,19 @@
       </div>
     </div>
   </nav>
+
+  <!-- ADDRESS BAR -->
+  <div class="w95-addressbar">
+    <button class="w95-toolbar-btn">◀ Назад</button>
+    <button class="w95-toolbar-btn">▶ Вперёд</button>
+    <div class="w95-addr-sep"></div>
+    <span class="w95-addr-label">Адрес:</span>
+    <div class="w95-addr-field">https://invitebro.ru/</div>
+    <button class="w95-toolbar-btn">Перейти</button>
+  </div>
+
+  <!-- SCROLLABLE CONTENT -->
+  <div class="w95-content-scroll">
 
   <!-- HERO -->
   <section class="hero">
@@ -510,6 +539,26 @@
       <div class="vat-notice" data-i18n="footer_vat"></div>
     </div>
   </footer>
+
+  </div><!-- /w95-content-scroll -->
+
+  <!-- STATUS BAR -->
+  <div class="w95-statusbar">
+    <div class="w95-status-pane" id="w95-status-main">Готово</div>
+    <div class="w95-status-pane fixed" style="flex:0 0 220px">12,400+ кодов · 840+ магазинов</div>
+    <div class="w95-status-pane fixed" style="flex:0 0 28px;text-align:center">🔒</div>
+  </div>
+
+  </div><!-- /w95-window -->
+  </div><!-- /w95-desktop -->
+
+  <!-- TASKBAR -->
+  <div class="w95-taskbar">
+    <button class="w95-start">🖼 Пуск</button>
+    <div class="w95-taskbar-sep"></div>
+    <div class="w95-taskbar-item">💾 InviteBro — реферальные коды</div>
+    <div class="w95-clock" id="w95-clock">00:00</div>
+  </div>
 
 <script type="application/ld+json">
 {
@@ -826,6 +875,18 @@ document.querySelectorAll('.step-card, .cat-pill, .trust-item, .plan-card').forE
 LangSwitcher.init('lang-sw', lang, setLang);
 applyLang();
 Auth.applyNavState();
+
+// Win95 clock
+(function() {
+  function tick() {
+    const now = new Date();
+    const t = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+    const el = document.getElementById('w95-clock');
+    if (el) el.textContent = t;
+  }
+  tick();
+  setInterval(tick, 10000);
+})();
 </script>
 </body>
 </html>

@@ -255,9 +255,140 @@
       footer { flex-direction: column; gap: 12px; text-align: center; }
       .footer-links { flex-wrap: wrap; justify-content: center; }
     }
+
+    /* ── WIN95 LOGIN OVERRIDES ── */
+    .auth-layout { background: #c0c0c0 !important; }
+    .auth-panel {
+      background: #000080 !important; color: #fff !important;
+      padding: 20px !important; border-right: 2px solid; border-color: #fff #404040 #404040 #fff !important;
+    }
+    .auth-panel::before { display: none !important; }
+    .panel-bg-text { display: none !important; }
+    .panel-eyebrow { color: #ffff00 !important; font-family: 'MS Sans Serif', Arial, sans-serif !important; font-size: 11px !important; font-weight: bold !important; letter-spacing: 0 !important; text-transform: none !important; }
+    .panel-eyebrow::before { display: none !important; }
+    .panel-heading { font-family: 'MS Sans Serif', Arial, sans-serif !important; font-size: 18px !important; font-weight: bold !important; letter-spacing: 0 !important; color: #fff !important; }
+    .panel-heading em { color: #ffff00 !important; font-style: normal !important; }
+    .panel-sub { color: #c0c0c0 !important; font-size: 11px !important; font-family: 'MS Sans Serif', Arial, sans-serif !important; }
+    .panel-stats { gap: 8px !important; }
+    .panel-stat {
+      border: 2px solid !important; border-color: #fff #404040 #404040 #fff !important;
+      background: rgba(255,255,255,0.08) !important; border-radius: 0 !important;
+      padding: 8px 12px !important; gap: 8px !important;
+    }
+    .panel-stat-icon { background: #1084d0 !important; border-radius: 0 !important; width: 32px !important; height: 32px !important; font-size: 16px !important; border: 1px solid rgba(255,255,255,0.3) !important; }
+    .panel-stat-num { font-family: 'MS Sans Serif', Arial, sans-serif !important; font-size: 16px !important; color: #fff !important; }
+    .panel-stat-label { font-size: 10px !important; color: #c0c0c0 !important; }
+
+    .auth-form-wrap { background: #c0c0c0 !important; padding: 20px !important; display: flex; align-items: flex-start !important; justify-content: center !important; }
+    .auth-form-inner {
+      width: 100%; max-width: 400px;
+      opacity: 1 !important; animation: none !important;
+      background: #c0c0c0;
+      border: 2px solid; border-color: #fff #404040 #404040 #fff;
+      box-shadow: inset -1px -1px #000, inset 1px 1px #dfdfdf;
+      padding: 0;
+    }
+    .auth-form-inner-titlebar {
+      background: linear-gradient(90deg, #000080, #1084d0);
+      color: #fff; font-size: 11px; font-weight: bold;
+      padding: 3px 6px; display: flex; align-items: center; gap: 4px;
+    }
+    .auth-form-inner-body { padding: 16px; }
+    .form-title { font-family: 'MS Sans Serif', Arial, sans-serif !important; font-size: 14px !important; font-weight: bold !important; letter-spacing: 0 !important; margin-bottom: 4px !important; }
+    .form-subtitle { font-size: 11px !important; color: #000 !important; margin-bottom: 16px !important; }
+    .form-subtitle a { color: #000080 !important; text-decoration: underline !important; font-weight: normal !important; }
+
+    .social-btns { gap: 4px !important; margin-bottom: 12px !important; }
+    .btn-social {
+      width: 100%; display: flex; align-items: center; justify-content: flex-start; gap: 8px;
+      padding: 4px 10px !important; border: none !important; border-radius: 0 !important;
+      background: #c0c0c0 !important; font-family: 'MS Sans Serif', Arial, sans-serif !important;
+      font-size: 11px !important; font-weight: normal !important; color: #000 !important;
+      cursor: pointer !important; text-decoration: none;
+      box-shadow: inset -1px -1px #000, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf !important;
+      transition: none !important; transform: none !important;
+    }
+    .btn-social:hover { background: #c0c0c0 !important; transform: none !important; }
+    .btn-social:active { box-shadow: inset 1px 1px #000, inset -1px -1px #fff, inset 2px 2px #808080, inset -2px -2px #dfdfdf !important; }
+    .btn-social svg { width: 14px !important; height: 14px !important; }
+
+    .divider { margin: 10px 0 !important; }
+    .divider span { font-size: 11px !important; color: #000 !important; font-weight: normal !important; }
+    .divider::before, .divider::after { background: #808080 !important; }
+
+    .field { margin-bottom: 10px !important; }
+    .field label { font-size: 11px !important; font-weight: bold !important; margin-bottom: 3px !important; color: #000 !important; }
+    .field input {
+      width: 100%; padding: 2px 4px !important; border-radius: 0 !important;
+      border: 2px solid !important; border-color: #808080 #fff #fff #808080 !important;
+      box-shadow: inset 1px 1px #0a0a0a !important;
+      font-family: 'MS Sans Serif', Arial, sans-serif !important; font-size: 11px !important;
+    }
+    .field input:focus { outline: 1px dotted #000 !important; outline-offset: -4px !important; box-shadow: inset 1px 1px #0a0a0a !important; }
+    .field input::placeholder { color: #808080 !important; }
+    .field-row { margin-bottom: 3px !important; }
+    .forgot-link { color: #000080 !important; font-size: 11px !important; text-decoration: underline !important; }
+    .password-wrap .toggle-pw { right: 4px !important; font-size: 12px !important; color: #000 !important; }
+    .remember-row { margin-bottom: 12px !important; }
+    .remember-row label { font-size: 11px !important; color: #000 !important; }
+
+    .btn-submit {
+      width: 100%; padding: 5px 16px !important; border-radius: 0 !important;
+      background: #c0c0c0 !important; color: #000 !important; border: none !important;
+      box-shadow: inset -1px -1px #000, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf !important;
+      font-family: 'MS Sans Serif', Arial, sans-serif !important; font-size: 11px !important;
+      font-weight: bold !important; cursor: pointer;
+      outline: 1px dotted #000; outline-offset: -4px;
+    }
+    .btn-submit:hover { transform: none !important; background: #c0c0c0 !important; }
+    .btn-submit:active { box-shadow: inset 1px 1px #000, inset -1px -1px #fff, inset 2px 2px #808080, inset -2px -2px #dfdfdf !important; }
+
+    .form-footer { font-size: 11px !important; color: #000 !important; margin-top: 12px !important; }
+    .form-footer a { color: #000080 !important; text-decoration: underline !important; font-weight: normal !important; }
+    .gdpr-note { background: #fff !important; border: 1px solid #808080 !important; border-radius: 0 !important; font-size: 10px !important; color: #000 !important; margin-top: 10px !important; }
+    .gdpr-note a { color: #000080 !important; }
+    .form-error { border-radius: 0 !important; background: #fff !important; border: 2px solid !important; border-color: #808080 #fff #fff #808080 !important; color: #000 !important; font-size: 11px !important; }
+    .method-tabs { gap: 0 !important; margin-bottom: 12px !important; border-bottom: 2px solid #808080 !important; }
+    .method-tab {
+      flex: 1; padding: 4px 10px !important; border: 1px solid #808080 !important; border-bottom: none !important;
+      border-radius: 0 !important; background: #c0c0c0 !important;
+      font-family: 'MS Sans Serif', Arial, sans-serif !important; font-size: 11px !important;
+      font-weight: normal !important; color: #000 !important; cursor: pointer;
+      transition: none !important; margin-bottom: -1px;
+    }
+    .method-tab:hover { border-color: #808080 !important; color: #000 !important; background: #c0c0c0 !important; }
+    .method-tab.active {
+      background: #c0c0c0 !important; color: #000 !important; font-weight: bold !important;
+      border-color: #808080 !important; z-index: 1; position: relative;
+    }
+    .phone-prefix { background: #c0c0c0 !important; border-radius: 0 !important; border: 2px solid !important; border-color: #808080 #fff #fff #808080 !important; font-size: 11px !important; padding: 2px 6px !important; }
+    .otp-input { letter-spacing: 0.2em !important; font-size: 18px !important; font-family: 'Courier New', monospace !important; }
+    .otp-back { color: #000080 !important; text-decoration: underline !important; font-size: 11px !important; }
+    .otp-hint { font-size: 11px !important; color: #000 !important; }
+    .already-in-avatar { border-radius: 0 !important; background: #000080 !important; border: 2px solid #808080 !important; }
+    .already-in-name { font-family: 'MS Sans Serif', Arial, sans-serif !important; font-size: 16px !important; font-weight: bold !important; letter-spacing: 0 !important; }
+    .already-in-email { font-size: 11px !important; color: #000 !important; }
+    footer { flex-direction: row !important; }
+    .footer-logo { font-family: 'MS Sans Serif', Arial, sans-serif !important; font-size: 13px !important; }
+    .footer-links a { font-size: 11px !important; color: #000080 !important; text-decoration: underline !important; }
+    .tg-widget-slot iframe { border-radius: 0 !important; }
   </style>
+  <link rel="stylesheet" href="win95.css" />
 </head>
 <body>
+
+  <!-- WIN95 WINDOW -->
+  <div class="w95-desktop">
+  <div class="w95-window">
+  <div class="w95-titlebar">
+    <span class="w95-titlebar-icon">🔑</span>
+    <span class="w95-titlebar-text">Войти — InviteBro</span>
+    <div class="w95-titlebar-btns">
+      <button class="w95-tb-btn">_</button>
+      <button class="w95-tb-btn">□</button>
+      <button class="w95-tb-btn" onclick="location.href='index.html'">✕</button>
+    </div>
+  </div>
 
   <!-- NAV -->
   <nav>
@@ -317,6 +448,8 @@
     <!-- RIGHT FORM PANEL -->
     <div class="auth-form-wrap">
       <div class="auth-form-inner">
+        <div class="auth-form-inner-titlebar">🔑 Вход в систему — InviteBro</div>
+        <div class="auth-form-inner-body">
 
         <!-- Already logged in banner (shown if user visits login while logged in) -->
         <div class="already-in" id="already-in-banner">
@@ -429,8 +562,20 @@
           🔒 <span data-i18n="gdpr_note">Your data is processed in compliance with GDPR (EU 2016/679). Read our <a href="privacy.html">Privacy Policy</a> and <a href="tos.html">Terms of Service</a>. InviteBro S.r.l. · Milan, Italy.</span>
         </div>
         </div><!-- /login-form-wrap -->
+        </div><!-- /auth-form-inner-body -->
       </div>
     </div>
+  </div>
+
+  </div><!-- /w95-window -->
+  </div><!-- /w95-desktop -->
+
+  <!-- TASKBAR -->
+  <div class="w95-taskbar">
+    <button class="w95-start">🖼 Пуск</button>
+    <div class="w95-taskbar-sep"></div>
+    <div class="w95-taskbar-item">🔑 Вход — InviteBro</div>
+    <div class="w95-clock" id="w95-clock">00:00</div>
   </div>
 
   <!-- FOOTER -->
