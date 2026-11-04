@@ -7,6 +7,17 @@
  */
 const Auth = (() => {
 
+  // Replaces the raw "Failed to fetch" users would otherwise see when Supabase is unreachable.
+  function _message(error) {
+    if (error.name !== 'AuthRetryableFetchError' && !/failed to fetch|network/i.test(error.message)) {
+      return error.message;
+    }
+    const lang = document.documentElement.lang;
+    return lang === 'it' ? 'Impossibile contattare il server. Riprova più tardi.'
+      : lang === 'ru' ? 'Не удалось связаться с сервером. Повторите позже.'
+      : 'Could not reach the server. Please try again later.';
+  }
+
   // ── Session cache ──────────────────────────────────────────────────────────
   // Supabase persists the session in localStorage under sb-*-auth-token.
   // Read it synchronously so applyNavState() works immediately on page load.
@@ -56,9 +67,12 @@ const Auth = (() => {
           full_name: `${firstName} ${lastName}`.trim(),
           source: source || window.location.hostname,
         },
+        emailRedirectTo: window.location.origin + '/explore.html',
       },
     });
-    if (error) return { error: error.message };
+    if (error) return { error: _message(error) };
+    // With confirmation on, Supabase hides duplicates behind a user with no identities.
+    if (data.user?.identities?.length === 0) return { error: 'already registered' };
     // Supabase returns session=null when email confirmation is required
     if (!data.session) return { confirm: true };
     return null; // null = fully signed in
@@ -66,7 +80,7 @@ const Auth = (() => {
 
   async function loginEmail(email, password) {
     const { error } = await SupabaseClient.auth.signInWithPassword({ email, password });
-    return error?.message ?? null;
+    return error ? _message(error) : null;
   }
 
   // ── Google OAuth (Supabase redirect flow) ──────────────────────────────────
