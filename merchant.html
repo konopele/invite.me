@@ -482,6 +482,7 @@
 <script src="supabase.js"></script>
 <script src="lang-switcher.js"></script>
 <script src="auth.js"></script>
+<script src="data-eu.js"></script>
 <script>
 /* ══════════════════════════════════════════════
    TRANSLATIONS
@@ -601,6 +602,7 @@ const LANGS = {
    MERCHANT DATA
 ══════════════════════════════════════════════ */
 const MERCHANTS = {
+  ...EU_MERCHANT_DETAIL,
   zalando:{name:'Zalando',emoji:'🛒',cat:'fashion',verified:true,featured:true,
     desc:"Europe's largest online fashion platform. 7,000+ brands, free returns on every order.",
     website:'zalando.com',totalCodes:50,inviteCodes:38,success:91},
@@ -619,6 +621,7 @@ const MERCHANTS = {
 };
 
 const PROMO_CODES = {
+  ...EU_PROMO_CODES,
   zalando:[
     {code:'ZALA20IT',disc:'−20%',desc:'20% off your first fashion order. Valid on full-price items.',verified:true,top:true,expiring:false,expires:'31 Jul 2026',uses:3420},
     {code:'ZALASALE10',disc:'−10%',desc:'Extra 10% on already discounted items during the seasonal sale.',verified:true,top:false,expiring:false,expires:'30 Jun 2026',uses:1890},
@@ -642,6 +645,7 @@ const PROMO_CODES = {
 };
 
 const INVITE_CODES = {
+  ...EU_INVITE_CODES,
   zalando:[
     {id:'z1',user:'marco_r',av:'🧑',premium:true,top:true,date:'2 days ago',code:'MARCO-ZAL9',link:'https://zalando.com/invite/marco',bonus:'€10 credit',alsoBonus:'€5 credit',votes:{ok:48,bad:3}},
     {id:'z2',user:'sofia_m',av:'👩',premium:false,top:false,date:'5 days ago',code:'SOFIA-ZALA',link:null,bonus:'€10 credit',alsoBonus:'€5 credit',votes:{ok:31,bad:1}},
